@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/signup")
@@ -41,12 +40,6 @@ public class SignUpController {
             return false;
         }
 
-//        ArrayList<SignUpDto> members = (ArrayList<SignUpDto>) userMapper.memberInfo();
-//        for (SignUpDto member : members) {
-//            if (!(member.getEmail().equals(email)) && !(member.getName().equals(name)) && !(password.equals(password1))) {
-//                return false;
-//            }
-//        }
         if(!(password.equals(password1))) {
             return false;
         }

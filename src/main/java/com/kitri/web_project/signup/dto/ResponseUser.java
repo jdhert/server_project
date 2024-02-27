@@ -9,5 +9,4 @@ public class ResponseUser {
 
     String nick_name;
     String email;
-
 }
