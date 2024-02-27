@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kitri.web_project.mybatis.mappers.UserMapper">
+
+    <sql id="requestColumns">
+        email, password
+    </sql>
+
+    <sql id="responseColumns">
+        id, email, password, nick_name, address, img_path
+    </sql>
+
+    <resultMap id="userResultMap" type="com.kitri.web_project.login.dto.ResponseUser">
+        <id property="id" column="id" />
+        <result property="email" column="email" />
+        <result property="name" column="nick_name" />
+        <result property="password" column="password" />
+        <result property="address" column="address" />
+        <result property="imgpath" column="img_path" />
+    </resultMap>
+
+    <select id="findAll" resultType="String">
+        SELECT email FROM user where id = 1;
+    </select>
+    <select id="findByEmail" resultType="com.kitri.web_project.login.dto.ResponseUser" parameterType="String">
+        SELECT * FROM user where email=#{email};
+    </select>
+</mapper>
