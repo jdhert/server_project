@@ -3,6 +3,7 @@
 
 <mapper namespace="com.kitri.web_project.mybatis.mappers.UserMapper">
 
+
     <insert id="signup" parameterType="com.kitri.web_project.signup.dto.SignUpDto">
         INSERT INTO user (email, nick_name, password, address)
         VALUES (#{email}, #{name}, #{password}, #{address})
@@ -17,6 +18,30 @@
 
     <select id="memberInfo" parameterType="com.kitri.web_project.signup.dto.SignUpDto" resultType="com.kitri.web_project.signup.dto.SignUpDto">
         SELECT * FROM user
+    </select>
+
+    <sql id="requestColumns">
+        email, password
+    </sql>
+
+    <sql id="responseColumns">
+        id, email, password, nick_name, address, img_path
+    </sql>
+
+    <resultMap id="userResultMap" type="com.kitri.web_project.login.dto.ResponseUser">
+        <id property="id" column="id" />
+        <result property="email" column="email" />
+        <result property="name" column="nick_name" />
+        <result property="password" column="password" />
+        <result property="address" column="address" />
+        <result property="imgpath" column="img_path" />
+    </resultMap>
+
+    <select id="findAll" resultType="String">
+        SELECT email FROM user where id = 1;
+    </select>
+    <select id="findByEmail" resultType="com.kitri.web_project.login.dto.ResponseUser" parameterType="String">
+        SELECT * FROM user where email=#{email};
     </select>
 </mapper>
 
