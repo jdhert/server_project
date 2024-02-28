@@ -7,6 +7,6 @@ import lombok.Setter;
 @Setter
 public class ResponseUser {
 
-    String nick_name;
+    String nickName;
     String email;
 }

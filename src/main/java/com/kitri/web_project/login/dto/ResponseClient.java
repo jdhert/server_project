@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ResponseUser {
+public class ResponseClient {
 
     @NotEmpty
     Long id;
