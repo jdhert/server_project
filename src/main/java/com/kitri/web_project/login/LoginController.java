@@ -1,15 +1,12 @@
 package com.kitri.web_project.login;
 
 import com.kitri.web_project.login.dto.LoginUser;
-import com.kitri.web_project.login.dto.ResponseUser;
+import com.kitri.web_project.login.dto.ResponseClient;
 import com.kitri.web_project.mybatis.mappers.UserMapper;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 @RestController
@@ -22,7 +19,7 @@ public class LoginController {
 
     @PostMapping("")
     public Long Log(@RequestBody LoginUser loginUser, HttpServletResponse response){
-    ResponseUser responseUsers = userMapper.findByEmail(loginUser.getEmail());
+    ResponseClient responseUsers = userMapper.findByEmail(loginUser.getEmail());
 
 //    String responseUsers =  userMapper.findAll();
 

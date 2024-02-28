@@ -4,13 +4,17 @@
 <mapper namespace="com.kitri.web_project.mybatis.mappers.UserMapper">
 
 
+    <sql id="responseColumns1">
+        nick_name as nickName, email
+    </sql>
+
     <insert id="signup" parameterType="com.kitri.web_project.signup.dto.SignUpDto">
         INSERT INTO user (email, nick_name, password, address)
         VALUES (#{email}, #{name}, #{password}, #{address})
     </insert>
 
     <select id="findMember" parameterType="string" resultType="com.kitri.web_project.signup.dto.ResponseUser">
-        SELECT nick_name, email
+        SELECT <include refid="responseColumns1" />
         FROM user
         WHERE nick_name = #{name}
           OR email = #{email}
@@ -28,7 +32,7 @@
         id, email, password, nick_name, address, img_path
     </sql>
 
-    <resultMap id="userResultMap" type="com.kitri.web_project.login.dto.ResponseUser">
+    <resultMap id="userResultMap" type="com.kitri.web_project.login.dto.ResponseClient">
         <id property="id" column="id" />
         <result property="email" column="email" />
         <result property="name" column="nick_name" />
@@ -40,7 +44,7 @@
     <select id="findAll" resultType="String">
         SELECT email FROM user where id = 1;
     </select>
-    <select id="findByEmail" resultType="com.kitri.web_project.login.dto.ResponseUser" parameterType="String">
+    <select id="findByEmail" resultType="com.kitri.web_project.login.dto.ResponseClient" parameterType="String">
         SELECT * FROM user where email=#{email};
     </select>
 </mapper>
