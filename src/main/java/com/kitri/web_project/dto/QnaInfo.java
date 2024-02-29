@@ -1,4 +1,4 @@
-package com.kitri.web_project.board.qna_board.dto;
+package com.kitri.web_project.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;

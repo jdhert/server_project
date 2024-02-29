@@ -1,7 +1,7 @@
-package com.kitri.web_project.login;
+package com.kitri.web_project.controller;
 
-import com.kitri.web_project.login.dto.LoginUser;
-import com.kitri.web_project.login.dto.ResponseClient;
+import com.kitri.web_project.dto.LoginUser;
+import com.kitri.web_project.dto.ResponseClient;
 import com.kitri.web_project.mybatis.mappers.UserMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

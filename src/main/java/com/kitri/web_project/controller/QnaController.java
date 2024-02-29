@@ -1,6 +1,6 @@
-package com.kitri.web_project.board.qna_board;
+package com.kitri.web_project.controller;
 
-import com.kitri.web_project.board.qna_board.dto.QnaInfo;
+import com.kitri.web_project.dto.QnaInfo;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +19,18 @@ public class QnaController {
 
     @GetMapping("/{page}")
     public List<QnaInfo> get(@PathVariable int page){
-        int maxPage=8;
+        int maxPage=4;
         int offset;
-        int limit;
-        if(page == 1)
+        int limit=0;
+        if(page == 1) {
             offset = 0;
-        else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
-//        limit = page * maxPage + (page- 1) * (maxPage / 2);
-        limit = 10;
+            limit = 4;
+        }
+        else offset = (page-1) * maxPage + (page-2) * 4;
+
+        if(limit != 4)
+            limit = 8;
+
         List<QnaInfo> qnaInfos = boardMapper.getQnaBoards(offset, limit);
         if(qnaInfos.isEmpty())
             return null;

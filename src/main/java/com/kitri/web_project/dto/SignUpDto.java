@@ -1,4 +1,4 @@
-package com.kitri.web_project.signup.dto;
+package com.kitri.web_project.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;

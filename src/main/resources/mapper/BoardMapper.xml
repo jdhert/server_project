@@ -8,21 +8,21 @@
         id, title, writer, created_at as createdAt, content, view_count as viewCount, comment_count as commentCount, like_count as likeCount, category
     </sql>
 
-    <select id="getQnaBoards" parameterType="int" resultType="com.kitri.web_project.board.qna_board.dto.QnaInfo">
+    <select id="getQnaBoards" parameterType="int" resultType="com.kitri.web_project.dto.QnaInfo">
         SELECT <include refid="responseColumns" />, (SELECT COUNT(*) FROM free_board where subject = 1) AS totalRowCount
         from free_board
         WHERE subject = 1
         limit #{offset}, #{limit}
     </select>
 
-    <select id="getFreeBoards" parameterType="int" resultType="com.kitri.web_project.board.qna_board.dto.QnaInfo">
+    <select id="getFreeBoards" parameterType="int" resultType="com.kitri.web_project.dto.QnaInfo">
         SELECT <include refid="responseColumns" />, (SELECT COUNT(*) FROM free_board where subject = 0) AS totalRowCount
         from free_board
         WHERE subject = 0
         limit #{offset}, #{limit}
     </select>
 
-    <select id="getQnaBoard" parameterType="int" resultType="com.kitri.web_project.board.qna_board.dto.QnaInfo">
+    <select id="getQnaBoard" parameterType="int" resultType="com.kitri.web_project.dto.QnaInfo">
         SELECT <include refid="responseColumns" /> FROM free_board
         WHERE subject = 1 and id = #{id}
     </select>
