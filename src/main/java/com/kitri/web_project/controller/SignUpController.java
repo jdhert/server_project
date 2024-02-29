@@ -1,10 +1,8 @@
-package com.kitri.web_project.signup.controller;
+package com.kitri.web_project.controller;
 
 import com.kitri.web_project.mybatis.mappers.UserMapper;
-import com.kitri.web_project.signup.dto.RequestClient;
-import com.kitri.web_project.signup.dto.ResponseUser;
-import com.kitri.web_project.signup.dto.SignUpDto;
-import jakarta.validation.Valid;
+import com.kitri.web_project.dto.RequestClient;
+import com.kitri.web_project.dto.ResponseUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +20,7 @@ public class SignUpController {
 
 
     //회원가입
-    @PostMapping("")
+    @PostMapping
     public boolean signup(@RequestBody RequestClient requestClient, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return false;
@@ -33,7 +31,6 @@ public class SignUpController {
         String password = requestClient.getPassword();
         String password1 = requestClient.getPassword1();
         String address = requestClient.getAddress();
-
 
         ResponseUser responseUser = userMapper.findMember(name, email);
         if (responseUser != null) {

@@ -8,19 +8,19 @@
         nick_name as nickName, email
     </sql>
 
-    <insert id="signup" parameterType="com.kitri.web_project.signup.dto.SignUpDto">
+    <insert id="signup" parameterType="com.kitri.web_project.dto.SignUpDto">
         INSERT INTO user (email, nick_name, password, address)
         VALUES (#{email}, #{name}, #{password}, #{address})
     </insert>
 
-    <select id="findMember" parameterType="string" resultType="com.kitri.web_project.signup.dto.ResponseUser">
+    <select id="findMember" parameterType="string" resultType="com.kitri.web_project.dto.ResponseUser">
         SELECT <include refid="responseColumns1" />
         FROM user
         WHERE nick_name = #{name}
           OR email = #{email}
     </select>
 
-    <select id="memberInfo" parameterType="com.kitri.web_project.signup.dto.SignUpDto" resultType="com.kitri.web_project.signup.dto.SignUpDto">
+    <select id="memberInfo" parameterType="com.kitri.web_project.dto.SignUpDto" resultType="com.kitri.web_project.dto.SignUpDto">
         SELECT * FROM user
     </select>
 
@@ -32,7 +32,7 @@
         id, email, password, nick_name, address, img_path
     </sql>
 
-    <resultMap id="userResultMap" type="com.kitri.web_project.login.dto.ResponseClient">
+    <resultMap id="userResultMap" type="com.kitri.web_project.dto.ResponseClient">
         <id property="id" column="id" />
         <result property="email" column="email" />
         <result property="name" column="nick_name" />
@@ -44,8 +44,25 @@
     <select id="findAll" resultType="String">
         SELECT email FROM user where id = 1;
     </select>
-    <select id="findByEmail" resultType="com.kitri.web_project.login.dto.ResponseClient" parameterType="String">
+    <select id="findByEmail" resultType="com.kitri.web_project.dto.ResponseClient" parameterType="String">
         SELECT * FROM user where email=#{email};
     </select>
+
+    <select id="findById" resultType="com.kitri.web_project.dto.UserInfo" parameterType="long">
+        SELECT count(*) as boardCount, (select count(*) from free_board_comment where user_id = #{id}) as commentCount,
+        (select count(*) from pet_diary where user_id = #{id}) as diaryCount
+        FROM free_board where user_id=#{id};
+    </select>
+
+
+    <sql id="responsePet">
+        id, species, age, weight, disease, name, gender, spec_species as specSpecies, recog_chip as recogChip
+    </sql>
+
+    <select id="getPets" resultType="com.kitri.web_project.dto.PetInfo" parameterType="long">
+        SELECT <include refid="responsePet" /> FROM pet where user_id = #{id}
+    </select>
+
+
 </mapper>
 

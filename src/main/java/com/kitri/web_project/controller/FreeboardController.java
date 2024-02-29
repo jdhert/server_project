@@ -1,6 +1,6 @@
-package com.kitri.web_project.board.freeboard;
+package com.kitri.web_project.controller;
 
-import com.kitri.web_project.board.qna_board.dto.QnaInfo;
+import com.kitri.web_project.dto.QnaInfo;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +26,7 @@ public class FreeboardController {
             offset = 0;
         else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
         limit = 10;
-        List<QnaInfo> qnaInfos = boardMapper.getQnaBoards(offset, limit);
+        List<QnaInfo> qnaInfos = boardMapper.getFreeBoards(offset, limit);
         if(qnaInfos.isEmpty())
             return null;
         else return qnaInfos;
