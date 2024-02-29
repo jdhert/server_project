@@ -24,4 +24,6 @@ public class QnaInfo {
     int likeCount;
     String category;
 
+    int totalRowCount;
+
 }

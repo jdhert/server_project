@@ -10,6 +10,7 @@ public interface BoardMapper {
 
     List<QnaInfo> getQnaBoards(int offset, int limit);
 
+    List<QnaInfo> getFreeBoards(int offset, int limit);
     QnaInfo getQnaBoard(int id);
 
     

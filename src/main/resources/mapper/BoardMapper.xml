@@ -9,8 +9,17 @@
     </sql>
 
     <select id="getQnaBoards" parameterType="int" resultType="com.kitri.web_project.board.qna_board.dto.QnaInfo">
-        SELECT <include refid="responseColumns" /> FROM free_board
-        WHERE subject = 1 limit #{offset}, #{limit}
+        SELECT <include refid="responseColumns" />, (SELECT COUNT(*) FROM free_board where subject = 1) AS totalRowCount
+        from free_board
+        WHERE subject = 1
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="getFreeBoards" parameterType="int" resultType="com.kitri.web_project.board.qna_board.dto.QnaInfo">
+        SELECT <include refid="responseColumns" />, (SELECT COUNT(*) FROM free_board where subject = 0) AS totalRowCount
+        from free_board
+        WHERE subject = 0
+        limit #{offset}, #{limit}
     </select>
 
     <select id="getQnaBoard" parameterType="int" resultType="com.kitri.web_project.board.qna_board.dto.QnaInfo">

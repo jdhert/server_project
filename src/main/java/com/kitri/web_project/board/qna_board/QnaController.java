@@ -25,7 +25,8 @@ public class QnaController {
         if(page == 1)
             offset = 0;
         else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
-        limit = page * maxPage + (page- 1) * (maxPage / 2);
+//        limit = page * maxPage + (page- 1) * (maxPage / 2);
+        limit = 10;
         List<QnaInfo> qnaInfos = boardMapper.getQnaBoards(offset, limit);
         if(qnaInfos.isEmpty())
             return null;
