@@ -31,6 +31,7 @@ public class SignUpDto {
 
     String address;
 
+    String imgPath;
 
     public SignUpDto(String name, String email, String password, String address) {
         this.name = name;

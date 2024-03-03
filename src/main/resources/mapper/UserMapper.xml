@@ -9,8 +9,8 @@
     </sql>
 
     <insert id="signup" parameterType="com.kitri.web_project.dto.SignUpDto">
-        INSERT INTO user (email, nick_name, password, address)
-        VALUES (#{email}, #{name}, #{password}, #{address})
+        INSERT INTO user (email, nick_name, password, address, img_Path)
+        VALUES (#{email}, #{name}, #{password}, #{address}, #{imgPath})
     </insert>
 
     <select id="findMember" parameterType="string" resultType="com.kitri.web_project.dto.ResponseUser">

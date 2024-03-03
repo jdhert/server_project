@@ -40,7 +40,7 @@ public class SignUpController {
         if(!(password.equals(password1))) {
             return false;
         }
-        userMapper.signup(name, email, password, address);
+        userMapper.signup(name, email, password, address, null);
         return true;
     }
 }

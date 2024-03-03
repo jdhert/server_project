@@ -2,6 +2,7 @@ package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.LoginUser;
 import com.kitri.web_project.dto.ResponseClient;
+import com.kitri.web_project.dto.SocialLogin;
 import com.kitri.web_project.mybatis.mappers.UserMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class LoginController {
     }
 
     @GetMapping("/logout")
-    public boolean logOut(HttpServletRequest request, HttpServletResponse res){
+    public boolean logOut(HttpServletResponse res){
         Cookie cookie = new Cookie("email", null);
         Cookie cookie1 = new Cookie("id", null);
         cookie1.setMaxAge(0);
@@ -47,5 +48,29 @@ public class LoginController {
         res.addCookie(cookie);
         res.addCookie(cookie1);
         return true;
+    }
+
+    @PostMapping("/social")
+    public Long socialLogin(@RequestBody SocialLogin socialLogin, HttpServletResponse response){
+        ResponseClient responseClient = userMapper.findByEmail(socialLogin.getEmail());
+        if(responseClient != null){
+            Cookie cookie = new Cookie("email", responseClient.getEmail());
+            Cookie cookie1 = new Cookie("id", responseClient.getId().toString());
+            cookie.setPath("/");
+            cookie1.setPath("/");
+            response.addCookie(cookie);
+            response.addCookie(cookie1);
+            return responseClient.getId();
+        } else {
+            userMapper.signup(socialLogin.getName(), socialLogin.getEmail(), socialLogin.getPassword(), "", socialLogin.getImage());
+            ResponseClient responseClient1 = userMapper.findByEmail(socialLogin.getEmail());
+            Cookie cookie = new Cookie("email", responseClient1.getEmail());
+            Cookie cookie1 = new Cookie("id", responseClient1.getId().toString());
+            cookie.setPath("/");
+            cookie1.setPath("/");
+            response.addCookie(cookie);
+            response.addCookie(cookie1);
+            return responseClient1.getId();
+        }
     }
 }
