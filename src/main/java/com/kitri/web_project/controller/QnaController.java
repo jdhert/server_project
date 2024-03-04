@@ -40,7 +40,7 @@ public class QnaController {
         return boardMapper.getQnaBoard(id);
     }
 
-    @PostMapping()
+    @PostMapping
     public void uploadBoard(@RequestBody RequestBoard board){
         boardMapper.uploadQna(board);
     }

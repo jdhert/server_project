@@ -33,4 +33,25 @@
         INSERT INTO free_board (user_id, content, title, writer, category, tag, subject)
         VALUES (#{id}, #{content}, #{title}, #{writer}, #{category}, #{tag}, #{subject})
     </insert>
+
+    <select id="getWritFreeBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.QnaInfo">
+        SELECT <include refid="responseColumns" /> FROM free_board
+        WHERE subject = 0 and writer like #{search}
+        order by created_at desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="getContFreeBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.QnaInfo">
+        SELECT <include refid="responseColumns" /> FROM free_board
+        WHERE subject = 0 and content like #{search}
+        order by created_at desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="getTagFreeBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.QnaInfo">
+        SELECT <include refid="responseColumns" /> FROM free_board
+        WHERE subject = 0 and tag like #{search}
+        order by created_at desc
+        limit #{offset}, #{limit}
+    </select>
 </mapper>

@@ -15,5 +15,10 @@ public interface BoardMapper {
     QnaInfo getQnaBoard(int id);
 
     void uploadQna(RequestBoard board);
-    
+
+    List<QnaInfo> getWritFreeBoards(String search, int offset, int limit);
+
+    List<QnaInfo> getContFreeBoards(String search, int offset, int limit);
+
+    List<QnaInfo> getTagFreeBoards(String search, int offset, int limit);
 }
