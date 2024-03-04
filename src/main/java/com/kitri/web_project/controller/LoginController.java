@@ -29,11 +29,11 @@ public class LoginController {
         return  0L;
     Cookie cookie = new Cookie("email", responseUsers.getEmail());
     Cookie cookie1 = new Cookie("id", responseUsers.getId().toString());
-        cookie.setPath("/");
-        cookie1.setPath("/");
-        response.addCookie(cookie);
-        response.addCookie(cookie1);
-        return responseUsers.getId();
+    cookie.setPath("/");
+    cookie1.setPath("/");
+    response.addCookie(cookie);
+    response.addCookie(cookie1);
+    return responseUsers.getId();
         //        cookie.setMaxAge(60*60*24*7);
     }
 

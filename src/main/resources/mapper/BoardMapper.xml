@@ -12,6 +12,7 @@
         SELECT <include refid="responseColumns" />, (SELECT COUNT(*) FROM free_board where subject = 1) AS totalRowCount
         from free_board
         WHERE subject = 1
+        order by created_at desc
         limit #{offset}, #{limit}
     </select>
 
@@ -19,6 +20,7 @@
         SELECT <include refid="responseColumns" />, (SELECT COUNT(*) FROM free_board where subject = 0) AS totalRowCount
         from free_board
         WHERE subject = 0
+        order by created_at desc
         limit #{offset}, #{limit}
     </select>
 
@@ -26,4 +28,9 @@
         SELECT <include refid="responseColumns" /> FROM free_board
         WHERE subject = 1 and id = #{id}
     </select>
+
+    <insert id="uploadQna" parameterType="com.kitri.web_project.dto.board.RequestBoard">
+        INSERT INTO free_board (user_id, content, title, writer, category, tag, subject)
+        VALUES (#{id}, #{content}, #{title}, #{writer}, #{category}, #{tag}, #{subject})
+    </insert>
 </mapper>

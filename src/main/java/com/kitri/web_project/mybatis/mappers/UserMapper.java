@@ -16,4 +16,6 @@ public interface UserMapper {
     ResponseClient findByEmail(String email);
     UserInfo findById(long id);
     List<PetInfo> getPets(long id);
+
+    List<DiaryInfo> getDiarys(long id);
 }

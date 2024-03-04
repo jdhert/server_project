@@ -1,12 +1,10 @@
 package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.QnaInfo;
+import com.kitri.web_project.dto.board.RequestBoard;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,6 +38,11 @@ public class QnaController {
     @GetMapping("/detail/{id}")
     public QnaInfo getInfo(@PathVariable int id){
         return boardMapper.getQnaBoard(id);
+    }
+
+    @PostMapping()
+    public void uploadBoard(@RequestBody RequestBoard board){
+        boardMapper.uploadQna(board);
     }
 
 
