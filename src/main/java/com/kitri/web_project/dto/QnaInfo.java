@@ -23,6 +23,7 @@ public class QnaInfo {
     int commentCount;
     int likeCount;
     String category;
+    String tag;
 
     int totalRowCount;
 
