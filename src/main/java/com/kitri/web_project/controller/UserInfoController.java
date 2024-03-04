@@ -1,8 +1,10 @@
 package com.kitri.web_project.controller;
 
+import com.kitri.web_project.dto.DiaryInfo;
 import com.kitri.web_project.dto.PetInfo;
 import com.kitri.web_project.mybatis.mappers.UserMapper;
 import com.kitri.web_project.dto.UserInfo;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,4 +32,14 @@ public class UserInfoController {
         long id1 = Long.parseLong(id);
         return userMapper.getPets(id1);
     }
+
+    @GetMapping("/diary/{id}")
+    public List<DiaryInfo> getDiary(@PathVariable String id){
+        long id1 = Long.parseLong(id);
+        List<DiaryInfo> diaryInfo = userMapper.getDiarys(id1);
+        return diaryInfo;
+    }
+
+
+
 }
