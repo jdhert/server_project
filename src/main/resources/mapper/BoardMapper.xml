@@ -5,7 +5,7 @@
 
 
     <sql id="responseColumns">
-        id, title, writer, created_at as createdAt, content, view_count as viewCount, comment_count as commentCount, like_count as likeCount, category
+        id, title, writer, created_at as createdAt, content, view_count as viewCount, comment_count as commentCount, like_count as likeCount, category, tag
     </sql>
 
     <select id="getQnaBoards" parameterType="int" resultType="com.kitri.web_project.dto.QnaInfo">
