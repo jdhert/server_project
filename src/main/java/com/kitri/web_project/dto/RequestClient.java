@@ -10,7 +10,7 @@ public class RequestClient {
     String name;
     String email;
     String password;
-    String password1;
+    String passwordVerify;
     String address;
 
 }

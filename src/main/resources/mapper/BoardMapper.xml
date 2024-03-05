@@ -2,8 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.kitri.web_project.mybatis.mappers.BoardMapper">
-
-
     <sql id="responseColumns">
         id, title, writer, created_at as createdAt, content, view_count as viewCount, comment_count as commentCount, like_count as likeCount, category, tag
     </sql>
@@ -34,24 +32,25 @@
         VALUES (#{id}, #{content}, #{title}, #{writer}, #{category}, #{tag}, #{subject})
     </insert>
 
-    <select id="getWritFreeBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.QnaInfo">
+    <select id="getSearchBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.QnaInfo">
         SELECT <include refid="responseColumns" /> FROM free_board
-        WHERE subject = 0 and writer like #{search}
-        order by created_at desc
-        limit #{offset}, #{limit}
+        WHERE subject = #{subject}
+        <choose>
+            <when test="type == 'writer'">
+                AND writer LIKE #{search}
+            </when>
+            <when test="type == 'content'">
+                AND content LIKE #{search}
+            </when>
+            <when test="type == 'tag'">
+                AND tag LIKE #{search}
+            </when>
+            <when test="type == 'title'">
+                AND title LIKE #{search}
+            </when>
+        </choose>
+        ORDER BY created_at DESC
+        LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="getContFreeBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.QnaInfo">
-        SELECT <include refid="responseColumns" /> FROM free_board
-        WHERE subject = 0 and content like #{search}
-        order by created_at desc
-        limit #{offset}, #{limit}
-    </select>
-
-    <select id="getTagFreeBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.QnaInfo">
-        SELECT <include refid="responseColumns" /> FROM free_board
-        WHERE subject = 0 and tag like #{search}
-        order by created_at desc
-        limit #{offset}, #{limit}
-    </select>
 </mapper>

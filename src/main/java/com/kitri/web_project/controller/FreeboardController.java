@@ -44,14 +44,7 @@ public class FreeboardController {
             offset = 0;
         else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
         limit = 8;
-        switch (type){
-            case "writer":
-                return boardMapper.getWritFreeBoards(search+"%", offset, limit);
-            case "content":
-                return boardMapper.getContFreeBoards(search+"%", offset, limit);
-            case "tag":
-                return boardMapper.getTagFreeBoards(search+"%", offset, limit);
-        }
-        return null;
+
+        return boardMapper.getSearchBoards(search+"%", type, offset, limit, 0);
     }
 }
