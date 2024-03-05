@@ -21,25 +21,15 @@ public class SignUpController {
     //회원가입
     @PostMapping
     public boolean signup(@RequestBody RequestClient requestClient, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors())
             return false;
-        }
-
-        String name = requestClient.getName();
-        String email = requestClient.getEmail();
-        String password = requestClient.getPassword();
-        String password1 = requestClient.getPasswordVerify();
-        String address = requestClient.getAddress();
-
-        ResponseUser responseUser = userMapper.findMember(name, email);
-        if (responseUser != null) {
+        ResponseUser responseUser = userMapper.findMember(requestClient.getName(), requestClient.getEmail());
+        if (responseUser != null)
             return false;
-        }
-
-        if(!(password.equals(password1))) {
+        else if(!(requestClient.getPassword().equals(requestClient.getPasswordVerify())))
             return false;
-        }
-        userMapper.signup(name, email, password, address, null);
+        else userMapper.signup(requestClient.getName(), requestClient.getEmail(), requestClient.getPassword(), requestClient.getAddress(), null);
+
         return true;
     }
 }

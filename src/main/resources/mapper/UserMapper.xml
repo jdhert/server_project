@@ -4,24 +4,16 @@
 <mapper namespace="com.kitri.web_project.mybatis.mappers.UserMapper">
 
 
-    <sql id="responseColumns1">
-        nick_name as nickName, email
-    </sql>
-
-    <insert id="signup" parameterType="com.kitri.web_project.dto.SignUpDto">
+    <insert id="signup" parameterType="string">
         INSERT INTO user (email, nick_name, password, address, img_Path)
         VALUES (#{email}, #{name}, #{password}, #{address}, #{imgPath})
     </insert>
 
     <select id="findMember" parameterType="string" resultType="com.kitri.web_project.dto.ResponseUser">
-        SELECT <include refid="responseColumns1" />
+        SELECT nick_name as nickName, email
         FROM user
         WHERE nick_name = #{name}
           OR email = #{email}
-    </select>
-
-    <select id="memberInfo" parameterType="com.kitri.web_project.dto.SignUpDto" resultType="com.kitri.web_project.dto.SignUpDto">
-        SELECT * FROM user
     </select>
 
     <sql id="requestColumns">
@@ -38,12 +30,9 @@
         <result property="name" column="nick_name" />
         <result property="password" column="password" />
         <result property="address" column="address" />
-        <result property="imgpath" column="img_path" />
+        <result property="imgPath" column="img_path" />
     </resultMap>
 
-    <select id="findAll" resultType="String">
-        SELECT email FROM user where id = 1;
-    </select>
     <select id="findByEmail" resultType="com.kitri.web_project.dto.ResponseClient" parameterType="String">
         SELECT * FROM user where email=#{email};
     </select>
@@ -64,7 +53,7 @@
         SELECT <include refid="responsePet" /> FROM pet where user_id = #{id}
     </select>
 
-    <select id="getDiarys" resultType="com.kitri.web_project.dto.DiaryInfo" parameterType="long">
+    <select id="getDiary" resultType="com.kitri.web_project.dto.DiaryInfo" parameterType="long">
         SELECT pet_diary.id as id, title, created_at as createdAt, content, pet.name as petName FROM pet_diary, pet where pet_id = pet.id and pet_diary.user_id = #{id}
         order by created_at desc limit 10;
     </select>

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class QnaInfo {
+public class BoardInfo {
     @NotEmpty
     Long id;
     @NotEmpty
@@ -17,6 +17,10 @@ public class QnaInfo {
     String writer;
     @NotEmpty
     LocalDateTime createdAt;
+    @NotEmpty
+    Long userId;
+
+
 
     String content;
     int viewCount;

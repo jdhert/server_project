@@ -17,5 +17,5 @@ public class ResponseClient {
     String password;
     String name;
     String address;
-    String imgpath;
+    String imgPath;
 }

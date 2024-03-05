@@ -3,37 +3,26 @@
 
 <mapper namespace="com.kitri.web_project.mybatis.mappers.BoardMapper">
     <sql id="responseColumns">
-        id, title, writer, created_at as createdAt, content, view_count as viewCount, comment_count as commentCount, like_count as likeCount, category, tag
+        title, created_at as createdAt, content, view_count as viewCount, comment_count as commentCount, like_count as likeCount, category, tag, user_id as userId
     </sql>
 
-    <select id="getQnaBoards" parameterType="int" resultType="com.kitri.web_project.dto.QnaInfo">
-        SELECT <include refid="responseColumns" />, (SELECT COUNT(*) FROM free_board where subject = 1) AS totalRowCount
-        from free_board
-        WHERE subject = 1
+    <select id="getBoards" parameterType="int" resultType="com.kitri.web_project.dto.BoardInfo">
+        select free_board.id as id, <include refid="responseColumns" />,
+        (select COUNT(*) FROM free_board where subject = #{subject}) AS totalRowCount,
+        nick_name as writer
+        from free_board join user on user.id = user_id
+        WHERE subject = #{subject}
         order by created_at desc
         limit #{offset}, #{limit}
     </select>
 
-    <select id="getFreeBoards" parameterType="int" resultType="com.kitri.web_project.dto.QnaInfo">
-        SELECT <include refid="responseColumns" />, (SELECT COUNT(*) FROM free_board where subject = 0) AS totalRowCount
-        from free_board
-        WHERE subject = 0
-        order by created_at desc
-        limit #{offset}, #{limit}
-    </select>
-
-    <select id="getQnaBoard" parameterType="int" resultType="com.kitri.web_project.dto.QnaInfo">
-        SELECT <include refid="responseColumns" /> FROM free_board
-        WHERE subject = 1 and id = #{id}
-    </select>
-
-    <insert id="uploadQna" parameterType="com.kitri.web_project.dto.board.RequestBoard">
+    <insert id="uploadBoard" parameterType="com.kitri.web_project.dto.board.RequestBoard">
         INSERT INTO free_board (user_id, content, title, writer, category, tag, subject)
         VALUES (#{id}, #{content}, #{title}, #{writer}, #{category}, #{tag}, #{subject})
     </insert>
 
-    <select id="getSearchBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.QnaInfo">
-        SELECT <include refid="responseColumns" /> FROM free_board
+    <select id="getSearchBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.BoardInfo">
+        SELECT id, <include refid="responseColumns" /> FROM free_board
         WHERE subject = #{subject}
         <choose>
             <when test="type == 'writer'">

@@ -4,7 +4,9 @@
 <mapper namespace="com.kitri.web_project.mybatis.mappers.CommentMapper">
 
     <select id="getComments" parameterType="long" resultType="com.kitri.web_project.dto.comment.CommentDto">
-        SELECT id, user_id as userId, content, created_at as createdAt,  like_count as likeCount  FROM free_board_comment
+        SELECT free_board_comment.id as id, user_id as userId, content, created_at as createdAt,  like_count as likeCount,
+        nick_name as name
+        FROM free_board_comment join user on user.id = user_id
         WHERE board_id = #{id}
     </select>
 
