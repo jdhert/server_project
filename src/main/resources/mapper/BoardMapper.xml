@@ -43,4 +43,27 @@
     </select>
 
 
+    <select id="getBoard" parameterType="long" resultType="com.kitri.web_project.dto.BoardInfo">
+        select free_board.id as id, <include refid="responseColumns" />,
+        (select COUNT(*) FROM free_board where subject = #{subject}) AS totalRowCount,
+        nick_name as writer
+        from free_board join user on user.id = user_id
+        WHERE subject = #{subject}
+        order by created_at desc
+        limit #{offset}, #{limit}
+    </select>
+
+
+    <insert id="setTag"  parameterType="com.kitri.web_project.dto.board.TagSet">
+        INSERT INTO board_tag (board_id, tag)
+        VALUES (#{id}, #{tag})
+    </insert>
+
+
+    <select id="getTags" parameterType="long" resultType="string">
+        select tag from board_tag
+        WHERE board_id = #{id};
+    </select>
+
+
 </mapper>

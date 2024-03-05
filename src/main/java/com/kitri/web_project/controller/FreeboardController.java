@@ -2,6 +2,7 @@ package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
+import com.kitri.web_project.dto.board.TagSet;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +33,9 @@ public class FreeboardController {
     public void uploadBoard(@RequestBody RequestBoard board) {
         List<String> tags  = board.getTags();
         boardMapper.uploadBoard(board);
-        System.out.println("하하");
-//        for(String tag : tags){
-////            boardMapper.uploadBoard();
-//        }
+        for(String tag : tags)
+            boardMapper.setTag(board.getId(), tag);
+
     }
 
     @GetMapping("/search/{page}")
@@ -48,5 +48,16 @@ public class FreeboardController {
         else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
         limit = 8;
         return boardMapper.getSearchBoards(search+"%", type, offset, limit, 0);
+    }
+
+    @GetMapping("/get/{boardId}")
+    public BoardInfo getBoard(@PathVariable long boardId){
+        boardMapper.getBoard(boardId);
+        return null;
+    }
+
+    @GetMapping("/getTag/{boardId}")
+    public List<String>getTagS(@PathVariable long boardId){
+        return boardMapper.getTags(boardId);
     }
 }
