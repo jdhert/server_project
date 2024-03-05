@@ -16,25 +16,18 @@ import java.util.Objects;
 @RequestMapping("/api/login")
 public class LoginController {
 
-
     @Autowired
     UserMapper userMapper;
 
     @PostMapping
     public Long Log(@RequestBody LoginUser loginUser, HttpServletResponse response){
-    ResponseClient responseUsers = userMapper.findByEmail(loginUser.getEmail());
-    if(responseUsers == null)
-        return 0L;
-    if(!Objects.equals(loginUser.getPassword(), responseUsers.getPassword()))
-        return  0L;
-    Cookie cookie = new Cookie("email", responseUsers.getEmail());
-    Cookie cookie1 = new Cookie("id", responseUsers.getId().toString());
-    cookie.setPath("/");
-    cookie1.setPath("/");
-    response.addCookie(cookie);
-    response.addCookie(cookie1);
-    return responseUsers.getId();
-        //        cookie.setMaxAge(60*60*24*7);
+        ResponseClient responseUsers = userMapper.findByEmail(loginUser.getEmail());
+        if(responseUsers == null)
+            return 0L;
+        if(!Objects.equals(loginUser.getPassword(), responseUsers.getPassword()))
+            return  0L;
+        CookieSet(response, responseUsers);
+        return responseUsers.getId();
     }
 
     @GetMapping("/logout")
@@ -54,23 +47,22 @@ public class LoginController {
     public Long socialLogin(@RequestBody SocialLogin socialLogin, HttpServletResponse response){
         ResponseClient responseClient = userMapper.findByEmail(socialLogin.getEmail());
         if(responseClient != null){
-            Cookie cookie = new Cookie("email", responseClient.getEmail());
-            Cookie cookie1 = new Cookie("id", responseClient.getId().toString());
-            cookie.setPath("/");
-            cookie1.setPath("/");
-            response.addCookie(cookie);
-            response.addCookie(cookie1);
+            CookieSet(response, responseClient);
             return responseClient.getId();
         } else {
             userMapper.signup(socialLogin.getName(), socialLogin.getEmail(), socialLogin.getPassword(), "", socialLogin.getImage());
             ResponseClient responseClient1 = userMapper.findByEmail(socialLogin.getEmail());
-            Cookie cookie = new Cookie("email", responseClient1.getEmail());
-            Cookie cookie1 = new Cookie("id", responseClient1.getId().toString());
-            cookie.setPath("/");
-            cookie1.setPath("/");
-            response.addCookie(cookie);
-            response.addCookie(cookie1);
+            CookieSet(response, responseClient1);
             return responseClient1.getId();
         }
+    }
+
+    public void CookieSet(HttpServletResponse response, ResponseClient responseClient){
+        Cookie cookie = new Cookie("email", responseClient.getEmail());
+        Cookie cookie1 = new Cookie("id", responseClient.getId().toString());
+        cookie.setPath("/");
+        cookie1.setPath("/");
+        response.addCookie(cookie);
+        response.addCookie(cookie1);
     }
 }

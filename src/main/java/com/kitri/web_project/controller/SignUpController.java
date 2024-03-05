@@ -18,7 +18,6 @@ public class SignUpController {
     @Autowired
     UserMapper userMapper;
 
-
     //회원가입
     @PostMapping
     public boolean signup(@RequestBody RequestClient requestClient, BindingResult bindingResult) {
@@ -29,7 +28,7 @@ public class SignUpController {
         String name = requestClient.getName();
         String email = requestClient.getEmail();
         String password = requestClient.getPassword();
-        String password1 = requestClient.getPassword1();
+        String password1 = requestClient.getPasswordVerify();
         String address = requestClient.getAddress();
 
         ResponseUser responseUser = userMapper.findMember(name, email);
