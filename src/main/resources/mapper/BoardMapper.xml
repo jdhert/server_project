@@ -16,9 +16,9 @@
         limit #{offset}, #{limit}
     </select>
 
-    <insert id="uploadBoard" parameterType="com.kitri.web_project.dto.board.RequestBoard">
-        INSERT INTO free_board (user_id, content, title, writer, category, tag, subject)
-        VALUES (#{id}, #{content}, #{title}, #{writer}, #{category}, #{tag}, #{subject})
+    <insert id="uploadBoard"   useGeneratedKeys="true" keyProperty="id" parameterType="com.kitri.web_project.dto.board.RequestBoard">
+        INSERT INTO free_board (user_id, content, title, category, subject)
+        VALUES (#{userId}, #{content}, #{title}, #{category}, #{subject})
     </insert>
 
     <select id="getSearchBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.BoardInfo">
@@ -41,5 +41,6 @@
         ORDER BY created_at DESC
         LIMIT #{offset}, #{limit}
     </select>
+
 
 </mapper>

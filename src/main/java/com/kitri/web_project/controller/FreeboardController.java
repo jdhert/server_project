@@ -6,7 +6,6 @@ import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -15,6 +14,7 @@ public class FreeboardController {
 
     @Autowired
     BoardMapper boardMapper;
+
 
     @GetMapping("/{page}")
     public List<BoardInfo> get(@PathVariable int page) {
@@ -29,12 +29,13 @@ public class FreeboardController {
     }
 
     @PostMapping
-    public void uploadBoard(@RequestBody RequestBoard board){
-        String tags = board.getTag();
-        List<String> tagList = Arrays.asList(tags.split("\\s*#\\s*"));
-
-
+    public void uploadBoard(@RequestBody RequestBoard board) {
+        List<String> tags  = board.getTags();
         boardMapper.uploadBoard(board);
+        System.out.println("하하");
+//        for(String tag : tags){
+////            boardMapper.uploadBoard();
+//        }
     }
 
     @GetMapping("/search/{page}")
