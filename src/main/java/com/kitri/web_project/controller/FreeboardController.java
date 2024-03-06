@@ -3,6 +3,7 @@ package com.kitri.web_project.controller;
 import com.kitri.web_project.dto.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
 import com.kitri.web_project.dto.board.TagSet;
+import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -56,16 +57,17 @@ public class FreeboardController {
 
     @GetMapping("/get/{boardId}")
     public BoardInfo getBoard(@PathVariable long boardId){
-        boardMapper.getBoard(boardId);
-        return null;
+        return boardMapper.getBoard(boardId);
     }
 
     @GetMapping("/getTag/{boardId}")
     public List<String>getTagS(@PathVariable long boardId){
         return boardMapper.getTags(boardId);
     }
-
-
+    @PutMapping
+    public void updateBoard(@RequestBody UpdateBoard updateBoard){
+        boardMapper.updateBoard(updateBoard);
+    }
     @GetMapping("/getMyBoard/{id}")
     public List<BoardInfo> getMyBoard(@RequestParam int subject, @RequestParam int page, @PathVariable long id) {
 
@@ -78,6 +80,5 @@ public class FreeboardController {
         limit = 10;
         return boardMapper.getMyBoards(id, subject, offset, limit);
     }
-
 
 }

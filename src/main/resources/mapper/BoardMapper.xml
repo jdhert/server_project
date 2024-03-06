@@ -71,14 +71,9 @@
 
 
     <select id="getBoard" parameterType="long" resultType="com.kitri.web_project.dto.BoardInfo">
-        select free_board.id as id, <include refid="responseColumns" />,
-        free_board.user_id as userId,
-        (select COUNT(*) FROM free_board where subject = #{subject}) AS totalRowCount,
-        nick_name as writer
-        from free_board join user on user.id = user_id
-        WHERE subject = #{subject}
-        order by created_at desc
-        limit #{offset}, #{limit}
+        select id, <include refid="responseColumns" />
+        from free_board
+        WHERE id = #{id}
     </select>
 
 
@@ -93,6 +88,11 @@
         WHERE board_id = #{id};
     </select>
 
+
+    <update id="updateBoard" parameterType="com.kitri.web_project.dto.board.UpdateBoard">
+        update free_board set title = #{title}, content = #{content}, category = #{category} where id = #{boardId}
+    </update>
+
     <select id="getMyBoards" parameterType="com.kitri.web_project.dto.board.RequestMyBoard" resultType="com.kitri.web_project.dto.BoardInfo">
         select free_board.id as id, <include refid="responseColumns" />,
         free_board.user_id as userId,
@@ -103,5 +103,6 @@
         order by created_at desc
         limit #{offset}, #{limit}
     </select>
+
 
 </mapper>
