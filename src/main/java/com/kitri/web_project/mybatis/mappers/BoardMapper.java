@@ -20,4 +20,5 @@ public interface BoardMapper {
     List<String> getTags(long id);
 
     void updateBoard(UpdateBoard updateBoard);
+    void deleteBoard(long id);
 }

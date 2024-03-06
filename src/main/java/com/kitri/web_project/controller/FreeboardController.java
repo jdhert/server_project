@@ -66,4 +66,9 @@ public class FreeboardController {
     public void updateBoard(@RequestBody UpdateBoard updateBoard){
         boardMapper.updateBoard(updateBoard);
     }
+
+    @DeleteMapping("/{boardId}")
+    public void deleteBoard(@PathVariable long boardId){
+        boardMapper.deleteBoard(boardId);
+    }
 }

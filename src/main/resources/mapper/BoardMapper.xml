@@ -65,4 +65,8 @@
         update free_board set title = #{title}, content = #{content}, category = #{category} where id = #{boardId}
     </update>
 
+    <delete id="deleteBoard" parameterType="long">
+        DELETE FROM free_board WHERE id = #{id}
+    </delete>
+
 </mapper>
