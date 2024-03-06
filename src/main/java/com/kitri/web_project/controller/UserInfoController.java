@@ -37,6 +37,14 @@ public class UserInfoController {
         long id1 = Long.parseLong(id);
         return userMapper.getDiary(id1);
     }
+//
+//    @GetMapping("/")
+//
+//    @GetMapping("/")
+//
+//    @GetMapping("/")
+//
+//    @GetMapping("/")
 
 
 
