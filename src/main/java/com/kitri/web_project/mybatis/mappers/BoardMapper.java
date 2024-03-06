@@ -21,6 +21,9 @@ public interface BoardMapper {
 
 
     void updateBoard(UpdateBoard updateBoard);
+  
+    void deleteBoard(long id);
+
 
     List<BoardInfo> getMyBoards(long id, int subject, int offset, int limit);
 
