@@ -66,5 +66,18 @@ public class FreeboardController {
     }
 
 
+    @GetMapping("/getMyBoard/{id}")
+    public List<BoardInfo> getMyBoard(@RequestParam int subject, @RequestParam int page, @PathVariable long id) {
+
+        int maxPage=10;
+        int offset;
+        int limit;
+        if(page == 1)
+            offset = 0;
+        else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
+        limit = 10;
+        return boardMapper.getMyBoards(id, subject, offset, limit);
+    }
+
 
 }

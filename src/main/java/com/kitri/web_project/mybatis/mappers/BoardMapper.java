@@ -17,4 +17,6 @@ public interface BoardMapper {
     void setTag(long id, String tag);
 
     List<String> getTags(long id);
+
+    List<BoardInfo> getMyBoards(long id, int subject, int offset, int limit);
 }
