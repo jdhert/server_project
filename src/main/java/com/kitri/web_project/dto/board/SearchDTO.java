@@ -8,6 +8,7 @@ import lombok.Setter;
 public class SearchDTO {
     String search;
     String type;
+    String type1;
     int offset;
     int limit;
     int subject;

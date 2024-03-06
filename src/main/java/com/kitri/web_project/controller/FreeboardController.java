@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/free")
@@ -39,7 +40,7 @@ public class FreeboardController {
     }
 
     @GetMapping("/search/{page}")
-    public List<BoardInfo> search(@RequestParam String search, @RequestParam String type, @PathVariable int page){
+    public List<BoardInfo> search(@RequestParam String search, @RequestParam String type, @RequestParam String type1, @PathVariable int page){
         int maxPage=8;
         int offset;
         int limit;
@@ -47,7 +48,10 @@ public class FreeboardController {
             offset = 0;
         else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
         limit = 8;
-        return boardMapper.getSearchBoards(search+"%", type, offset, limit, 0);
+
+        List<BoardInfo> bs = boardMapper.getSearchBoards(search+'%', type, type1, offset, limit, 0);
+
+        return bs;
     }
 
     @GetMapping("/get/{boardId}")
@@ -60,4 +64,7 @@ public class FreeboardController {
     public List<String>getTagS(@PathVariable long boardId){
         return boardMapper.getTags(boardId);
     }
+
+
+
 }

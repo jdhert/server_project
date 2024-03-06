@@ -11,7 +11,7 @@ import java.util.List;
 public interface BoardMapper {
     List<BoardInfo> getBoards(int offset ,int limit, int subject);
     void uploadBoard(RequestBoard board);
-    List<BoardInfo> getSearchBoards(String search, String type, int offset, int limit, int subject);
+    List<BoardInfo> getSearchBoards(String search, String type, String type1, int offset, int limit, int subject);
 
     BoardInfo getBoard(long id);
     void setTag(long id, String tag);
