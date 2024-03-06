@@ -41,7 +41,7 @@ public class FreeboardController {
     }
 
     @GetMapping("/search/{page}")
-    public List<BoardInfo> search(@RequestParam String search, @RequestParam String type, @RequestParam String type1, @PathVariable int page){
+    public List<BoardInfo> search(@RequestParam String search, @RequestParam String type, @RequestParam String type1, @RequestParam int subject, @PathVariable int page){
         int maxPage=8;
         int offset;
         int limit;
@@ -50,9 +50,7 @@ public class FreeboardController {
         else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
         limit = 8;
 
-        List<BoardInfo> bs = boardMapper.getSearchBoards(search+'%', type, type1, offset, limit, 0);
-
-        return bs;
+        return boardMapper.getSearchBoards(search+'%', type, type1, offset, limit, subject);
     }
 
     @GetMapping("/get/{boardId}")
