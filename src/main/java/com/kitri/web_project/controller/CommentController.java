@@ -19,7 +19,12 @@ public class CommentController {
 
     @GetMapping("/{id}")
     public List<CommentDto> getComments(@PathVariable long id){
-        List<CommentDto> c =commentMapper.getComments(id);
         return commentMapper.getComments(id);
     }
+
+    @GetMapping("/mycomment/{id}")
+    public List<CommentDto> getMyComments(@PathVariable long id){
+        return commentMapper.getMyComments(id);
+    }
+
 }
