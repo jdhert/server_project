@@ -11,4 +11,10 @@
     </select>
 
 
+    <select id="getMyComments" parameterType="long" resultType="com.kitri.web_project.dto.comment.CommentDto">
+        SELECT id as id, user_id as userId, content, created_at as createdAt,  like_count as likeCount
+        FROM free_board_comment
+        WHERE user_id = #{id}
+    </select>
+
 </mapper>

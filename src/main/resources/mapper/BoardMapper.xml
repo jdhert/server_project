@@ -42,6 +42,9 @@
             <when test="type == 'title'">
                 AND title LIKE #{search}
             </when>
+            <when test="type == 'writer'">
+                AND nick_name LIKE #{search}
+            </when>
         </choose>) AS totalRowCount,
         nick_name as writer
         FROM free_board join user on user.id = user_id
@@ -58,6 +61,9 @@
             </when>
             <when test="type == 'title'">
                 AND title LIKE #{search}
+            </when>
+            <when test="type == 'writer'">
+                AND nick_name LIKE #{search}
             </when>
         </choose>
         <if test="type1 == 'Latest'">
