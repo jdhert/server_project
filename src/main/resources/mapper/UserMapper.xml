@@ -54,7 +54,8 @@
     </select>
 
     <select id="getDiary" resultType="com.kitri.web_project.dto.DiaryInfo" parameterType="long">
-        SELECT pet_diary.id as id, title, created_at as createdAt, content, pet.name as petName FROM pet_diary, pet where pet_id = pet.id and pet_diary.user_id = #{id}
+        SELECT pet_diary.id as id, title, created_at as createdAt, content, pet.name as petName
+        FROM pet_diary, pet where pet_id = pet.id and pet_diary.user_id = #{id}
         order by created_at desc limit 10;
     </select>
 
