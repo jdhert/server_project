@@ -3,11 +3,12 @@
 
 <mapper namespace="com.kitri.web_project.mybatis.mappers.BoardMapper">
     <sql id="responseColumns">
-        title, created_at as createdAt, content, view_count as viewCount, comment_count as commentCount, like_count as likeCount, category, tag, user_id as userId
+        title, created_at as createdAt, content, view_count as viewCount, comment_count as commentCount, like_count as likeCount, category
     </sql>
 
     <select id="getBoards" parameterType="int" resultType="com.kitri.web_project.dto.BoardInfo">
         select free_board.id as id, <include refid="responseColumns" />,
+               free_board.user_id as userId,
         (select COUNT(*) FROM free_board where subject = #{subject}) AS totalRowCount,
         nick_name as writer
         from free_board join user on user.id = user_id
@@ -22,23 +23,55 @@
     </insert>
 
     <select id="getSearchBoards" parameterType="com.kitri.web_project.dto.board.SearchDTO" resultType="com.kitri.web_project.dto.BoardInfo">
-        SELECT id, <include refid="responseColumns" /> FROM free_board
+        SELECT free_board.id as id, <include refid="responseColumns" />,
+        free_board.user_id as userId,
+        (SELECT COUNT(*)
+        FROM free_board
+        JOIN user ON user.id = user_id
+        <if test="type == 'tag'">
+            JOIN board_tag ON board_tag.board_id = free_board.id
+        </if>
         WHERE subject = #{subject}
         <choose>
-            <when test="type == 'writer'">
-                AND writer LIKE #{search}
-            </when>
             <when test="type == 'content'">
                 AND content LIKE #{search}
             </when>
             <when test="type == 'tag'">
-                AND tag LIKE #{search}
+                AND board_tag.tag LIKE #{search}
             </when>
             <when test="type == 'title'">
                 AND title LIKE #{search}
             </when>
+            <when test="type == 'writer'">
+                AND nick_name LIKE #{search}
+            </when>
+        </choose>) AS totalRowCount,
+        nick_name as writer
+        FROM free_board join user on user.id = user_id
+        <if test="type == 'tag'">
+            JOIN board_tag ON board_tag.board_id = free_board.id
+        </if>
+        WHERE subject = #{subject}
+        <choose>
+            <when test="type == 'content'">
+                AND content LIKE #{search}
+            </when>
+            <when test="type == 'tag'">
+                AND board_tag.tag LIKE #{search}
+            </when>
+            <when test="type == 'title'">
+                AND title LIKE #{search}
+            </when>
+            <when test="type == 'writer'">
+                AND nick_name LIKE #{search}
+            </when>
         </choose>
-        ORDER BY created_at DESC
+        <if test="type1 == 'Latest'">
+            ORDER BY created_at DESC
+        </if>
+        <if test="type1 == 'Oldest'">
+            ORDER BY created_at ASC
+        </if>
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -61,6 +94,7 @@
         WHERE board_id = #{id};
     </select>
 
+
     <update id="updateBoard" parameterType="com.kitri.web_project.dto.board.UpdateBoard">
         update free_board set title = #{title}, content = #{content}, category = #{category} where id = #{boardId}
     </update>
@@ -68,5 +102,22 @@
     <delete id="deleteBoard" parameterType="long">
         DELETE FROM free_board WHERE id = #{id}
     </delete>
+
+    <select id="getMyBoards" parameterType="com.kitri.web_project.dto.board.RequestMyBoard" resultType="com.kitri.web_project.dto.BoardInfo">
+        select free_board.id as id, <include refid="responseColumns" />,
+        free_board.user_id as userId,
+        (select COUNT(*) FROM free_board where subject = #{subject}) AS totalRowCount,
+        nick_name as writer
+        from free_board join user on user.id = user_id
+        WHERE subject = #{subject} and user.id = #{id}
+        order by created_at desc
+        limit #{offset}, #{limit}
+    </select>
+
+
+    <delete id="deleteTags" parameterType="long">
+        delete from board_tag where board_id = #{id}
+    </delete>
+
 
 </mapper>

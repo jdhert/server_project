@@ -11,6 +11,15 @@
     </select>
 
 
+    <select id="getMyComments" parameterType="long" resultType="com.kitri.web_project.dto.comment.CommentDto">
+        SELECT id as id, user_id as userId, content, created_at as createdAt,  like_count as likeCount
+        FROM free_board_comment
+        WHERE user_id = #{id}
+    </select>
 
+    <insert id="addComment" parameterType="com.kitri.web_project.dto.comment.RequestComment">
+        insert into free_board_comment (board_id, user_id, content)
+        values (#{id}, #{userId}, #{content})
+    </insert>
 
 </mapper>
