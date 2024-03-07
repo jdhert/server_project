@@ -31,20 +31,4 @@ public class QnaController {
     }
 
 
-    @PostMapping
-    public void uploadBoard(@RequestBody RequestBoard board) { boardMapper.uploadBoard(board); }
-
-    @GetMapping("/search/{page}")
-    public List<BoardInfo> search(@RequestParam String search, @RequestParam String type, @RequestParam String type1, @PathVariable int page){
-        int maxPage=8;
-        int offset;
-        int limit;
-        if(page == 1)
-            offset = 0;
-        else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
-        limit = 8;
-        return boardMapper.getSearchBoards(search+"%", type, type1, offset, limit, 1);
-    }
-
-
 }

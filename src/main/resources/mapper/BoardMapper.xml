@@ -115,4 +115,9 @@
     </select>
 
 
+    <delete id="deleteTags" parameterType="long">
+        delete from board_tag where board_id = #{id}
+    </delete>
+
+
 </mapper>
