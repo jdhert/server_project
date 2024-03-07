@@ -24,6 +24,7 @@ public interface BoardMapper {
   
     void deleteBoard(long id);
 
+    void deleteTags(long id);
 
     List<BoardInfo> getMyBoards(long id, int subject, int offset, int limit);
 

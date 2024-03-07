@@ -37,7 +37,6 @@ public class FreeboardController {
         boardMapper.uploadBoard(board);
         for(String tag : tags)
             boardMapper.setTag(board.getId(), tag);
-
     }
 
     @GetMapping("/search/{page}")
@@ -64,7 +63,10 @@ public class FreeboardController {
     }
     @PutMapping
     public void updateBoard(@RequestBody UpdateBoard updateBoard){
+        boardMapper.deleteTags(updateBoard.getBoardId());
         boardMapper.updateBoard(updateBoard);
+        for(String tag : updateBoard.getTags())
+            boardMapper.setTag(updateBoard.getBoardId(), tag);
     }
 
 
