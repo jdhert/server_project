@@ -17,4 +17,9 @@
         WHERE user_id = #{id}
     </select>
 
+    <insert id="addComment" parameterType="com.kitri.web_project.dto.comment.RequestComment">
+        insert into free_board_comment (board_id, user_id, content)
+        values (#{id}, #{userId}, #{content})
+    </insert>
+
 </mapper>
