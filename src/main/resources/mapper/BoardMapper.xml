@@ -110,7 +110,7 @@
 
 
     <update id="updateBoard" parameterType="com.kitri.web_project.dto.board.UpdateBoard">
-        update free_board set title = #{title}, content = #{content}, category = #{category} where id = #{boardId}
+        update free_board set title = #{title}, content = #{content}, category = #{category}, created_At = now() where id = #{boardId}
     </update>
 
     <delete id="deleteBoard" parameterType="long">
