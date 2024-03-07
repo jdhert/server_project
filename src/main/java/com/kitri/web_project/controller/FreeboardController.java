@@ -85,7 +85,18 @@ public class FreeboardController {
         limit = 10;
         return boardMapper.getMyBoards(id, subject, offset, limit);
     }
-
+    @GetMapping("/popular")
+    public List<BoardInfo> getPopularBoard() {
+        String[] intervals = {"7 DAY", "1 MONTH", "1 YEAR", "100 YEAR"};
+        List<BoardInfo> results = null;
+        for (String interval : intervals) {
+            results = boardMapper.getPopularBoards(interval);
+            if (!results.isEmpty()) {
+                break;
+            }
+        }
+        return results;
+    }
     @PostMapping(value = "/{id}", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
     public void insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles, @PathVariable long id) {
         for (MultipartFile file : imageFiles) {
@@ -93,6 +104,5 @@ public class FreeboardController {
             // 파일 처리 로직 구현
         }
     }
-
 
 }

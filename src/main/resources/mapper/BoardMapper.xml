@@ -17,6 +17,20 @@
         limit #{offset}, #{limit}
     </select>
 
+    <select id="getPopularBoards" parameterType="string" resultType="com.kitri.web_project.dto.BoardInfo">
+        SELECT *
+        FROM free_board
+        WHERE subject = 0 AND created_at >= DATE(NOW()) - INTERVAL
+        <choose>
+            <when test="_parameter == '7 DAY'">7 DAY</when>
+            <when test="_parameter == '1 MONTH'">1 MONTH</when>
+            <when test="_parameter == '1 YEAR'">1 YEAR</when>
+            <otherwise>100 YEAR</otherwise>
+        </choose>
+        ORDER BY like_count DESC, view_count DESC
+        LIMIT 3
+    </select>
+
     <insert id="uploadBoard"   useGeneratedKeys="true" keyProperty="id" parameterType="com.kitri.web_project.dto.board.RequestBoard">
         INSERT INTO free_board (user_id, content, title, category, subject)
         VALUES (#{userId}, #{content}, #{title}, #{category}, #{subject})
