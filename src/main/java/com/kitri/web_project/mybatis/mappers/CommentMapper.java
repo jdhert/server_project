@@ -9,4 +9,5 @@ import java.util.List;
 public interface CommentMapper {
     List<CommentDto> getComments(long id);
 
+
 }
