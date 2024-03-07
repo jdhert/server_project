@@ -70,7 +70,6 @@ public class FreeboardController {
             boardMapper.setTag(updateBoard.getBoardId(), tag);
     }
 
-
     @DeleteMapping("/{boardId}")
     public void deleteBoard(@PathVariable long boardId){
         boardMapper.deleteBoard(boardId);

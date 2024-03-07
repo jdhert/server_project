@@ -13,6 +13,8 @@ public interface CommentMapper {
     List<CommentDto> getMyComments(long id);
 
     void addComment(RequestComment requestComment);
+    void deleteComment(long commentId);
+    void editComment(CommentDto commentDto);
 
 
 }

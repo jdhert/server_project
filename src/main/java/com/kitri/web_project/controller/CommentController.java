@@ -25,9 +25,20 @@ public class CommentController {
         return commentMapper.getMyComments(id);
     }
 
-
     @PostMapping
     public void addComment(@RequestBody RequestComment requestComment){
         commentMapper.addComment(requestComment);
+    }
+
+    @PutMapping
+    public void editComment(@RequestBody CommentDto commentDto){
+        commentMapper.editComment(commentDto);
+    }
+
+    @DeleteMapping("/{commentId}")
+    public void deleteComment(@PathVariable long commentId){
+        commentMapper.deleteComment(commentId);
+
+        System.out.println("z");
     }
 }
