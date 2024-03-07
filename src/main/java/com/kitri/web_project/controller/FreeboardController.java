@@ -6,7 +6,9 @@ import com.kitri.web_project.dto.board.TagSet;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,9 +26,7 @@ public class FreeboardController {
         int maxPage = 8;
         int offset;
         int limit;
-        if (page == 1)
-            offset = 0;
-        else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
+        offset = (page - 1) * maxPage;
         limit = 8;
         return boardMapper.getBoards(offset, limit, 0);
     }
@@ -44,11 +44,12 @@ public class FreeboardController {
         int maxPage=8;
         int offset;
         int limit;
-        if(page == 1)
-            offset = 0;
-        else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
+        if(subject == 1) {
+            if (page == 1)
+                offset = 0;
+            else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
+        } else offset = (page - 1) * maxPage;
         limit = 8;
-
         return boardMapper.getSearchBoards(search+'%', type, type1, offset, limit, subject);
     }
 
@@ -77,15 +78,21 @@ public class FreeboardController {
 
     @GetMapping("/getMyBoard/{id}")
     public List<BoardInfo> getMyBoard(@RequestParam int subject, @RequestParam int page, @PathVariable long id) {
-
         int maxPage=10;
         int offset;
         int limit;
-        if(page == 1)
-            offset = 0;
-        else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
+        offset = (page - 1) * maxPage;
         limit = 10;
         return boardMapper.getMyBoards(id, subject, offset, limit);
     }
+
+    @PostMapping(value = "/{id}", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles, @PathVariable long id) {
+        for (MultipartFile file : imageFiles) {
+            System.out.println(file.getOriginalFilename());
+            // 파일 처리 로직 구현
+        }
+    }
+
 
 }
