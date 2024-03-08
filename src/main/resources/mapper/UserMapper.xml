@@ -58,5 +58,14 @@
         order by created_at desc limit 10;
     </select>
 
+    <insert id="save" parameterType="com.kitri.web_project.dto.diary.RequestDiary">
+        INSERT INTO pet_diary (title, content, user_id, pet_id, mood, weather)
+        VALUES (#{title}, #{content}, #{id}, #{petId}, #{mood}, #{weather})
+    </insert>
+
+    <select id="petDiary" resultType="com.kitri.web_project.dto.diary.RequestDiary" parameterType="long">
+        SELECT * FROM pet_diary where id = #{id};
+    </select>
+
 </mapper>
 
