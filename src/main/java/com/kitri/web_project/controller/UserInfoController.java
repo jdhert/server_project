@@ -49,4 +49,5 @@ public class UserInfoController {
         return userMapper.petDiary(id);
     }
     //다이어리 미리보기 매핑
+
 }

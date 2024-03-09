@@ -5,11 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SearchDTO {
-    String search;
-    String type;
-    String type1;
+public class RequestMyBoard {
+    Long id;
+    int subject;
     int offset;
     int limit;
-    int subject;
 }
