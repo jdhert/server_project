@@ -68,5 +68,15 @@
         SELECT * FROM pet_diary where id = #{id};
     </select>
 
+    <delete id="deleteDiary" parameterType="long">
+        DELETE FROM pet_diary where id = #{diaryId};
+    </delete>
+
+    <select id="petCalendar" resultType="com.kitri.web_project.dto.diary.PetCalendar" parameterType="long">
+        SELECT pet.name, pet_diary.created_at
+        FROM pet
+        JOIN pet_diary ON pet.user_id = pet_diary.user_id
+        WHERE pet.user_id = #{id};
+    </select>
 </mapper>
 

@@ -3,9 +3,9 @@ package com.kitri.web_project.controller;
 import com.kitri.web_project.dto.DiaryInfo;
 import com.kitri.web_project.dto.PetInfo;
 import com.kitri.web_project.dto.diary.RequestDiary;
+import com.kitri.web_project.dto.diary.PetCalendar;
 import com.kitri.web_project.mybatis.mappers.UserMapper;
 import com.kitri.web_project.dto.UserInfo;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,4 +50,14 @@ public class UserInfoController {
     }
     //다이어리 미리보기 매핑
 
+    @DeleteMapping("/{diaryId}")
+    public void RequestDiary(@PathVariable long diaryId) {
+        userMapper.deleteDiary(diaryId);
+        System.out.println("success");
+    }
+
+    @GetMapping("/calendar/{id}")
+    public List<PetCalendar>petCalendars(@PathVariable long id){
+        return userMapper.petCalendar(id);
+    }
 }
