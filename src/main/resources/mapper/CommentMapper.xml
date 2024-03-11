@@ -23,7 +23,7 @@
     </insert>
 
     <update id="editComment" parameterType="com.kitri.web_project.dto.comment.CommentDto">
-        UPDATE free_board_comment SET content = #{content} WHERE id = #{commentId}
+        UPDATE free_board_comment SET content = #{content} WHERE id = #{id}
     </update>
 
     <delete id="deleteComment" parameterType="long">

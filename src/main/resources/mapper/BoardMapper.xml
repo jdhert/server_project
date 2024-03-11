@@ -133,5 +133,14 @@
         delete from board_tag where board_id = #{id}
     </delete>
 
+    <update id="incrementLikeCount" parameterType="long">
+        UPDATE free_board SET like_count = like_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="decrementLikeCount" parameterType="long">
+        UPDATE free_board SET like_count = like_count - 1
+        WHERE id = #{id}
+    </update>
 
 </mapper>

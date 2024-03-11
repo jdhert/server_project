@@ -7,10 +7,12 @@ import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @RestController
@@ -104,4 +106,14 @@ public class FreeboardController {
         }
     }
 
+    @PutMapping("/{postId}/like")
+    public void updateLikeStatus(@PathVariable long postId,  @RequestParam boolean liked){
+        if(liked) {
+            //좋아요 추가, like_count 증가
+            boardMapper.incrementLikeCount(postId);
+        } else {
+            //좋아요 취소, like_count 감소
+            boardMapper.decrementLikeCount(postId);
+        }
+    }
 }

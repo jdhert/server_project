@@ -29,4 +29,7 @@ public interface BoardMapper {
 
     List<BoardInfo> getMyBoards(long id, int subject, int offset, int limit);
 
+    void incrementLikeCount(long postId);
+    void decrementLikeCount(long postId);
+
 }
