@@ -27,10 +27,11 @@ public class CommentController {
 
     @PostMapping
     public void addComment(@RequestBody RequestComment requestComment){
+
         commentMapper.addComment(requestComment);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public void editComment(@RequestBody CommentDto commentDto){
         commentMapper.editComment(commentDto);
     }
