@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kitri.web_project.mybatis.mappers.PetMapper">
+
+    <insert id="addPet" useGeneratedKeys="true" keyProperty="id" parameterType="com.kitri.web_project.dto.pet.RequestPet">
+        INSERT INTO pet (user_id, img_path, name, age, weight, species, spec_species, gender, disease, recog_chip)
+        VALUES (#{userId}, #{petImg}, #{petName}, #{petAge}, #{petWeight}, #{species}, #{spec_species}, #{petGender}, #{petDisease}, #{petRecog_chip})
+    </insert>
+
+</mapper>

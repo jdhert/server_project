@@ -46,7 +46,7 @@
 
 
     <sql id="responsePet">
-        id, species, age, weight, disease, name, gender, spec_species as specSpecies, recog_chip as recogChip
+        id, species, age, weight, disease, name, gender, spec_species as specSpecies, recog_chip as recogChip, img_path as img
     </sql>
 
     <select id="getPets" resultType="com.kitri.web_project.dto.PetInfo" parameterType="long">
