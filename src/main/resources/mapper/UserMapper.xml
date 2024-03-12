@@ -78,5 +78,6 @@
         JOIN pet_diary ON pet.user_id = pet_diary.user_id
         WHERE pet.user_id = #{id};
     </select>
+
 </mapper>
 
