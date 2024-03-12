@@ -61,7 +61,8 @@
                 AND nick_name LIKE #{search}
             </when>
         </choose>) AS totalRowCount,
-        nick_name as writer
+        nick_name as writer,
+        user.img_path as userImg
         FROM free_board join user on user.id = user_id
         <if test="type == 'tag'">
             JOIN board_tag ON board_tag.board_id = free_board.id
