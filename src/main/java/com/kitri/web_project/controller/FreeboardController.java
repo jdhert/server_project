@@ -5,6 +5,7 @@ import com.kitri.web_project.dto.board.RequestBoard;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -131,8 +132,8 @@ public class FreeboardController {
     @Value("${upload.path.routine}")
     private String uploadRootPath;
 
-    @PostMapping(value = "/{id}", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
-    public List<String> insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles, @PathVariable long id) {
+    @PostMapping(value = "/img", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
+    public List<String> insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles) {
         List<String> s = new ArrayList<>();;
         for (MultipartFile file : imageFiles) {
             // 파일 처리 로직 구현
@@ -157,8 +158,6 @@ public class FreeboardController {
                 String s1 = savePath + "/" + encodedFileName; // URL 생성
                 s.add(s1);
 
-
-
             } catch(IOException e){
                 System.out.println(e);
             }
@@ -177,6 +176,7 @@ public class FreeboardController {
         }
     }
 
+
     public void ImageSet(List<BoardInfo> bm){
         for(BoardInfo b : bm){
             ResponseEntity<List<String>> s = getImages(b.getId());
@@ -184,4 +184,16 @@ public class FreeboardController {
                 b.setImgPath(Objects.requireNonNull(s.getBody()).get(0));
         }
     }
+
+    @PutMapping("/view/{id}")
+    public ResponseEntity<?> updateViewCount(@PathVariable("id") Long id) {
+        try {
+            boardMapper.updateViewCount(id); // boardMapper에 정의된 updateViewCount 메소드를 호출
+            return new ResponseEntity<>(HttpStatus.OK); // 성공적으로 조회수를 업데이트한 경우, HTTP 200 상태 코드 반환
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 예외 발생 시, HTTP 500 상태 코드 반환
+        }
+    }
+
+
 }
