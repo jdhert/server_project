@@ -89,6 +89,11 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <update id="updateViewCount" parameterType="long">
+        UPDATE DBpet.free_board
+        SET view_count = view_count + 1
+        WHERE id = #{id}
+    </update>
 
     <select id="getBoard" parameterType="long" resultType="com.kitri.web_project.dto.BoardInfo">
         select id, <include refid="responseColumns" />
