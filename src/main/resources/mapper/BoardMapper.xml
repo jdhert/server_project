@@ -10,7 +10,8 @@
         select free_board.id as id, <include refid="responseColumns" />,
                free_board.user_id as userId,
         (select COUNT(*) FROM free_board where subject = #{subject}) AS totalRowCount,
-        nick_name as writer
+        nick_name as writer,
+        user.img_path as userImg
         from free_board join user on user.id = user_id
         WHERE subject = #{subject}
         order by created_at desc
@@ -18,8 +19,8 @@
     </select>
 
     <select id="getPopularBoards" parameterType="string" resultType="com.kitri.web_project.dto.BoardInfo">
-        SELECT *
-        FROM free_board
+        SELECT free_board.id, <include refid="responseColumns" />, user_id as userId, nick_name as writer, user.img_path as userImg
+        FROM free_board join user on user_id = user.id
         WHERE subject = 0 AND created_at >= DATE(NOW()) - INTERVAL
         <choose>
             <when test="_parameter == '7 DAY'">7 DAY</when>
