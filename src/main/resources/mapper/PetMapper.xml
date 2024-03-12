@@ -8,4 +8,9 @@
         VALUES (#{userId}, #{petImg}, #{petName}, #{petAge}, #{petWeight}, #{species}, #{spec_species}, #{petGender}, #{petDisease}, #{petRecog_chip})
     </insert>
 
+    <select id="getImages" parameterType="long" resultType="string">
+        select img_path from pet
+        where user_id = #{id}
+    </select>
+
 </mapper>

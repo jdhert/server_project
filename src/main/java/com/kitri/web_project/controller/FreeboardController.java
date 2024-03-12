@@ -126,8 +126,8 @@ public class FreeboardController {
     @Value("${upload.path.routine}")
     private String uploadRootPath;
 
-    @PostMapping(value = "/{id}", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
-    public List<String> insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles, @PathVariable long id) {
+    @PostMapping(value = "/img", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
+    public List<String> insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles) {
         List<String> s = new ArrayList<>();;
         for (MultipartFile file : imageFiles) {
             System.out.println(file.getOriginalFilename());
@@ -152,8 +152,6 @@ public class FreeboardController {
                 String encodedFileName = URLEncoder.encode(uploadFileName, StandardCharsets.UTF_8); // 파일명 인코딩
                 String s1 = savePath + "/" + encodedFileName; // URL 생성
                 s.add(s1);
-
-
 
             } catch(IOException e){
                 System.out.println(e);
