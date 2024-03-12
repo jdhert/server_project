@@ -6,6 +6,7 @@ import com.kitri.web_project.dto.board.TagSet;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -116,4 +117,15 @@ public class FreeboardController {
             boardMapper.decrementLikeCount(postId);
         }
     }
+
+    @PutMapping("/view/{id}")
+    public ResponseEntity<?> updateViewCount(@PathVariable("id") Long id) {
+        try {
+            boardMapper.updateViewCount(id); // boardMapper에 정의된 updateViewCount 메소드를 호출
+            return new ResponseEntity<>(HttpStatus.OK); // 성공적으로 조회수를 업데이트한 경우, HTTP 200 상태 코드 반환
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 예외 발생 시, HTTP 500 상태 코드 반환
+        }
+    }
+
 }
