@@ -16,4 +16,5 @@ public class RequestBoard {
     String category;
     List<String> tags;
     int subject;
+    List<String> images;
 }
