@@ -38,7 +38,5 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public void deleteComment(@PathVariable long commentId){
         commentMapper.deleteComment(commentId);
-
-        System.out.println("z");
     }
 }
