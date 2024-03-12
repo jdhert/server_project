@@ -2,19 +2,28 @@ package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
-import com.kitri.web_project.dto.board.TagSet;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/free")
@@ -36,10 +45,11 @@ public class FreeboardController {
 
     @PostMapping
     public void uploadBoard(@RequestBody RequestBoard board) {
-        List<String> tags  = board.getTags();
         boardMapper.uploadBoard(board);
-        for(String tag : tags)
+        for(String tag : board.getTags())
             boardMapper.setTag(board.getId(), tag);
+        for(String image : board.getImages())
+            boardMapper.setImage(board.getUserId(), board.getId(), image);
     }
 
     @GetMapping("/search/{page}")
@@ -65,6 +75,20 @@ public class FreeboardController {
     public List<String>getTagS(@PathVariable long boardId){
         return boardMapper.getTags(boardId);
     }
+
+    @GetMapping("/getImage/{boardId}")
+    public ResponseEntity<List<String>> getImages(@PathVariable long boardId){
+        List<String> images = boardMapper.getImages(boardId);
+        List<String> imageUrls = images.stream()
+                .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/images/")
+                        .path(path)
+                        .toUriString())
+                .map(encodedUrl -> URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8)) // URL 디코딩
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(imageUrls);
+    }
+
     @PutMapping
     public void updateBoard(@RequestBody UpdateBoard updateBoard){
         boardMapper.deleteTags(updateBoard.getBoardId());
@@ -99,12 +123,44 @@ public class FreeboardController {
         }
         return results;
     }
+
+    @Value("${upload.path.routine}")
+    private String uploadRootPath;
+
     @PostMapping(value = "/{id}", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
-    public void insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles, @PathVariable long id) {
+    public List<String> insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles, @PathVariable long id) {
+        List<String> s = new ArrayList<>();;
         for (MultipartFile file : imageFiles) {
             System.out.println(file.getOriginalFilename());
             // 파일 처리 로직 구현
+            try {
+                //1.서버에 이미지파일을 저장, 이미지를 서버에 업로드
+                //1-a.파일 저장 위치를 지정하여 파일 객체에 포장
+                String originalFilename = file.getOriginalFilename();
+                //1-a-1.파일명이 중복되지 않도록 변경
+                String uploadFileName = UUID.randomUUID() + "_" + originalFilename;
+                //1-a-2.압럳, 폴더를 날짜별로 생성
+                String newUploadPath = uploadRootPath;
+                File uploadFile = new File(newUploadPath + File.separator + uploadFileName);
+                //1-b. 파일을 해당 경로에 업로드
+                file.transferTo(uploadFile);
+
+//                String savePath
+//                        = newUploadPath.substring(uploadRootPath.length());
+//                String s1 = savePath + File.separator + uploadFileName;
+
+                String savePath = newUploadPath.substring(uploadRootPath.length()).replace("\\", "/"); // 역슬래시를 슬래시로 변환
+                String encodedFileName = URLEncoder.encode(uploadFileName, StandardCharsets.UTF_8); // 파일명 인코딩
+                String s1 = savePath + "/" + encodedFileName; // URL 생성
+                s.add(s1);
+
+
+
+            } catch(IOException e){
+                System.out.println(e);
+            }
         }
+        return s;
     }
 
     @PutMapping("/{postId}/like")

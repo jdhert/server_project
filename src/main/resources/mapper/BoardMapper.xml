@@ -148,4 +148,14 @@
         WHERE id = #{id}
     </update>
 
+    <insert id="setImage"  parameterType="com.kitri.web_project.dto.image.RequestImage">
+        INSERT INTO free_board_img (user_id, board_id, img_path)
+        VALUES (#{id}, #{boardId}, #{imagePath})
+    </insert>
+
+    <select id="getImages" parameterType="long" resultType="string">
+        select img_path from free_board_img
+        where board_id = #{id}
+    </select>
+
 </mapper>
