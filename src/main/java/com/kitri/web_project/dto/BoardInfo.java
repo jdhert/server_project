@@ -29,6 +29,9 @@ public class BoardInfo {
     String category;
     String tag;
 
+    String imgPath;
+    String userImg;
+
     int totalRowCount;
 
 }

@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -21,6 +20,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -40,7 +40,9 @@ public class FreeboardController {
         int limit;
         offset = (page - 1) * maxPage;
         limit = 8;
-        return boardMapper.getBoards(offset, limit, 0);
+        List<BoardInfo> bm = boardMapper.getBoards(offset, limit, 0);
+        ImageSet(bm);
+        return bm;
     }
 
     @PostMapping
@@ -63,7 +65,9 @@ public class FreeboardController {
             else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
         } else offset = (page - 1) * maxPage;
         limit = 8;
-        return boardMapper.getSearchBoards(search+'%', type, type1, offset, limit, subject);
+        List<BoardInfo> bm = boardMapper.getSearchBoards(search+'%', type, type1, offset, limit, subject);
+        ImageSet(bm);
+        return bm;
     }
 
     @GetMapping("/get/{boardId}")
@@ -121,6 +125,7 @@ public class FreeboardController {
                 break;
             }
         }
+        ImageSet(results);
         return results;
     }
 
@@ -131,7 +136,6 @@ public class FreeboardController {
     public List<String> insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles) {
         List<String> s = new ArrayList<>();;
         for (MultipartFile file : imageFiles) {
-            System.out.println(file.getOriginalFilename());
             // 파일 처리 로직 구현
             try {
                 //1.서버에 이미지파일을 저장, 이미지를 서버에 업로드
@@ -172,6 +176,15 @@ public class FreeboardController {
         }
     }
 
+
+    public void ImageSet(List<BoardInfo> bm){
+        for(BoardInfo b : bm){
+            ResponseEntity<List<String>> s = getImages(b.getId());
+            if(!Objects.requireNonNull(s.getBody()).isEmpty())
+                b.setImgPath(Objects.requireNonNull(s.getBody()).get(0));
+        }
+    }
+
     @PutMapping("/view/{id}")
     public ResponseEntity<?> updateViewCount(@PathVariable("id") Long id) {
         try {
@@ -181,5 +194,6 @@ public class FreeboardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 예외 발생 시, HTTP 500 상태 코드 반환
         }
     }
+
 
 }
