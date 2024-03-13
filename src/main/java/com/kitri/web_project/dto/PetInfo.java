@@ -16,4 +16,5 @@ public class PetInfo {
     boolean recogChip;
     String name;
     String gender;
+    String img;
 }
