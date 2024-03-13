@@ -15,4 +15,6 @@ public class CommentDto {
     LocalDateTime createdAt;
     int likeCount;
     String name;
+    Long parentCommentId;
+    String imgPath;
 }

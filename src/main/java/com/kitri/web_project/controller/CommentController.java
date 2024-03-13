@@ -16,8 +16,13 @@ public class CommentController {
     CommentMapper commentMapper;
 
     @GetMapping("/{id}")
-    public List<CommentDto> getComments(@PathVariable long id){
-        return commentMapper.getComments(id);
+    public List<CommentDto> getTopLevelComments(@PathVariable long id){
+        return commentMapper.getTopLevelComments(id);
+    }
+
+    @GetMapping("/detailcomment")
+    public List<CommentDto> getChildComments(@RequestParam long id, @RequestParam long parentCommentId){
+        return commentMapper.getChildComments(id, parentCommentId);
     }
 
     @GetMapping("/mycomment/{id}")
@@ -27,10 +32,11 @@ public class CommentController {
 
     @PostMapping
     public void addComment(@RequestBody RequestComment requestComment){
+
         commentMapper.addComment(requestComment);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public void editComment(@RequestBody CommentDto commentDto){
         commentMapper.editComment(commentDto);
     }
@@ -38,7 +44,5 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public void deleteComment(@PathVariable long commentId){
         commentMapper.deleteComment(commentId);
-
-        System.out.println("z");
     }
 }

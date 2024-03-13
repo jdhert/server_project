@@ -14,6 +14,7 @@ public interface BoardMapper {
     List<BoardInfo> getPopularBoards(String interval);
     void uploadBoard(RequestBoard board);
     List<BoardInfo> getSearchBoards(String search, String type, String type1, int offset, int limit, int subject);
+    void updateViewCount(Long id);
 
     BoardInfo getBoard(long id);
     void setTag(long id, String tag);
@@ -28,5 +29,12 @@ public interface BoardMapper {
     void deleteTags(long id);
 
     List<BoardInfo> getMyBoards(long id, int subject, int offset, int limit);
+
+    void incrementLikeCount(long postId);
+    void decrementLikeCount(long postId);
+
+    void setImage(long id, long boardId, String imagePath);
+
+    List<String> getImages(long id);
 
 }

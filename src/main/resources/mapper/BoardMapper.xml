@@ -10,7 +10,8 @@
         select free_board.id as id, <include refid="responseColumns" />,
                free_board.user_id as userId,
         (select COUNT(*) FROM free_board where subject = #{subject}) AS totalRowCount,
-        nick_name as writer
+        nick_name as writer,
+        user.img_path as userImg
         from free_board join user on user.id = user_id
         WHERE subject = #{subject}
         order by created_at desc
@@ -18,8 +19,8 @@
     </select>
 
     <select id="getPopularBoards" parameterType="string" resultType="com.kitri.web_project.dto.BoardInfo">
-        SELECT *
-        FROM free_board
+        SELECT free_board.id, <include refid="responseColumns" />, user_id as userId, nick_name as writer, user.img_path as userImg
+        FROM free_board join user on user_id = user.id
         WHERE subject = 0 AND created_at >= DATE(NOW()) - INTERVAL
         <choose>
             <when test="_parameter == '7 DAY'">7 DAY</when>
@@ -60,7 +61,8 @@
                 AND nick_name LIKE #{search}
             </when>
         </choose>) AS totalRowCount,
-        nick_name as writer
+        nick_name as writer,
+        user.img_path as userImg
         FROM free_board join user on user.id = user_id
         <if test="type == 'tag'">
             JOIN board_tag ON board_tag.board_id = free_board.id
@@ -89,6 +91,11 @@
         LIMIT #{offset}, #{limit}
     </select>
 
+    <update id="updateViewCount" parameterType="long">
+        UPDATE DBpet.free_board
+        SET view_count = view_count + 1
+        WHERE id = #{id}
+    </update>
 
     <select id="getBoard" parameterType="long" resultType="com.kitri.web_project.dto.BoardInfo">
         select id, <include refid="responseColumns" />
@@ -133,5 +140,24 @@
         delete from board_tag where board_id = #{id}
     </delete>
 
+    <update id="incrementLikeCount" parameterType="long">
+        UPDATE free_board SET like_count = like_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="decrementLikeCount" parameterType="long">
+        UPDATE free_board SET like_count = like_count - 1
+        WHERE id = #{id}
+    </update>
+
+    <insert id="setImage"  parameterType="com.kitri.web_project.dto.image.RequestImage">
+        INSERT INTO free_board_img (user_id, board_id, img_path)
+        VALUES (#{id}, #{boardId}, #{imagePath})
+    </insert>
+
+    <select id="getImages" parameterType="long" resultType="string">
+        select img_path from free_board_img
+        where board_id = #{id}
+    </select>
 
 </mapper>

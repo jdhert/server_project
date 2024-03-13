@@ -8,8 +8,9 @@ import java.util.List;
 
 @Mapper
 public interface CommentMapper {
-    List<CommentDto> getComments(long id);
-
+//    List<CommentDto> getComments(long id);
+    List<CommentDto> getTopLevelComments(long id);
+    List<CommentDto> getChildComments(long id, long parentCommentId);
     List<CommentDto> getMyComments(long id);
 
     void addComment(RequestComment requestComment);
