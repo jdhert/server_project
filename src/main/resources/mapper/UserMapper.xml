@@ -73,10 +73,27 @@
     </delete>
 
     <select id="petCalendar" resultType="com.kitri.web_project.dto.diary.PetCalendar" parameterType="long">
-        SELECT pet.name, pet_diary.created_at
-        FROM pet
-        JOIN pet_diary ON pet.user_id = pet_diary.user_id
-        WHERE pet.user_id = #{id};
+        SELECT created_at as createdAt, content, pet.name as petName
+        FROM pet_diary, pet
+        where pet_id = pet.id and pet_diary.user_id = #{id}
     </select>
+
+    <update id="editDiary" parameterType="com.kitri.web_project.dto.diary.RequestDiary">
+        UPDATE pet_diary
+        SET content = #{content},
+            title = #{title},
+            mood = #{mood},
+            weather = #{weather},
+            created_at = #{createdAt}
+        WHERE id = #{id}
+    </update>
+
+    <select id="UpdateDiary" resultType="com.kitri.web_project.dto.diary.RequestDiary" parameterType="long">
+        SELECT pet.name, pet_diary.title, pet_diary.content, pet_diary.mood, pet_diary.weather, pet_diary.created_at
+        FROM pet_diary
+        INNER JOIN pet ON pet_diary.pet_id = pet.id
+        WHERE pet_diary.id = #{diaryId};
+    </select>
+
 </mapper>
 
