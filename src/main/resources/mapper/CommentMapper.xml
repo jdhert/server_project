@@ -17,6 +17,17 @@
         ORDER BY created_at ASC
     </select>
 
+
+    <select id="getComments" parameterType="long" resultType="com.kitri.web_project.dto.comment.CommentDto">
+        SELECT free_board_comment.id as id, user_id as userId, content, created_at as createdAt,  like_count as likeCount,
+        nick_name as name,
+        img_path as imgPath
+        FROM free_board_comment join user on user.id = user_id
+        WHERE parent_comment_id IS NULL
+        AND board_id = #{id}
+        ORDER BY created_at ASC
+    </select>
+
     <select id="getChildComments" parameterType="long" resultType="com.kitri.web_project.dto.comment.CommentDto">
         SELECT free_board_comment.id as id, user_id as userId, content, created_at as createdAt,  like_count as likeCount, nick_name as name
         FROM free_board_comment join user on user.id = user_id

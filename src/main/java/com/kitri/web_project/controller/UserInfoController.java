@@ -28,7 +28,9 @@ public class UserInfoController {
     @GetMapping("/pet/{id}")
     public List<PetInfo> getPet(@PathVariable String id) {
         long id1 = Long.parseLong(id);
-        return userMapper.getPets(id1);
+        List<PetInfo> p = userMapper.getPets(id1);
+        return p;
+
     }
 
     @GetMapping("/diary/{id}")

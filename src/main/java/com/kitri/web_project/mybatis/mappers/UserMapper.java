@@ -20,4 +20,5 @@ public interface UserMapper {
     List<RequestDiary> petDiary(long id); //펫 다이어리 미리보기
     void deleteDiary(long diaryId); //다이어리 삭제하기
     List<PetCalendar> petCalendar(long id); //캘린더 미리보기
+
 }

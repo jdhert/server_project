@@ -16,4 +16,5 @@ public class CommentDto {
     int likeCount;
     String name;
     Long parentCommentId;
+    String imgPath;
 }
