@@ -27,7 +27,6 @@ public class CommentController {
 
     @PostMapping
     public void addComment(@RequestBody RequestComment requestComment){
-
         commentMapper.addComment(requestComment);
     }
 

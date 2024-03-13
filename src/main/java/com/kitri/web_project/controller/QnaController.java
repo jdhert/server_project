@@ -2,6 +2,7 @@ package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
+import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,39 @@ public class QnaController {
             limit = 8;
         return boardMapper.getBoards(offset, limit, 1);
     }
+    @GetMapping("/get/{boardId}")
+    public BoardInfo getBoard(@PathVariable long boardId){
+        return boardMapper.getBoard(boardId);
+    }
 
+    @PutMapping
+    public void updateBoard(@RequestBody UpdateBoard updateBoard){
+        boardMapper.deleteTags(updateBoard.getBoardId());
+        boardMapper.updateBoard(updateBoard);
+        for(String tag : updateBoard.getTags())
+            boardMapper.setTag(updateBoard.getBoardId(), tag);
+    }
 
+    @DeleteMapping("/{boardId}")
+    public void deleteBoard(@PathVariable long boardId){
+        boardMapper.deleteBoard(boardId);
+    }
+
+    @PutMapping("/{postId}/like")
+    public void updateLikeStatus(@PathVariable long postId, @RequestParam boolean liked) {
+        if(liked) {
+            boardMapper.incrementLikeCount(postId);
+        } else {
+            boardMapper.decrementLikeCount(postId);
+        }
+    }
+
+    @PutMapping("/{commentId}/commentLike")
+    public void updateCommentLikeStatus(@PathVariable long commentId, @RequestParam boolean liked) {
+        if(liked) {
+            boardMapper.incrementCommentLikeCount(commentId);
+        } else {
+            boardMapper.decrementCommentLikeCount(commentId);
+        }
+    }
 }

@@ -32,4 +32,13 @@ public interface BoardMapper {
     void incrementLikeCount(long postId);
     void decrementLikeCount(long postId);
 
+    void incrementCommentLikeCount(long commentId);
+    void decrementCommentLikeCount(long commentId);
+
+
+//    void incrementLikeCountqna(long postId);
+//    void decrementLikeCountqna(long postId);
+//
+//    void incrementCommentLikeCountqna(long commentId);
+//    void decrementCommentLikeCountqna(long commentId);
 }

@@ -143,4 +143,16 @@
         WHERE id = #{id}
     </update>
 
+    <update id="incrementCommentLikeCount" parameterType="long">
+        UPDATE free_board_comment SET like_count = like_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="decrementCommentLikeCount" parameterType="long">
+        UPDATE free_board_comment SET like_count = like_count - 1
+        WHERE id = #{id}
+    </update>
+
+
+
 </mapper>
