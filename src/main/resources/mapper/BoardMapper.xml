@@ -150,6 +150,17 @@
         WHERE id = #{id}
     </update>
 
+    <update id="incrementCommentLikeCount" parameterType="long">
+        UPDATE free_board_comment SET like_count = like_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="decrementCommentLikeCount" parameterType="long">
+        UPDATE free_board_comment SET like_count = like_count - 1
+        WHERE id = #{id}
+    </update>
+
+
     <insert id="setImage"  parameterType="com.kitri.web_project.dto.image.RequestImage">
         INSERT INTO free_board_img (user_id, board_id, img_path)
         VALUES (#{id}, #{boardId}, #{imagePath})
