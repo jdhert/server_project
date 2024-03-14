@@ -40,7 +40,7 @@
     <select id="findById" resultType="com.kitri.web_project.dto.UserInfo" parameterType="long">
         SELECT (SELECT count(*) FROM free_board WHERE user_id = #{id}) AS boardCount, (select count(*) from free_board_comment where user_id = #{id}) as commentCount,
         (select count(*) from pet_diary where user_id = #{id}) as diaryCount,
-        nick_name as name, email, img_path as imgPath
+        nick_name as name, email, img_path as imgPath, address
         FROM  user where id=#{id};
     </select>
 
@@ -93,6 +93,17 @@
         FROM pet_diary
         INNER JOIN pet ON pet_diary.pet_id = pet.id
         WHERE pet_diary.id = #{diaryId};
+    </select>
+
+    <update id="updateUser" parameterType="com.kitri.web_project.dto.UserUpdateInfo">
+        UPDATE user
+        SET email = #{email}, nick_name = #{name}, img_path = #{imgPath}, address = #{address}
+        WHERE id = #{userId}
+    </update>
+
+    <select id="getUserImages" parameterType="long" resultType="string">
+        select img_path from user
+        where id = #{id}
     </select>
 
 </mapper>

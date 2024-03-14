@@ -1,23 +1,20 @@
 package com.kitri.web_project.controller;
 
+import com.kitri.web_project.dto.DiaryInfo;
+import com.kitri.web_project.dto.PetInfo;
+import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.dto.pet.RequestPet;
+import com.kitri.web_project.dto.pet.UpdatePet;
 import com.kitri.web_project.mybatis.mappers.PetMapper;
+import com.kitri.web_project.mybatis.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,6 +23,9 @@ public class PetController {
 
     @Autowired
     private PetMapper petMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @PostMapping
     public void addPet(@RequestBody RequestPet pet) {
@@ -46,5 +46,43 @@ public class PetController {
         return ResponseEntity.ok(imageUrls);
     }
 
+    @GetMapping("/detail/img/{petId}")
+    public ResponseEntity<List<String>> getPetImages(@PathVariable long petId){
+        List<String> images = petMapper.getPetImages(petId);
+        // URI Components Builder를 사용해 완전한 URL 생성
+        List<String> imageUrls = images.stream()
+                .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/images/")
+                        .path(path)
+                        .toUriString())
+                .map(encodedUrl -> URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8)) // URL 디코딩
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(imageUrls);
+    }
+
+    @GetMapping("/detail/{petId}")
+    public PetInfo getPet(@PathVariable Long petId) {
+        return petMapper.getPet(petId);
+    }
+
+    @PutMapping
+    public void updatePet(@RequestBody UpdatePet pet) {
+        if (pet.getPetImg() == null) {
+            petMapper.updatePet2(pet);
+        } else {
+            petMapper.updatePet(pet);
+        }
+    }
+
+    @DeleteMapping("/{petId}")
+    public void RequestDiary(@PathVariable long petId) {
+        petMapper.deletePet(petId);
+    }
+
+    @GetMapping("/diary/{id}")
+    public List<DiaryInfo> getDiary(@PathVariable String id) {
+        long id1 = Long.parseLong(id);
+        return userMapper.getDiary(id1);
+    }
 
 }
