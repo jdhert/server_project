@@ -13,4 +13,34 @@
         where user_id = #{id}
     </select>
 
+    <select id="getPetImages" parameterType="long" resultType="string">
+        select img_path from pet
+        where id = #{petId}
+    </select>
+
+    <sql id="responsePet">
+        id, species, age, weight, disease, name, gender, spec_species as specSpecies, recog_chip as recogChip, img_path as img
+    </sql>
+
+    <select id="getPet" resultType="com.kitri.web_project.dto.PetInfo" parameterType="long">
+        SELECT <include refid="responsePet" /> FROM pet where id = #{petId}
+    </select>
+
+    <update id="updatePet" parameterType="com.kitri.web_project.dto.pet.UpdatePet">
+        UPDATE pet
+        SET name = #{petName}, age = #{petAge}, weight = #{petWeight}, img_path = #{petImg}, spec_species = #{spec_species}, disease = #{petDisease}, recog_chip = #{petRecog_chip}
+        WHERE id = #{petId}
+    </update>
+
+    <update id="updatePet2" parameterType="com.kitri.web_project.dto.pet.UpdatePet">
+        UPDATE pet
+        SET name = #{petName}, age = #{petAge}, weight = #{petWeight}, spec_species = #{spec_species}, disease = #{petDisease}, recog_chip = #{petRecog_chip}
+        WHERE id = #{petId}
+    </update>
+
+    <delete id="deletePet" parameterType="long">
+        DELETE FROM pet where id = #{petId};
+    </delete>
+
+
 </mapper>

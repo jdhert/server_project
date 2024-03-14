@@ -5,14 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserInfo {
-
+public class UserUpdateInfo {
+    Long userId;
     String name;
     String email;
     String imgPath;
     String address;
-
-    int boardCount;
-    int commentCount;
-    int diaryCount;
 }
