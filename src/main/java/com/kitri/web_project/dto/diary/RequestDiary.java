@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class RequestDiary {
+    String name;
     String mood;
     String weather;
     String title;

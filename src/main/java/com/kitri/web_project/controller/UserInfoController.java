@@ -3,6 +3,7 @@ package com.kitri.web_project.controller;
 import com.kitri.web_project.dto.DiaryInfo;
 import com.kitri.web_project.dto.PetInfo;
 import com.kitri.web_project.dto.UserUpdateInfo;
+import com.kitri.web_project.dto.comment.CommentDto;
 import com.kitri.web_project.dto.diary.RequestDiary;
 import com.kitri.web_project.dto.diary.PetCalendar;
 import com.kitri.web_project.dto.pet.UpdatePet;
@@ -90,4 +91,16 @@ public class UserInfoController {
     public List<PetCalendar>petCalendars(@PathVariable long id){
         return userMapper.petCalendar(id);
     }
+
+    @GetMapping("/update/{id}") //다이어리 수정 불러오기
+    public List<RequestDiary>requestDiaries1(@PathVariable long id){
+        return userMapper.UpdateDiary(id);
+    }
+
+    @PutMapping ("/edit/{id}") //다이어리 수정
+    public void editDiary(@RequestBody RequestDiary requestDiary){
+        userMapper.editDiary(requestDiary);
+    }
+
+
 }

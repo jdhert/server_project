@@ -22,4 +22,6 @@ public interface UserMapper {
     List<PetCalendar> petCalendar(long id); //캘린더 미리보기
     void updateUser(UserUpdateInfo userUpdateInfo);
     String getUserImages(long id);
+    List<RequestDiary>UpdateDiary(long id); //다이어리 수정 불러오기
+    void editDiary(RequestDiary id); //다이어리 수정하기
 }
