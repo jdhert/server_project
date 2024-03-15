@@ -163,15 +163,24 @@ public class FreeboardController {
     }
 
     @PutMapping("/{postId}/like")
-    public void updateLikeStatus(@PathVariable long postId,  @RequestParam boolean liked){
+    public void updateLikeStatus(@PathVariable long postId, @RequestParam boolean liked) {
         if(liked) {
-            //좋아요 추가, like_count 증가
             boardMapper.incrementLikeCount(postId);
         } else {
-            //좋아요 취소, like_count 감소
             boardMapper.decrementLikeCount(postId);
         }
     }
+
+
+    @PutMapping("/{commentId}/commentLike")
+    public void updateCommentLikeStatus(@PathVariable long commentId, @RequestParam boolean liked) {
+        if(liked) {
+            boardMapper.incrementCommentLikeCount(commentId);
+        } else {
+            boardMapper.decrementCommentLikeCount(commentId);
+        }
+    }
+
 
 
     public void ImageSet(List<BoardInfo> bm){
@@ -191,6 +200,7 @@ public class FreeboardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 예외 발생 시, HTTP 500 상태 코드 반환
         }
     }
+
 
 
 }

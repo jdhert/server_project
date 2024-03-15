@@ -40,7 +40,7 @@
     <select id="findById" resultType="com.kitri.web_project.dto.UserInfo" parameterType="long">
         SELECT (SELECT count(*) FROM free_board WHERE user_id = #{id}) AS boardCount, (select count(*) from free_board_comment where user_id = #{id}) as commentCount,
         (select count(*) from pet_diary where user_id = #{id}) as diaryCount,
-        nick_name as name, email, img_path as imgPath
+        nick_name as name, email, img_path as imgPath, address
         FROM  user where id=#{id};
     </select>
 
@@ -54,9 +54,9 @@
     </select>
 
     <select id="getDiary" resultType="com.kitri.web_project.dto.DiaryInfo" parameterType="long">
-        SELECT pet_diary.id as id, title, created_at as createdAt, content, pet.name as petName
+        SELECT pet_diary.id as id, title, created_at as createdAt, content, pet.id as petId, pet.name as petName
         FROM pet_diary, pet where pet_id = pet.id and pet_diary.user_id = #{id}
-        order by created_at desc limit 10;
+        order by created_at desc;
     </select>
 
     <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="com.kitri.web_project.dto.diary.RequestDiary">
@@ -120,6 +120,17 @@
         WHERE pet_diary.user_id = #{id};
     </select>
 
+
+    <update id="updateUser" parameterType="com.kitri.web_project.dto.UserUpdateInfo">
+        UPDATE user
+        SET email = #{email}, nick_name = #{name}, img_path = #{imgPath}, address = #{address}
+        WHERE id = #{userId}
+    </update>
+
+    <select id="getUserImages" parameterType="long" resultType="string">
+        select img_path from user
+        where id = #{id}
+    </select>
 
 </mapper>
 

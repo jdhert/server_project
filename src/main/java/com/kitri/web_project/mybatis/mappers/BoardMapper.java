@@ -33,8 +33,12 @@ public interface BoardMapper {
     void incrementLikeCount(long postId);
     void decrementLikeCount(long postId);
 
+    void incrementCommentLikeCount(long commentId);
+    void decrementCommentLikeCount(long commentId);
+
     void setImage(long id, long boardId, String imagePath);
 
     List<String> getImages(long id);
+
 
 }
