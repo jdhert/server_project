@@ -6,6 +6,7 @@ import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +16,9 @@ public class RequestDiary {
     String weather;
     String title;
     String content;
-    Long id;
-    Long petId;
-    LocalDateTime createdAt;
+    long id;
+    long userId;
+    long petId;
+    LocalDate createdAt;
+    List<String> img;
 }
