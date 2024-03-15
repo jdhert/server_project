@@ -12,5 +12,6 @@ public class DiaryInfo {
     String title;
     LocalDateTime createdAt;
     String content;
+    Long petId;
     String petName;
 }

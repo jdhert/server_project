@@ -79,10 +79,4 @@ public class PetController {
         petMapper.deletePet(petId);
     }
 
-    @GetMapping("/diary/{id}")
-    public List<DiaryInfo> getDiary(@PathVariable String id) {
-        long id1 = Long.parseLong(id);
-        return userMapper.getDiary(id1);
-    }
-
 }
