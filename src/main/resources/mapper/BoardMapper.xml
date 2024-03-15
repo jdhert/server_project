@@ -171,4 +171,7 @@
         where board_id = #{id}
     </select>
 
+
+
+
 </mapper>

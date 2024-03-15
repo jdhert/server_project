@@ -27,6 +27,10 @@
         ORDER BY created_at ASC
     </select>
 
+    <select id="childCount" parameterType="long" resultType="int">
+        select count(*) from free_board_comment where parent_comment_id = #{id}
+    </select>
+
     <select id="getMyComments" parameterType="long" resultType="com.kitri.web_project.dto.comment.CommentDto">
         SELECT id as id, user_id as userId, content, created_at as createdAt,  like_count as likeCount
         FROM free_board_comment
@@ -45,5 +49,30 @@
     <delete id="deleteComment" parameterType="long">
         DELETE FROM free_board_comment WHERE id = #{commentId}
     </delete>
+
+    <insert id="addNewComment" parameterType="com.kitri.web_project.dto.comment.RequestComment">
+        INSERT INTO free_board_comment (board_id, user_id, content, parent_comment_id)
+        VALUES (#{boardId}, #{userId}, #{content}, #{parentCommentId})
+    </insert>
+
+    <update id="editReply" parameterType="com.kitri.web_project.dto.comment.RequestReplyComment">
+        UPDATE free_board_comment
+        SET content = #{content}
+        WHERE id = #{commentId}
+    </update>
+
+    <delete id="deleteReply" parameterType="long">
+        DELETE FROM free_board_comment WHERE id = #{replyId}
+    </delete>
+
+    <update id="incrementReplyLikeCount" parameterType="long">
+        UPDATE free_board_comment SET like_count = like_count + 1
+        WHERE id = #{id}
+    </update>
+
+    <update id="decrementReplyLikeCount" parameterType="long">
+        UPDATE free_board_comment SET like_count = like_count - 1
+        WHERE id = #{id}
+    </update>
 
 </mapper>

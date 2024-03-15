@@ -185,6 +185,7 @@ public class FreeboardController {
     }
 
 
+
     public void ImageSet(List<BoardInfo> bm){
         for(BoardInfo b : bm){
             ResponseEntity<List<String>> s = getImages(b.getId());
@@ -202,6 +203,7 @@ public class FreeboardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 예외 발생 시, HTTP 500 상태 코드 반환
         }
     }
+
 
 
 }
