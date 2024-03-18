@@ -9,7 +9,7 @@
         VALUES (#{email}, #{name}, #{password}, #{address}, #{imgPath})
     </insert>
 
-    <select id="findMember" parameterType="string" resultType="com.kitri.web_project.dto.ResponseUser">
+    <select id="findMember" parameterType="string" resultType="com.kitri.web_project.dto.login.ResponseUser">
         SELECT nick_name as nickName, email
         FROM user
         WHERE nick_name = #{name}
@@ -24,7 +24,7 @@
         id, email, password, nick_name, address, img_path
     </sql>
 
-    <resultMap id="userResultMap" type="com.kitri.web_project.dto.ResponseClient">
+    <resultMap id="userResultMap" type="com.kitri.web_project.dto.login.ResponseClient">
         <id property="id" column="id" />
         <result property="email" column="email" />
         <result property="name" column="nick_name" />
@@ -33,7 +33,7 @@
         <result property="imgPath" column="img_path" />
     </resultMap>
 
-    <select id="findByEmail" resultType="com.kitri.web_project.dto.ResponseClient" parameterType="String">
+    <select id="findByEmail" resultMap="userResultMap" parameterType="String">
         SELECT * FROM user where email=#{email};
     </select>
 

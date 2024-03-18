@@ -33,6 +33,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     //(롬복이라는 어노에티션으로 반복되는 코드를 최소화해줌)
 
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 
