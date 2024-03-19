@@ -82,7 +82,6 @@ public class UserInfoController {
         }
     }
 
-
     @GetMapping("/img/{id}")
     public ResponseEntity<String> getUserImages(@PathVariable long id){
         String images = userMapper.getUserImages(id);

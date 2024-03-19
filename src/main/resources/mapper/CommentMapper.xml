@@ -32,9 +32,10 @@
     </select>
 
     <select id="getMyComments" parameterType="long" resultType="com.kitri.web_project.dto.comment.CommentDto">
-        SELECT id as id, user_id as userId, content, created_at as createdAt,  like_count as likeCount
-        FROM free_board_comment
-        WHERE user_id = #{id}
+        SELECT fbc.id as id, fbc.user_id as userId, fbc.board_id as boardId, fbc.content, fbc.created_at as createdAt, fbc.like_count as likeCount, fb.subject
+        FROM free_board_comment fbc
+        JOIN free_board fb ON fbc.board_id = fb.id
+        WHERE fbc.user_id = #{id};
     </select>
 
     <insert id="addComment" parameterType="com.kitri.web_project.dto.comment.RequestComment">

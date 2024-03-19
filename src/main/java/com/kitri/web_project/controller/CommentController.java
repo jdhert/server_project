@@ -35,7 +35,7 @@ public class CommentController {
     }
 
     @GetMapping("/mycomment/{id}")
-    public List<CommentDto> getMyComments(@PathVariable long id){
+    public List<CommentDto> getFreeComments(@PathVariable long id){
         return commentMapper.getMyComments(id);
     }
 
