@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -67,16 +68,53 @@ public class PetController {
 
     @PutMapping
     public void updatePet(@RequestBody UpdatePet pet) {
+        String imgPath = null;
         if (pet.getPetImg() == null) {
             petMapper.updatePet2(pet);
         } else {
+            imgPath = String.valueOf(petMapper.getPetImages(pet.getPetId()));
             petMapper.updatePet(pet);
+        }
+
+        String fullPath = "/D:/imageStore" + imgPath;
+        File file = new File(fullPath);
+        if (file.exists()) {
+            try {
+                if (file.delete()) {
+                    System.out.println("Success: Image deleted");
+                } else {
+                    System.out.println("Failed: Image could not be deleted");
+                }
+            } catch (SecurityException e) {
+                System.out.println("Failed: Security Exception occurred while deleting image");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Failed: Image not found at path " + fullPath);
         }
     }
 
     @DeleteMapping("/{petId}")
     public void RequestDiary(@PathVariable long petId) {
+        String imgPath = String.valueOf(petMapper.getPetImages(petId));
         petMapper.deletePet(petId);
+
+        String fullPath = "/D:/imageStore" + imgPath;
+        File file = new File(fullPath);
+        if (file.exists()) {
+            try {
+                if (file.delete()) {
+                    System.out.println("Success: Image deleted");
+                } else {
+                    System.out.println("Failed: Image could not be deleted");
+                }
+            } catch (SecurityException e) {
+                System.out.println("Failed: Security Exception occurred while deleting image");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Failed: Image not found at path " + fullPath);
+        }
     }
 
 }

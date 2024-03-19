@@ -132,5 +132,9 @@
         where id = #{id}
     </select>
 
+    <delete id="deleteUser" parameterType="long">
+        DELETE FROM user where id = #{id};
+    </delete>
+
 </mapper>
 

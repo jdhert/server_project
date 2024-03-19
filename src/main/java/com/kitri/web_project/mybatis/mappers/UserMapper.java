@@ -10,6 +10,7 @@ import com.kitri.web_project.dto.login.ResponseUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import javax.lang.model.element.NestingKind;
 import java.util.List;
 
 @Mapper
@@ -29,6 +30,8 @@ public interface UserMapper {
     String getUserImages(long id);
     List<RequestDiary>UpdateDiary(long id); //다이어리 수정 불러오기
     void editDiary(RequestDiary id); //다이어리 수정하기
+    void deleteUser(Long id);
+
     void imageSave(String imgPath, long userId, long petId, long id);
 
     List<DiaryImgDto> getDiaryImages(long id);

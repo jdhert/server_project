@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -35,8 +36,52 @@ public class UserInfoController {
 
     @PutMapping
     public void updateUser(@RequestBody UserUpdateInfo userUpdateInfo) {
+
+        String imgPath = userMapper.getUserImages(userUpdateInfo.getUserId());
         userMapper.updateUser(userUpdateInfo);
+
+        String fullPath = "/D:/imageStore" + imgPath;
+        File file = new File(fullPath);
+        if (file.exists()) {
+            try {
+                if (file.delete()) {
+                    System.out.println("Success: Image deleted");
+                } else {
+                    System.out.println("Failed: Image could not be deleted");
+                }
+            } catch (SecurityException e) {
+                System.out.println("Failed: Security Exception occurred while deleting image");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Failed: Image not found at path " + fullPath);
+        }
     }
+
+    @DeleteMapping("/user/{id}")
+    public void deleteUser(@PathVariable Long id) {
+
+        String imgPath = userMapper.getUserImages(id);
+        userMapper.deleteUser(id);
+
+        String fullPath = "/D:/imageStore" + imgPath;
+        File file = new File(fullPath);
+        if (file.exists()) {
+            try {
+                if (file.delete()) {
+                    System.out.println("Success: Image deleted");
+                } else {
+                    System.out.println("Failed: Image could not be deleted");
+                }
+            } catch (SecurityException e) {
+                System.out.println("Failed: Security Exception occurred while deleting image");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Failed: Image not found at path " + fullPath);
+        }
+    }
+
 
     @GetMapping("/img/{id}")
     public ResponseEntity<String> getUserImages(@PathVariable long id){
