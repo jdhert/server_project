@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kitri.web_project.mybatis.mappers.ApiMapper">
+
+
+    <insert id="insertIt" parameterType="com.kitri.web_project.dto.api.DataItem">
+        INSERT INTO pet_api (
+            building_number, longitude, basic_info_place_description, road_name,
+            road_address, village_name, pet_companion_info, pet_exclusive_info,
+            pet_restriction, address_number, jurisdiction_town_name, district_name,
+            city_name, facility_name, additional_pet_fee, postal_code, operating_hours,
+            latitude, pet_size_admission, admission_fee_info, indoor_place_info,
+            outdoor_place_info, phone_number, parking_availability, lot_address,
+            last_modified_date, category1, category2, category3, website, day_off
+        ) VALUES (
+                     #{buildingNumber}, #{longitude}, #{basicInfoPlaceDescription}, #{roadName},
+                     #{roadAddress}, #{villageName}, #{petCompanionInfo}, #{petExclusiveInfo},
+                     #{petRestriction}, #{addressNumber}, #{jurisdictionTownName}, #{districtName},
+                     #{cityName}, #{facilityName}, #{additionalPetFee}, #{postalCode}, #{operatingHours},
+                     #{latitude}, #{petSizeAdmission}, #{admissionFeeInfo}, #{indoorPlaceInfo},
+                     #{outdoorPlaceInfo}, #{phoneNumber}, #{parkingAvailability}, #{lotAddress},
+                     #{lastModifiedDate}, #{category1}, #{category2}, #{category3}, #{website}, #{dayOff}
+                 )
+            ON DUPLICATE KEY UPDATE id=id;
+    </insert>
+    
+    <select id="getNearBy" parameterType="double" resultType="com.kitri.web_project.dto.api.DataItem">
+        SELECT
+            *,
+            ST_Distance_Sphere(
+                    point(longitude, latitude),
+                    point(#{longitude}, #{latitude})
+            ) AS distance
+        FROM
+            pet_api
+        ORDER BY
+            distance ASC
+            LIMIT
+            10;
+    </select>
+
+    <select id="getByCategory" resultType="com.kitri.web_project.dto.api.DataItem">
+        select * from pet_api where category3 like #{category} limit #{page}, 10;
+    </select>
+
+    <select id="getList" resultType="com.kitri.web_project.dto.api.DataItem">
+        select * from pet_api limit #{page}, 10;
+    </select>
+</mapper>
