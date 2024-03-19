@@ -1,8 +1,7 @@
 package com.kitri.web_project.mybatis.mappers;
 
-import com.kitri.web_project.dto.BoardInfo;
+import com.kitri.web_project.dto.board.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
-import com.kitri.web_project.dto.board.TagSet;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -36,15 +35,9 @@ public interface BoardMapper {
     void incrementCommentLikeCount(long commentId);
     void decrementCommentLikeCount(long commentId);
 
-
-//    void incrementLikeCountqna(long postId);
-//    void decrementLikeCountqna(long postId);
-//
-//    void incrementCommentLikeCountqna(long commentId);
-//    void decrementCommentLikeCountqna(long commentId);
-
     void setImage(long id, long boardId, String imagePath);
 
     List<String> getImages(long id);
+
 
 }

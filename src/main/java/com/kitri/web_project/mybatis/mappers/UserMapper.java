@@ -1,9 +1,14 @@
 package com.kitri.web_project.mybatis.mappers;
 
 import com.kitri.web_project.dto.*;
+import com.kitri.web_project.dto.diary.DiaryImgDto;
+import com.kitri.web_project.dto.diary.DiaryMainImg;
 import com.kitri.web_project.dto.diary.RequestDiary;
 import com.kitri.web_project.dto.diary.PetCalendar;
+import com.kitri.web_project.dto.login.ResponseClient;
+import com.kitri.web_project.dto.login.ResponseUser;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import javax.lang.model.element.NestingKind;
 import java.util.List;
@@ -18,7 +23,7 @@ public interface UserMapper {
     List<PetInfo> getPets(long id);
     List<DiaryInfo> getDiary(long id);
     void save(RequestDiary diaryInfo); //펫 다이어리 등록
-    List<RequestDiary> petDiary(long id); //펫 다이어리 미리보기
+    RequestDiary petDiary(long id); //펫 다이어리 미리보기
     void deleteDiary(long diaryId); //다이어리 삭제하기
     List<PetCalendar> petCalendar(long id); //캘린더 미리보기
     void updateUser(UserUpdateInfo userUpdateInfo);
@@ -27,4 +32,12 @@ public interface UserMapper {
     void editDiary(RequestDiary id); //다이어리 수정하기
     void deleteUser(Long id);
 
+    void imageSave(String imgPath, long userId, long petId, long id);
+
+    List<DiaryImgDto> getDiaryImages(long id);
+    void deleteImageById(@Param("id") long id);
+
+    List<DiaryMainImg> diaryMainImages(long id);
+
+//    List<String> diaryMainImages(long id);
 }
