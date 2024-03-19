@@ -1,11 +1,10 @@
 package com.kitri.web_project.controller;
 
-import com.kitri.web_project.dto.LoginUser;
-import com.kitri.web_project.dto.ResponseClient;
-import com.kitri.web_project.dto.SocialLogin;
+import com.kitri.web_project.dto.login.LoginUser;
+import com.kitri.web_project.dto.login.ResponseClient;
+import com.kitri.web_project.dto.login.SocialLogin;
 import com.kitri.web_project.mybatis.mappers.UserMapper;
 import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,12 +33,16 @@ public class LoginController {
     public boolean logOut(HttpServletResponse res){
         Cookie cookie = new Cookie("email", null);
         Cookie cookie1 = new Cookie("id", null);
+        Cookie cookie2 = new Cookie("name", null);
         cookie1.setMaxAge(0);
         cookie.setMaxAge(0);
+        cookie2.setMaxAge(0);
         cookie.setPath("/");
         cookie1.setPath("/");
+        cookie2.setPath("/");
         res.addCookie(cookie);
         res.addCookie(cookie1);
+        res.addCookie(cookie2);
         return true;
     }
 
@@ -60,9 +63,12 @@ public class LoginController {
     public void CookieSet(HttpServletResponse response, ResponseClient responseClient){
         Cookie cookie = new Cookie("email", responseClient.getEmail());
         Cookie cookie1 = new Cookie("id", responseClient.getId().toString());
+        Cookie cookie2 = new Cookie("name", responseClient.getName());
         cookie.setPath("/");
         cookie1.setPath("/");
+        cookie2.setPath("/");
         response.addCookie(cookie);
         response.addCookie(cookie1);
+        response.addCookie(cookie2);
     }
 }

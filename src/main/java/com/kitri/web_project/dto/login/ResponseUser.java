@@ -1,4 +1,4 @@
-package com.kitri.web_project.dto;
+package com.kitri.web_project.dto.login;
 
 import lombok.Getter;
 import lombok.Setter;

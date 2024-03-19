@@ -17,4 +17,5 @@ public class CommentDto {
     String name;
     Long parentCommentId;
     String imgPath;
+    int child;
 }
