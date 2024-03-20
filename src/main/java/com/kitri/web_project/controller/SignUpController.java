@@ -1,6 +1,6 @@
 package com.kitri.web_project.controller;
 
-import com.kitri.web_project.mybatis.mappers.UserMapper;
+import com.kitri.web_project.mappers.UserMapper;
 import com.kitri.web_project.dto.login.RequestClient;
 import com.kitri.web_project.dto.login.ResponseUser;
 import org.springframework.beans.factory.annotation.Autowired;

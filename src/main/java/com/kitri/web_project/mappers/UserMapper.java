@@ -1,4 +1,4 @@
-package com.kitri.web_project.mybatis.mappers;
+package com.kitri.web_project.mappers;
 
 import com.kitri.web_project.dto.*;
 import com.kitri.web_project.dto.diary.DiaryImgDto;

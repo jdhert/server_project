@@ -3,14 +3,13 @@ package com.kitri.web_project.controller;
 import com.kitri.web_project.dto.comment.CommentDto;
 import com.kitri.web_project.dto.comment.RequestComment;
 import com.kitri.web_project.dto.comment.RequestReplyComment;
-import com.kitri.web_project.mybatis.mappers.CommentMapper;
+import com.kitri.web_project.mappers.CommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

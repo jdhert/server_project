@@ -3,7 +3,7 @@ package com.kitri.web_project.controller;
 import com.kitri.web_project.dto.board.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
 import com.kitri.web_project.dto.board.UpdateBoard;
-import com.kitri.web_project.mybatis.mappers.BoardMapper;
+import com.kitri.web_project.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;

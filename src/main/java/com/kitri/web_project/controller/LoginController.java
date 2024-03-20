@@ -3,7 +3,7 @@ package com.kitri.web_project.controller;
 import com.kitri.web_project.dto.login.LoginUser;
 import com.kitri.web_project.dto.login.ResponseClient;
 import com.kitri.web_project.dto.login.SocialLogin;
-import com.kitri.web_project.mybatis.mappers.UserMapper;
+import com.kitri.web_project.mappers.UserMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

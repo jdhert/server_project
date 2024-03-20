@@ -2,13 +2,13 @@ package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.DiaryInfo;
 import com.kitri.web_project.dto.PetInfo;
-import com.kitri.web_project.dto.comment.CommentDto;
+import com.kitri.web_project.dto.UserInfo;
+import com.kitri.web_project.dto.UserUpdateInfo;
 import com.kitri.web_project.dto.diary.DiaryImgDto;
 import com.kitri.web_project.dto.diary.DiaryMainImg;
-import com.kitri.web_project.dto.*;
-import com.kitri.web_project.dto.diary.RequestDiary;
 import com.kitri.web_project.dto.diary.PetCalendar;
-import com.kitri.web_project.mybatis.mappers.UserMapper;
+import com.kitri.web_project.dto.diary.RequestDiary;
+import com.kitri.web_project.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

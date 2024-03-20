@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kitri.web_project.mybatis.mappers.CommentMapper">
+<mapper namespace="com.kitri.web_project.mappers.CommentMapper">
 
 <!--    <select id="getComments" parameterType="long" resultType="com.kitri.web_project.dto.comment.CommentDto">-->
 <!--        SELECT free_board_comment.id as id, user_id as userId, content, created_at as createdAt,  like_count as likeCount,-->
