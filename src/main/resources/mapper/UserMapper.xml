@@ -136,7 +136,7 @@
         DELETE FROM user where id = #{id};
     </delete>
 
-    <update id="updatePassword" parameterType="com.kitri.web_project.dto.ResponseClient">
+    <update id="updatePassword" parameterType="com.kitri.web_project.dto.login.ResponseClient">
         UPDATE user
         SET password = #{password}
         WHERE id = #{id}
