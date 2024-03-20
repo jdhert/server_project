@@ -1,12 +1,10 @@
 package com.kitri.web_project.controller;
 
-import com.kitri.web_project.dto.DiaryInfo;
 import com.kitri.web_project.dto.PetInfo;
-import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.dto.pet.RequestPet;
 import com.kitri.web_project.dto.pet.UpdatePet;
-import com.kitri.web_project.mybatis.mappers.PetMapper;
-import com.kitri.web_project.mybatis.mappers.UserMapper;
+import com.kitri.web_project.mappers.PetMapper;
+import com.kitri.web_project.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

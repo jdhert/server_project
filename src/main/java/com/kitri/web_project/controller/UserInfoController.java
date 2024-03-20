@@ -2,14 +2,14 @@ package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.DiaryInfo;
 import com.kitri.web_project.dto.PetInfo;
-import com.kitri.web_project.dto.comment.CommentDto;
+import com.kitri.web_project.dto.UserInfo;
+import com.kitri.web_project.dto.UserUpdateInfo;
 import com.kitri.web_project.dto.diary.DiaryImgDto;
 import com.kitri.web_project.dto.diary.DiaryMainImg;
-import com.kitri.web_project.dto.*;
 import com.kitri.web_project.dto.diary.PetCalendar;
 import com.kitri.web_project.dto.diary.RequestDiary;
 import com.kitri.web_project.dto.login.ResponseClient;
-import com.kitri.web_project.mybatis.mappers.UserMapper;
+import com.kitri.web_project.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,11 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
