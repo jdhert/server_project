@@ -31,6 +31,8 @@ public interface UserMapper {
     List<RequestDiary>UpdateDiary(long id); //다이어리 수정 불러오기
     void editDiary(RequestDiary id); //다이어리 수정하기
     void deleteUser(Long id);
+    void updatePassword(ResponseClient user);
+    void updateNewPassword(List<Object> params);
 
     void imageSave(String imgPath, long userId, long petId, long id);
 

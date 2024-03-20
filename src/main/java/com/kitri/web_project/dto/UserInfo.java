@@ -12,6 +12,8 @@ public class UserInfo {
     String imgPath;
     String address;
 
+    boolean social;
+
     int boardCount;
     int commentCount;
     int diaryCount;
