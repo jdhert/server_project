@@ -40,7 +40,7 @@
     <select id="findById" resultType="com.kitri.web_project.dto.UserInfo" parameterType="long">
         SELECT (SELECT count(*) FROM free_board WHERE user_id = #{id}) AS boardCount, (select count(*) from free_board_comment where user_id = #{id}) as commentCount,
         (select count(*) from pet_diary where user_id = #{id}) as diaryCount,
-        nick_name as name, email, img_path as imgPath, address
+        nick_name as name, email, img_path as imgPath, address, social
         FROM  user where id=#{id};
     </select>
 
@@ -109,6 +109,18 @@
     <delete id="deleteUser" parameterType="long">
         DELETE FROM user where id = #{id};
     </delete>
+
+    <update id="updatePassword" parameterType="com.kitri.web_project.dto.ResponseClient">
+        UPDATE user
+        SET password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateNewPassword" parameterType="java.util.List">
+        UPDATE user
+        SET password = #{params[2]}
+        WHERE id = #{params[0]} AND password = #{params[1]}
+    </update>
 
 </mapper>
 

@@ -18,4 +18,6 @@ public class ResponseClient {
     String name;
     String address;
     String imgPath;
+
+    Boolean social;
 }

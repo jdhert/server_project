@@ -25,9 +25,11 @@ public class LoginController {
         if(responseUsers == null)
             return 0L;
         if(!Objects.equals(loginUser.getPassword(), responseUsers.getPassword()))
-            return  0L;
-        CookieSet(response, responseUsers);
-        return responseUsers.getId();
+            return 0L;
+        if(!responseUsers.getSocial()) {
+            CookieSet(response, responseUsers);
+            return responseUsers.getId();
+        } return 0L;
     }
 
     @GetMapping("/logout")
