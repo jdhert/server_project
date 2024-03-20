@@ -1,4 +1,4 @@
-package com.kitri.web_project.dto;
+package com.kitri.web_project.dto.login;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

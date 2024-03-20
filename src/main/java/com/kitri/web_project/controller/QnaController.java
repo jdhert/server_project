@@ -1,7 +1,6 @@
 package com.kitri.web_project.controller;
 
-import com.kitri.web_project.dto.BoardInfo;
-import com.kitri.web_project.dto.board.RequestBoard;
+import com.kitri.web_project.dto.board.BoardInfo;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.mybatis.mappers.BoardMapper;
 import org.springframework.beans.factory.annotation.Autowired;

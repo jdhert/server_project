@@ -2,7 +2,9 @@ package com.kitri.web_project.mybatis.mappers;
 
 import com.kitri.web_project.dto.comment.CommentDto;
 import com.kitri.web_project.dto.comment.RequestComment;
+import com.kitri.web_project.dto.comment.RequestReplyComment;
 import org.apache.ibatis.annotations.Mapper;
+import org.eclipse.tags.shaded.org.apache.regexp.RE;
 
 import java.util.List;
 
@@ -16,6 +18,12 @@ public interface CommentMapper {
     void addComment(RequestComment requestComment);
     void deleteComment(long commentId);
     void editComment(CommentDto commentDto);
+    void addNewComment(RequestReplyComment requestReplyComment);
+    void editReply(RequestReplyComment requestReplyComment);
+    void deleteReply(long replyId);
 
+    void incrementReplyLikeCount(long replyId);
+    void decrementReplyLikeCount(long replyId);
 
+    int childCount(long id);
 }

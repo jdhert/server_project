@@ -9,7 +9,7 @@
         VALUES (#{email}, #{name}, #{password}, #{address}, #{imgPath})
     </insert>
 
-    <select id="findMember" parameterType="string" resultType="com.kitri.web_project.dto.ResponseUser">
+    <select id="findMember" parameterType="string" resultType="com.kitri.web_project.dto.login.ResponseUser">
         SELECT nick_name as nickName, email
         FROM user
         WHERE nick_name = #{name}
@@ -24,7 +24,7 @@
         id, email, password, nick_name, address, img_path
     </sql>
 
-    <resultMap id="userResultMap" type="com.kitri.web_project.dto.ResponseClient">
+    <resultMap id="userResultMap" type="com.kitri.web_project.dto.login.ResponseClient">
         <id property="id" column="id" />
         <result property="email" column="email" />
         <result property="name" column="nick_name" />
@@ -33,7 +33,7 @@
         <result property="imgPath" column="img_path" />
     </resultMap>
 
-    <select id="findByEmail" resultType="com.kitri.web_project.dto.ResponseClient" parameterType="String">
+    <select id="findByEmail" resultMap="userResultMap" parameterType="String">
         SELECT * FROM user where email=#{email};
     </select>
 
@@ -59,13 +59,17 @@
         order by created_at desc;
     </select>
 
-    <insert id="save" parameterType="com.kitri.web_project.dto.diary.RequestDiary">
-        INSERT INTO pet_diary (title, content, user_id, pet_id, mood, weather)
-        VALUES (#{title}, #{content}, #{id}, #{petId}, #{mood}, #{weather})
+    <insert id="save" useGeneratedKeys="true" keyProperty="id" parameterType="com.kitri.web_project.dto.diary.RequestDiary">
+        INSERT INTO pet_diary (title, content, user_id, pet_id, mood, weather, created_at)
+        VALUES (#{title}, #{content}, #{userId}, #{petId}, #{mood}, #{weather}, #{createdAt})
     </insert>
 
     <select id="petDiary" resultType="com.kitri.web_project.dto.diary.RequestDiary" parameterType="long">
-        SELECT * FROM pet_diary where id = #{id};
+        SELECT pet.name, pet_diary.title, pet_diary.content, pet_diary.created_at, pet_diary.mood, pet_diary.weather,
+               pet_id as petId, pet_diary.user_id as userId
+        FROM pet_diary
+        JOIN pet ON pet_diary.pet_id = pet.id
+        WHERE pet_diary.id = #{id};
     </select>
 
     <delete id="deleteDiary" parameterType="long">
@@ -73,7 +77,7 @@
     </delete>
 
     <select id="petCalendar" resultType="com.kitri.web_project.dto.diary.PetCalendar" parameterType="long">
-        SELECT created_at as createdAt, content, pet.name as petName
+        SELECT created_at as createdAt, content, pet.name as name
         FROM pet_diary, pet
         where pet_id = pet.id and pet_diary.user_id = #{id}
     </select>
@@ -94,6 +98,28 @@
         INNER JOIN pet ON pet_diary.pet_id = pet.id
         WHERE pet_diary.id = #{diaryId};
     </select>
+
+    <insert id="imageSave" parameterType="com.kitri.web_project.dto.diary.DiaryDto">
+        insert into diary_img (img_path, diary_id, pet_id, user_id)
+        values ( #{imgPath}, #{id}, #{petId}, #{userId})
+    </insert>
+
+    <select id="getDiaryImages" parameterType="long" resultType="com.kitri.web_project.dto.diary.DiaryImgDto">
+        select img_path as imgPath , id as imgId from diary_img where diary_id = #{id}
+    </select>
+
+    <delete id="deleteImageById" parameterType="Long">
+        DELETE FROM diary_img where id = #{id};
+    </delete>
+
+    <select id="diaryMainImages" parameterType="long" resultType="com.kitri.web_project.dto.diary.DiaryMainImg">
+        SELECT pet.name as petName, pet_diary.title, pet_diary.content, pet_diary.created_at, pet_id as petId, pet_diary.user_id as userId, pet_diary.id as diaryId,
+               (SELECT img_path FROM diary_img WHERE diary_id = pet_diary.id LIMIT 1) as imgPath
+        FROM pet_diary
+                 JOIN pet ON pet_diary.pet_id = pet.id
+        WHERE pet_diary.user_id = #{id};
+    </select>
+
 
     <update id="updateUser" parameterType="com.kitri.web_project.dto.UserUpdateInfo">
         UPDATE user
