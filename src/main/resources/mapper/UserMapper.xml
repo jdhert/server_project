@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kitri.web_project.mybatis.mappers.UserMapper">
+<mapper namespace="com.kitri.web_project.mappers.UserMapper">
 
 
     <insert id="signup" parameterType="string">
@@ -9,7 +9,7 @@
         VALUES (#{email}, #{name}, #{password}, #{address}, #{imgPath})
     </insert>
 
-    <select id="findMember" parameterType="string" resultType="com.kitri.web_project.dto.ResponseUser">
+    <select id="findMember" parameterType="string" resultType="com.kitri.web_project.dto.login.ResponseUser">
         SELECT nick_name as nickName, email
         FROM user
         WHERE nick_name = #{name}
@@ -24,7 +24,7 @@
         id, email, password, nick_name, address, img_path
     </sql>
 
-    <resultMap id="userResultMap" type="com.kitri.web_project.dto.ResponseClient">
+    <resultMap id="userResultMap" type="com.kitri.web_project.dto.login.ResponseClient">
         <id property="id" column="id" />
         <result property="email" column="email" />
         <result property="name" column="nick_name" />
@@ -33,14 +33,14 @@
         <result property="imgPath" column="img_path" />
     </resultMap>
 
-    <select id="findByEmail" resultType="com.kitri.web_project.dto.ResponseClient" parameterType="String">
+    <select id="findByEmail" resultMap="userResultMap" parameterType="String">
         SELECT * FROM user where email=#{email};
     </select>
 
     <select id="findById" resultType="com.kitri.web_project.dto.UserInfo" parameterType="long">
         SELECT (SELECT count(*) FROM free_board WHERE user_id = #{id}) AS boardCount, (select count(*) from free_board_comment where user_id = #{id}) as commentCount,
         (select count(*) from pet_diary where user_id = #{id}) as diaryCount,
-        nick_name as name, email, img_path as imgPath, address
+        nick_name as name, email, img_path as imgPath, address, social
         FROM  user where id=#{id};
     </select>
 
@@ -138,6 +138,22 @@
         select img_path from user
         where id = #{id}
     </select>
+
+    <delete id="deleteUser" parameterType="long">
+        DELETE FROM user where id = #{id};
+    </delete>
+
+    <update id="updatePassword" parameterType="com.kitri.web_project.dto.login.ResponseClient">
+        UPDATE user
+        SET password = #{password}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateNewPassword" parameterType="java.util.List">
+        UPDATE user
+        SET password = #{params[2]}
+        WHERE id = #{params[0]} AND password = #{params[1]}
+    </update>
 
 </mapper>
 

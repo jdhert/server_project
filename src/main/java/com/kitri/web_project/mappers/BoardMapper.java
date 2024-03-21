@@ -1,8 +1,7 @@
-package com.kitri.web_project.mybatis.mappers;
+package com.kitri.web_project.mappers;
 
-import com.kitri.web_project.dto.BoardInfo;
+import com.kitri.web_project.dto.board.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
-import com.kitri.web_project.dto.board.TagSet;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import org.apache.ibatis.annotations.Mapper;
 

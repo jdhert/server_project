@@ -1,4 +1,4 @@
-package com.kitri.web_project.mybatis.mappers;
+package com.kitri.web_project.mappers;
 
 import com.kitri.web_project.dto.PetInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
