@@ -18,6 +18,7 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -104,7 +105,6 @@ public class UserInfoController {
 
     @GetMapping("/select/{id}")
     public RequestDiary requestDiaries(@PathVariable long id){
-//        long id1 = Long.parseLong(id);
         return userMapper.petDiary(id);
     }
     //다이어리 미리보기 매핑
@@ -117,7 +117,19 @@ public class UserInfoController {
 
     @GetMapping("/calendar/{id}")
     public List<PetCalendar>petCalendars(@PathVariable long id){
+
         return userMapper.petCalendar(id);
+    }
+
+//    @PostMapping("/updateColor") // 캘린더 색상 업데이트
+//    public void petCalendars(@RequestBody PetCalendar petCalendar){
+//        userMapper.UpdateColor(petCalendar);
+//    }
+
+    @PostMapping("/updateColor/{petId}") //캘린더 색상 업데이트
+    public void petCalendars(@PathVariable long petId, @RequestBody Map<String, String> requestBody){
+        String color = requestBody.get("color");
+        userMapper.UpdateColor(petId, color);
     }
 
     @GetMapping("/update/{id}") //다이어리 수정 불러오기

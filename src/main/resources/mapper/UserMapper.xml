@@ -77,9 +77,10 @@
     </delete>
 
     <select id="petCalendar" resultType="com.kitri.web_project.dto.diary.PetCalendar" parameterType="long">
-        SELECT created_at as createdAt, content, pet.name as name
-        FROM pet_diary, pet
-        where pet_id = pet.id and pet_diary.user_id = #{id}
+        SELECT p.name, pd.content, pd.created_at as createdAt, pd.id as diaryId, p.pet_color as petColor, p.id as petId
+        FROM pet p
+                 INNER JOIN pet_diary pd ON p.id = pd.pet_id
+        WHERE pd.user_id = #{id};
     </select>
 
     <update id="editDiary" parameterType="com.kitri.web_project.dto.diary.RequestDiary">
@@ -113,7 +114,7 @@
     </delete>
 
     <select id="diaryMainImages" parameterType="long" resultType="com.kitri.web_project.dto.diary.DiaryMainImg">
-        SELECT pet.name as petName, pet_diary.title, pet_diary.content, pet_diary.created_at, pet_id as petId, pet_diary.user_id as userId, pet_diary.id as diaryId,
+        SELECT pet.name as petName, pet_diary.title, pet_diary.content, pet_diary.created_at as createdAt, pet_id as petId, pet_diary.user_id as userId, pet_diary.id as diaryId,
                (SELECT img_path FROM diary_img WHERE diary_id = pet_diary.id LIMIT 1) as imgPath
         FROM pet_diary
                  JOIN pet ON pet_diary.pet_id = pet.id
@@ -125,6 +126,12 @@
         UPDATE user
         SET email = #{email}, nick_name = #{name}, img_path = #{imgPath}, address = #{address}
         WHERE id = #{userId}
+    </update>
+
+    <update id="UpdateColor">
+        UPDATE pet
+        SET pet_color = #{color}
+        WHERE id = #{petId};
     </update>
 
     <select id="getUserImages" parameterType="long" resultType="string">

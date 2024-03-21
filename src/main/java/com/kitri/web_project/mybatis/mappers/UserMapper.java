@@ -34,5 +34,5 @@ public interface UserMapper {
 
     List<DiaryMainImg> diaryMainImages(long id);
 
-//    List<String> diaryMainImages(long id);
+    void UpdateColor(long petId, String color);
 }
