@@ -116,12 +116,12 @@ public class BoardController {
 
     @GetMapping("/getMyBoard/{id}")
     public List<BoardInfo> getMyBoard(@RequestParam int subject, @RequestParam int page, @PathVariable long id) {
-        int maxPage=10;
-        int offset;
-        int limit;
-        offset = (page - 1) * maxPage;
-        limit = 10;
-        return boardMapper.getMyBoards(id, subject, offset, limit);
+//        int maxPage=10;
+//        int offset;
+//        int limit;
+//        offset = (page - 1) * maxPage;
+//        limit = 10;
+        return boardMapper.getMyBoards(id, subject);
     }
     @GetMapping("/popular")
     public List<BoardInfo> getPopularBoard() {
