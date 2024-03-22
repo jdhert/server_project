@@ -1,10 +1,11 @@
 package com.kitri.web_project.controller;
 
-import com.kitri.web_project.dto.BoardInfo;
+import com.kitri.web_project.dto.board.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
 import com.kitri.web_project.dto.board.RequestBoardLike;
 import com.kitri.web_project.dto.board.UpdateBoard;
-import com.kitri.web_project.mybatis.mappers.BoardMapper;
+import com.kitri.web_project.mappers.BoardMapper;
+import com.kitri.web_project.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,11 +29,18 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/free")
-public class FreeboardController {
+public class BoardController {
 
     @Autowired
     BoardMapper boardMapper;
 
+
+    private final BoardService boardService;
+
+    @Autowired
+    public BoardController(BoardService boardService){
+        this.boardService = boardService;
+    }
 
     @GetMapping("/{page}")
     public List<BoardInfo> get(@PathVariable int page) {
@@ -109,12 +117,12 @@ public class FreeboardController {
 
     @GetMapping("/getMyBoard/{id}")
     public List<BoardInfo> getMyBoard(@RequestParam int subject, @RequestParam int page, @PathVariable long id) {
-        int maxPage=10;
-        int offset;
-        int limit;
-        offset = (page - 1) * maxPage;
-        limit = 10;
-        return boardMapper.getMyBoards(id, subject, offset, limit);
+//        int maxPage=10;
+//        int offset;
+//        int limit;
+//        offset = (page - 1) * maxPage;
+//        limit = 10;
+        return boardMapper.getMyBoards(id, subject);
     }
     @GetMapping("/popular")
     public List<BoardInfo> getPopularBoard() {
@@ -137,7 +145,6 @@ public class FreeboardController {
     public List<String> insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles) {
         List<String> s = new ArrayList<>();;
         for (MultipartFile file : imageFiles) {
-            // 파일 처리 로직 구현
             try {
                     //1.서버에 이미지파일을 저장, 이미지를 서버에 업로드
                     //1-a.파일 저장 위치를 지정하여 파일 객체에 포장
@@ -195,10 +202,10 @@ public class FreeboardController {
     @PutMapping("/view/{id}")
     public ResponseEntity<?> updateViewCount(@PathVariable("id") Long id) {
         try {
-            boardMapper.updateViewCount(id); // boardMapper에 정의된 updateViewCount 메소드를 호출
-            return new ResponseEntity<>(HttpStatus.OK); // 성공적으로 조회수를 업데이트한 경우, HTTP 200 상태 코드 반환
+            boardMapper.updateViewCount(id);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR); // 예외 발생 시, HTTP 500 상태 코드 반환
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -231,6 +238,15 @@ public class FreeboardController {
             return false;
         }
     }
+
+
+    @GetMapping("/getMyLike/{id}")
+    public List<BoardInfo> getMyLike(@PathVariable long id, int page){
+        return boardService.boardInfos(id, page);
+    }
+
+
+
 
 
 

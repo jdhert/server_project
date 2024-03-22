@@ -2,22 +2,24 @@ package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.DiaryInfo;
 import com.kitri.web_project.dto.PetInfo;
-import com.kitri.web_project.dto.comment.CommentDto;
+import com.kitri.web_project.dto.UserInfo;
+import com.kitri.web_project.dto.UserUpdateInfo;
 import com.kitri.web_project.dto.diary.DiaryImgDto;
 import com.kitri.web_project.dto.diary.DiaryMainImg;
-import com.kitri.web_project.dto.*;
-import com.kitri.web_project.dto.diary.RequestDiary;
 import com.kitri.web_project.dto.diary.PetCalendar;
-import com.kitri.web_project.mybatis.mappers.UserMapper;
+import com.kitri.web_project.dto.diary.RequestDiary;
+import com.kitri.web_project.mappers.UserMapper;
+import com.kitri.web_project.service.BoardService;
+import com.kitri.web_project.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,6 +29,15 @@ public class UserInfoController {
     @Autowired
     UserMapper userMapper;
 
+
+
+    private final UserInfoService userInfoService;
+
+    @Autowired
+    public UserInfoController(UserInfoService userInfoService){
+        this.userInfoService = userInfoService;
+    }
+
     @GetMapping("/{id}")
     public UserInfo getInfo(@PathVariable String id) {
         long id1 = Long.parseLong(id);
@@ -35,7 +46,63 @@ public class UserInfoController {
 
     @PutMapping
     public void updateUser(@RequestBody UserUpdateInfo userUpdateInfo) {
+
+        String imgPath = userMapper.getUserImages(userUpdateInfo.getUserId());
         userMapper.updateUser(userUpdateInfo);
+
+        String fullPath = "/D:/imageStore" + imgPath;
+        File file = new File(fullPath);
+        if (file.exists()) {
+            try {
+                if (file.delete()) {
+                    System.out.println("Success: Image deleted");
+                } else {
+                    System.out.println("Failed: Image could not be deleted");
+                }
+            } catch (SecurityException e) {
+                System.out.println("Failed: Security Exception occurred while deleting image");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Failed: Image not found at path " + fullPath);
+        }
+    }
+
+    @PostMapping("/updatepw/{id}")
+    public boolean updateNewPassword(@PathVariable Long id, @RequestBody Map<String, String> passwords) {
+        String currentPassword = passwords.get("currentPassword");
+        String newPassword = passwords.get("newPassword");
+        String passwordFind = userMapper.passwordFind(id);
+
+        if(!Objects.equals(passwordFind, currentPassword))
+            return false;
+        else {
+            List<Object> params = Arrays.asList(id, currentPassword, newPassword);
+            userMapper.updateNewPassword(params);
+            return true;
+        }
+    }
+
+    @DeleteMapping("/user/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        String imgPath = userMapper.getUserImages(id);
+        userMapper.deleteUser(id);
+        String fullPath = "/D:/imageStore" + imgPath;
+        File file = new File(fullPath);
+        if (file.exists()) {
+            try {
+                if (file.delete()) {
+                    System.out.println("Success: Image deleted");
+                } else {
+                    System.out.println("Failed: Image could not be deleted");
+                }
+            } catch (SecurityException e) {
+                System.out.println("Failed: Security Exception occurred while deleting image");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Failed: Image not found at path " + fullPath);
+        }
     }
 
     @GetMapping("/img/{id}")
@@ -71,8 +138,10 @@ public class UserInfoController {
     @PostMapping
     public void adddiary(@RequestBody RequestDiary diaryInfo) {
         userMapper.save(diaryInfo);
-        for(String s : diaryInfo.getImg()) {
-            userMapper.imageSave(s, diaryInfo.getUserId(),diaryInfo.getPetId(), diaryInfo.getId());
+        if(diaryInfo.getImg() != null) {
+            for (String s : diaryInfo.getImg()) {
+                userMapper.imageSave(s, diaryInfo.getUserId(), diaryInfo.getPetId(), diaryInfo.getId());
+            }
         }
     }
 
@@ -117,7 +186,13 @@ public class UserInfoController {
 
     @GetMapping("/calendar/{id}")
     public List<PetCalendar>petCalendars(@PathVariable long id){
+
         return userMapper.petCalendar(id);
+    }
+    @PostMapping("/updateColor/{petId}") //캘린더 색상 업데이트
+    public void petCalendars(@PathVariable long petId, @RequestBody Map<String, String> requestBody){
+        String color = requestBody.get("color");
+        userMapper.UpdateColor(petId, color);
     }
 
     @GetMapping("/update/{id}") //다이어리 수정 불러오기
@@ -146,7 +221,7 @@ public class UserInfoController {
         // imgPath 데이터만 추출하여 디코딩된 URL 리스트 생성
         List<String> decodedImageUrls = diaryMainImgList.stream()
                 .map(diaryMainImg -> decodeImageUrl(diaryMainImg.getImgPath()))
-                .collect(Collectors.toList());
+                .toList();
 
         // 디코딩된 URL을 다시 imgPath 필드에 할당하여 diaryMainImgList 수정
         for (int i = 0; i < diaryMainImgList.size(); i++) {
@@ -156,6 +231,15 @@ public class UserInfoController {
         return diaryMainImgList;
     }
 
+
+
+    @GetMapping("/passVerify/{id}")
+    public boolean passVerify(@PathVariable long id,String password){
+        return userInfoService.passwordVerify(id, password);
+    }
+
+
+
     // URL 디코딩 메서드
     private String decodeImageUrl(String encodedUrl) {
         return URLDecoder.decode(ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -164,5 +248,8 @@ public class UserInfoController {
                         .toUriString(),
                 StandardCharsets.UTF_8);
     }
+
+
+
 
 }

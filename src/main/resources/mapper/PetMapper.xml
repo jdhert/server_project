@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kitri.web_project.mybatis.mappers.PetMapper">
+<mapper namespace="com.kitri.web_project.mappers.PetMapper">
 
     <insert id="addPet" useGeneratedKeys="true" keyProperty="id" parameterType="com.kitri.web_project.dto.pet.RequestPet">
         INSERT INTO pet (user_id, img_path, name, age, weight, species, spec_species, gender, disease, recog_chip)
@@ -42,5 +42,19 @@
         DELETE FROM pet where id = #{petId};
     </delete>
 
+    <select id="getDiary" parameterType="long" resultType="com.kitri.web_project.dto.pet.getPetDiary">
+        SELECT
+            pd.title AS title,
+            pd.created_at AS createdAt,
+            pd.id AS diaryId,
+            (SELECT di.img_path FROM diary_img di WHERE di.diary_id = pd.id LIMIT 1) AS imgPath,
+    p.name AS petName
+        FROM
+            pet_diary pd
+            JOIN
+            pet p ON pd.pet_id = p.id
+        WHERE
+            pd.pet_id = #{petId};
+    </select>
 
 </mapper>

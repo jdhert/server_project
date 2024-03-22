@@ -1,8 +1,8 @@
 package com.kitri.web_project.controller;
 
-import com.kitri.web_project.mybatis.mappers.UserMapper;
-import com.kitri.web_project.dto.RequestClient;
-import com.kitri.web_project.dto.ResponseUser;
+import com.kitri.web_project.mappers.UserMapper;
+import com.kitri.web_project.dto.login.RequestClient;
+import com.kitri.web_project.dto.login.ResponseUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,9 +28,10 @@ public class SignUpController {
             return false;
         else if(!(requestClient.getPassword().equals(requestClient.getPasswordVerify())))
             return false;
-        else userMapper.signup(requestClient.getName(), requestClient.getEmail(), requestClient.getPassword(), requestClient.getAddress(), null);
-
-        return true;
+        else {
+            userMapper.signup(requestClient.getName(), requestClient.getEmail(), requestClient.getPassword(), requestClient.getAddress(), null, false);
+            return true;
+        }
     }
 }
 

@@ -1,9 +1,10 @@
-package com.kitri.web_project.mybatis.mappers;
+package com.kitri.web_project.mappers;
 
 import com.kitri.web_project.dto.PetInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
 import com.kitri.web_project.dto.pet.RequestPet;
 import com.kitri.web_project.dto.pet.UpdatePet;
+import com.kitri.web_project.dto.pet.getPetDiary;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface PetMapper {
     void deletePet(long petId);
     void updatePet(UpdatePet pet);
     void updatePet2(UpdatePet pet);
+    List<getPetDiary> getDiary(long petId);
+
 }

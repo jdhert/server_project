@@ -1,8 +1,7 @@
-package com.kitri.web_project.mybatis.mappers;
+package com.kitri.web_project.mappers;
 
-import com.kitri.web_project.dto.BoardInfo;
+import com.kitri.web_project.dto.board.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
-import com.kitri.web_project.dto.board.TagSet;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -29,7 +28,7 @@ public interface BoardMapper {
 
     void deleteTags(long id);
 
-    List<BoardInfo> getMyBoards(long id, int subject, int offset, int limit);
+    List<BoardInfo> getMyBoards(long id, int subject);
 
     void incrementLikeCount(long postId);
     void decrementLikeCount(long postId);
@@ -40,6 +39,8 @@ public interface BoardMapper {
     void setImage(long id, long boardId, String imagePath);
 
     List<String> getImages(long id);
+
+    List<BoardInfo> getMyLike(long id, int page);
 
 
     boolean checkLikeExists(@Param("userId") long userId, @Param("boardId") long boardId);

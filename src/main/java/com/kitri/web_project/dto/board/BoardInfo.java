@@ -1,4 +1,4 @@
-package com.kitri.web_project.dto;
+package com.kitri.web_project.dto.board;
 
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;

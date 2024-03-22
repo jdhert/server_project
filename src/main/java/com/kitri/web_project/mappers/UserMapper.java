@@ -1,21 +1,24 @@
-package com.kitri.web_project.mybatis.mappers;
+package com.kitri.web_project.mappers;
 
 import com.kitri.web_project.dto.*;
 import com.kitri.web_project.dto.diary.DiaryImgDto;
 import com.kitri.web_project.dto.diary.DiaryMainImg;
 import com.kitri.web_project.dto.diary.RequestDiary;
 import com.kitri.web_project.dto.diary.PetCalendar;
+import com.kitri.web_project.dto.login.ResponseClient;
+import com.kitri.web_project.dto.login.ResponseUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import javax.lang.model.element.NestingKind;
 import java.util.List;
 
 @Mapper
 public interface UserMapper {
 
     ResponseUser findMember(String name, String email);
-    void signup(String name, String email, String password, String address, String imgPath); //회원가입
-    ResponseClient findByEmail(String email);
+    void signup(String name, String email, String password, String address, String imgPath, boolean social);
+    ResponseClient findByEmail(String email, boolean social);
     UserInfo findById(long id);
     List<PetInfo> getPets(long id);
     List<DiaryInfo> getDiary(long id);
@@ -27,6 +30,10 @@ public interface UserMapper {
     String getUserImages(long id);
     List<RequestDiary>UpdateDiary(long id); //다이어리 수정 불러오기
     void editDiary(RequestDiary id); //다이어리 수정하기
+    void deleteUser(Long id);
+    void updatePassword(String password, long id);
+    void updateNewPassword(List<Object> params);
+
     void imageSave(String imgPath, long userId, long petId, long id);
 
     List<DiaryImgDto> getDiaryImages(long id);
@@ -34,5 +41,7 @@ public interface UserMapper {
 
     List<DiaryMainImg> diaryMainImages(long id);
 
-//    List<String> diaryMainImages(long id);
+    void UpdateColor(long petId, String color);
+
+    String passwordFind(long id);
 }

@@ -12,11 +12,14 @@ public class CommentDto {
 
     Long id;
     Long userId;
+    Long boardId;
     String content;
     LocalDateTime createdAt;
     int likeCount;
     String name;
     Long parentCommentId;
     String imgPath;
+    boolean subject;
     int child;
+
 }
