@@ -28,9 +28,10 @@ public class SignUpController {
             return false;
         else if(!(requestClient.getPassword().equals(requestClient.getPasswordVerify())))
             return false;
-        else userMapper.signup(requestClient.getName(), requestClient.getEmail(), requestClient.getPassword(), requestClient.getAddress(), null);
-
-        return true;
+        else {
+            userMapper.signup(requestClient.getName(), requestClient.getEmail(), requestClient.getPassword(), requestClient.getAddress(), null, false);
+            return true;
+        }
     }
 }
 

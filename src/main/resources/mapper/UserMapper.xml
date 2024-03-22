@@ -3,10 +3,9 @@
 
 <mapper namespace="com.kitri.web_project.mappers.UserMapper">
 
-
     <insert id="signup" parameterType="string">
-        INSERT INTO user (email, nick_name, password, address, img_Path)
-        VALUES (#{email}, #{name}, #{password}, #{address}, #{imgPath})
+        INSERT INTO user (email, nick_name, password, address, img_Path, social)
+        VALUES (#{email}, #{name}, #{password}, #{address}, #{imgPath}, #{social})
     </insert>
 
     <select id="findMember" parameterType="string" resultType="com.kitri.web_project.dto.login.ResponseUser">
@@ -14,6 +13,7 @@
         FROM user
         WHERE nick_name = #{name}
           OR email = #{email}
+            and social = false;
     </select>
 
     <sql id="requestColumns">
@@ -30,12 +30,14 @@
         <result property="name" column="nick_name" />
         <result property="password" column="password" />
         <result property="address" column="address" />
-        <result property="imgPath" column="img_path" />
+        <result property="imgPath" column="img_pat
+        h" />
     </resultMap>
 
-    <select id="findByEmail" resultMap="userResultMap" parameterType="String">
-        SELECT * FROM user where email=#{email};
+    <select id="findByEmail" resultMap="userResultMap" parameterType="string">
+        SELECT * FROM user where email like #{email} and social = false;
     </select>
+
 
     <select id="findById" resultType="com.kitri.web_project.dto.UserInfo" parameterType="long">
         SELECT (SELECT count(*) FROM free_board WHERE user_id = #{id}) AS boardCount, (select count(*) from free_board_comment where user_id = #{id}) as commentCount,
@@ -143,7 +145,7 @@
         DELETE FROM user where id = #{id};
     </delete>
 
-    <update id="updatePassword" parameterType="com.kitri.web_project.dto.login.ResponseClient">
+    <update id="updatePassword">
         UPDATE user
         SET password = #{password}
         WHERE id = #{id}
@@ -155,5 +157,8 @@
         WHERE id = #{params[0]} AND password = #{params[1]}
     </update>
 
+    <select id="passwordFind" resultType="string">
+        select password from user where id = #{id}
+    </select>
 </mapper>
 

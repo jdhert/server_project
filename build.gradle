@@ -39,10 +39,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    // 이메일 전송 프로토콜 의존성 추가
-
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+jar {
+    enabled = false
 }

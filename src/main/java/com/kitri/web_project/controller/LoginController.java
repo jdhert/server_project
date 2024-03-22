@@ -4,6 +4,8 @@ import com.kitri.web_project.dto.login.LoginUser;
 import com.kitri.web_project.dto.login.ResponseClient;
 import com.kitri.web_project.dto.login.SocialLogin;
 import com.kitri.web_project.mappers.UserMapper;
+import com.kitri.web_project.service.ApiService;
+import com.kitri.web_project.service.LoginService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,17 @@ public class LoginController {
     @Autowired
     UserMapper userMapper;
 
+    private final LoginService loginService;
+
+    @Autowired
+    public LoginController(LoginService loginService){
+        this.loginService = loginService;
+    }
+
+
     @PostMapping
     public Long Log(@RequestBody LoginUser loginUser, HttpServletResponse response){
-        ResponseClient responseUsers = userMapper.findByEmail(loginUser.getEmail());
+        ResponseClient responseUsers = userMapper.findByEmail(loginUser.getEmail(), false);
         if(responseUsers == null)
             return 0L;
         if(!Objects.equals(loginUser.getPassword(), responseUsers.getPassword()))
@@ -50,16 +60,22 @@ public class LoginController {
 
     @PostMapping("/social")
     public Long socialLogin(@RequestBody SocialLogin socialLogin, HttpServletResponse response){
-        ResponseClient responseClient = userMapper.findByEmail(socialLogin.getEmail());
-        if(responseClient != null){
-            CookieSet(response, responseClient);
-            return responseClient.getId();
-        } else {
-            userMapper.signup(socialLogin.getName(), socialLogin.getEmail(), socialLogin.getPassword(), "", socialLogin.getImage());
-            ResponseClient responseClient1 = userMapper.findByEmail(socialLogin.getEmail());
-            CookieSet(response, responseClient1);
-            return responseClient1.getId();
-        }
+       return loginService.socialLogin(socialLogin, response);
+    }
+
+    @GetMapping("/findPass")
+    public boolean findPassword(String email){
+        return loginService.findPassword(email);
+    }
+
+    @GetMapping("/sendCode")
+    public void sendCode(String email){
+        loginService.sendCode(email);
+    }
+
+    @GetMapping("/codeVerify")
+    public boolean verifyCode(String code){
+        return loginService.verifyCode(code);
     }
 
     public void CookieSet(HttpServletResponse response, ResponseClient responseClient){
