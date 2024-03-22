@@ -171,6 +171,29 @@
         where board_id = #{id}
     </select>
 
+    <select id="checkLikeExists" parameterType="com.kitri.web_project.dto.board.RequestBoardLike">
+        SELECT EXISTS (
+            SELECT 1 FROM free_board_like
+            WHERE user_id = #{userId} AND board_id = #{boardId}
+        ) AS likeExists;
+    </select>
+
+    <insert id="insertLike" parameterType="com.kitri.web_project.dto.board.RequestBoardLike">
+        INSERT INTO free_board_like (user_id, board_id)
+        VALUES (#{userId}, #{boardId})
+    </insert>
+
+    <delete id="deleteLike" parameterType="com.kitri.web_project.dto.board.RequestBoardLike">
+        DELETE FROM free_board_like
+        WHERE user_id = #{userId} AND board_id = #{boardId}
+    </delete>
+
+    <select id="getPostLikeStatus" parameterType="Long" resultType="boolean">
+        SELECT COUNT(*) > 0 AS likeStatus
+        FROM free_board_like
+        WHERE board_id = #{boardId}
+    </select>
+
 
 
 

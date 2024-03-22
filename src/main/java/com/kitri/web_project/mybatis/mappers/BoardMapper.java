@@ -5,6 +5,7 @@ import com.kitri.web_project.dto.board.RequestBoard;
 import com.kitri.web_project.dto.board.TagSet;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -39,6 +40,14 @@ public interface BoardMapper {
     void setImage(long id, long boardId, String imagePath);
 
     List<String> getImages(long id);
+
+
+    boolean checkLikeExists(@Param("userId") long userId, @Param("boardId") long boardId);
+
+    boolean insertLike(long userId, long boardId);
+    boolean deleteLike(long userId, long boardId);
+
+    boolean getPostLikeStatus(Long postId);
 
 
 }
