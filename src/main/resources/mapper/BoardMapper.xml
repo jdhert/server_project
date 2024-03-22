@@ -98,11 +98,15 @@
     </update>
 
     <select id="getBoard" parameterType="long" resultType="com.kitri.web_project.dto.board.BoardInfo">
-        select id, <include refid="responseColumns" />
-        from free_board
-        WHERE id = #{id}
-    </select>
+<!--        select id, <include refid="responseColumns" />, user_id as userId-->
+<!--        from free_board-->
+<!--        WHERE id = #{id}-->
 
+        SELECT fb.id, fb.title, fb.created_at AS createdAt, fb.content, fb.view_count AS viewCount, fb.comment_count AS commentCount, fb.like_count AS likeCount, fb.category, fb.user_id AS userId, u.nick_name AS writer, u.img_path AS userImg
+        FROM free_board fb
+        JOIN user u ON fb.user_id = u.id
+        WHERE fb.id = #{id}
+    </select>
 
     <insert id="setTag"  parameterType="com.kitri.web_project.dto.board.TagSet">
         INSERT INTO board_tag (board_id, tag)
@@ -132,7 +136,6 @@
         from free_board join user on user.id = user_id
         WHERE subject = #{subject} and user.id = #{id}
         order by created_at desc
-        limit #{offset}, #{limit}
     </select>
 
 

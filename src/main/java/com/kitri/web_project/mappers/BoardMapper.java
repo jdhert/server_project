@@ -27,7 +27,7 @@ public interface BoardMapper {
 
     void deleteTags(long id);
 
-    List<BoardInfo> getMyBoards(long id, int subject, int offset, int limit);
+    List<BoardInfo> getMyBoards(long id, int subject);
 
     void incrementLikeCount(long postId);
     void decrementLikeCount(long postId);
