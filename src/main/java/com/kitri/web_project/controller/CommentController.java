@@ -2,6 +2,7 @@ package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.comment.CommentDto;
 import com.kitri.web_project.dto.comment.RequestComment;
+import com.kitri.web_project.dto.comment.RequestCommentLike;
 import com.kitri.web_project.dto.comment.RequestReplyComment;
 import com.kitri.web_project.mappers.CommentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class CommentController {
 
     @DeleteMapping("/{commentId}")
     public void deleteComment(@PathVariable long commentId){
-        commentMapper.deleteComment(commentId);
+       commentMapper.deleteComment(commentId);
     }
 
     @PostMapping("/{commentId}/replies")
@@ -88,6 +89,92 @@ public class CommentController {
     public int countchild(@PathVariable long id){
         return commentMapper.childCount(id);
     }
+
+    @PostMapping("/liked")
+    public boolean commentLiked(@RequestBody RequestCommentLike requestCommentLike) {
+        long userId = requestCommentLike.getUserId();
+        long boardId = requestCommentLike.getBoardId();
+        long commentId = requestCommentLike.getCommentId();
+        try {
+            if (requestCommentLike.getLiked()) {
+                boolean recordExists = commentMapper.checkCommentLikeExists(userId, boardId, commentId);
+                if (!recordExists) {
+                    commentMapper.insertCommentLike(userId, boardId, commentId);
+                }
+                return true;
+            } else {
+                commentMapper.deleteCommentLike(userId, boardId, commentId);
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @GetMapping("/{id}/likeStatus")
+    public boolean getCommentLikeStatus(@PathVariable("id") Long commentId) {
+        try {
+            boolean commentLiked = commentMapper.getCommentLikeStatus(commentId);
+            return commentLiked;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    @PostMapping("/replyLiked")
+    public boolean replyLiked(@RequestBody RequestCommentLike requestCommentLike) {
+        long userId = requestCommentLike.getUserId();
+        long boardId = requestCommentLike.getBoardId();
+        long commentId = requestCommentLike.getCommentId();
+        boolean liked = requestCommentLike.getLiked();
+
+        try {
+            boolean alreadyLiked = commentMapper.checkReplyLikeExists(userId, boardId, commentId);
+            if (alreadyLiked && liked) {
+                return true;
+            }
+            else if (!alreadyLiked && !liked) {
+                return false;
+            }
+
+            if (liked) {
+                commentMapper.insertReplyLike(userId, boardId, commentId);
+            } else {
+                commentMapper.deleteReplyLike(userId, boardId, commentId);
+            }
+            return liked;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    @GetMapping("/{id}/replyLikeStatus")
+    public boolean getReplyLikeStatus(@PathVariable("id") Long replyId) {
+        try {
+            boolean replyLiked = commentMapper.getReplyLikeStatus(replyId);
+            return replyLiked;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //게시글의 총 댓글 수
+    @GetMapping("/totalCount")
+    public int getTotalCommentCount(@RequestParam("boardId") long boardId) {
+        return commentMapper.getTotalCommentCount(boardId);
+    }
+
+
 }
+
+
 
 

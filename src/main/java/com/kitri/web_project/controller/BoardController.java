@@ -2,6 +2,7 @@ package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.board.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
+import com.kitri.web_project.dto.board.RequestBoardLike;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.mappers.BoardMapper;
 import com.kitri.web_project.service.BoardService;
@@ -205,6 +206,36 @@ public class BoardController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/liked")
+    public boolean boardLiked(@RequestBody RequestBoardLike requestBoardLike) {
+        try {
+            if (requestBoardLike.getLiked()) {
+                boolean recordExists = boardMapper.checkLikeExists(requestBoardLike.getUserId(), requestBoardLike.getBoardId());
+                if (!recordExists) {
+                    boardMapper.insertLike(requestBoardLike.getUserId(), requestBoardLike.getBoardId());
+                }
+                return true;
+            } else {
+                boardMapper.deleteLike(requestBoardLike.getUserId(), requestBoardLike.getBoardId());
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @GetMapping("/{id}/likeStatus")
+    public boolean getPostLikeStatus(@PathVariable("id") Long postId) {
+        try {
+            boolean postLiked = boardMapper.getPostLikeStatus(postId);
+            return postLiked;
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
         }
     }
 

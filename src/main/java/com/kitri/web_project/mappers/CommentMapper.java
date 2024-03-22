@@ -4,6 +4,7 @@ import com.kitri.web_project.dto.comment.CommentDto;
 import com.kitri.web_project.dto.comment.RequestComment;
 import com.kitri.web_project.dto.comment.RequestReplyComment;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.eclipse.tags.shaded.org.apache.regexp.RE;
 
 import java.util.List;
@@ -26,4 +27,23 @@ public interface CommentMapper {
     void decrementReplyLikeCount(long replyId);
 
     int childCount(long id);
+
+    boolean checkCommentLikeExists(long userId, long boardId, long commentId);
+    boolean insertCommentLike(long userId, long boardId, long commentId);
+    boolean deleteCommentLike(long userId, long boardId, long commentId);
+
+    boolean getCommentLikeStatus(Long commentId);
+
+
+    boolean checkReplyLikeExists(long userId, long boardId, long commentId);
+    boolean insertReplyLike(long userId, long boardId, long commentId);
+    boolean deleteReplyLike(long userId, long boardId, long commentId);
+
+    boolean getReplyLikeStatus(Long replylId);
+
+    int getTotalCommentCount(long boardId);
+
+
+
+
 }

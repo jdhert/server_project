@@ -20,7 +20,8 @@
     
 
     <select id="getChildComments" parameterType="long" resultType="com.kitri.web_project.dto.comment.CommentDto">
-        SELECT free_board_comment.id as id, user_id as userId, content, created_at as createdAt,  like_count as likeCount, nick_name as name
+        SELECT free_board_comment.id as id, user_id as userId, content, created_at as createdAt,  like_count as likeCount, nick_name as name,
+               img_path AS imgPath, parent_comment_id as parentCommentId
         FROM free_board_comment join user on user.id = user_id
         WHERE parent_comment_id = #{parentCommentId}
         AND board_id = #{id}
@@ -63,18 +64,74 @@
         WHERE id = #{commentId}
     </update>
 
+
     <delete id="deleteReply" parameterType="long">
-        DELETE FROM free_board_comment WHERE id = #{replyId}
+        DELETE FROM free_board_comment WHERE id = #{replyId} OR parent_comment_id = #{replyId}
     </delete>
+
 
     <update id="incrementReplyLikeCount" parameterType="long">
         UPDATE free_board_comment SET like_count = like_count + 1
-        WHERE id = #{id}
+        WHERE id = #{replyId}
     </update>
 
     <update id="decrementReplyLikeCount" parameterType="long">
         UPDATE free_board_comment SET like_count = like_count - 1
-        WHERE id = #{id}
+        WHERE id = #{repliyId}
     </update>
+
+
+    <select id="checkCommentLikeExists" parameterType="com.kitri.web_project.dto.comment.RequestCommentLike">
+       SELECT EXISTS (
+          SELECT 1 FROM free_board_comment_like
+          WHERE user_id = #{userId} AND board_id = #{boardId} AND comment_id = #{commentId}
+          ) AS likeExists;
+    </select>
+
+    <insert id="insertCommentLike" parameterType="com.kitri.web_project.dto.comment.RequestCommentLike">
+       INSERT INTO free_board_comment_like (user_id, board_id, comment_id)
+       VALUES (#{userId}, #{boardId}, #{commentId})
+    </insert>
+
+    <delete id="deleteCommentLike" parameterType="com.kitri.web_project.dto.comment.RequestCommentLike">
+        DELETE FROM free_board_comment_like
+        WHERE user_id = #{userId} AND board_id = #{boardId} AND comment_id = #{commentId}
+    </delete>
+
+    <select id="getCommentLikeStatus" parameterType="Long" resultType="boolean">
+        SELECT COUNT(*) > 0 AS likeStatus
+        FROM free_board_comment_like
+        WHERE comment_id = #{commentId}
+    </select>
+
+
+
+
+    <select id="checkReplyLikeExists" parameterType="com.kitri.web_project.dto.comment.RequestCommentLike">
+        SELECT EXISTS (
+            SELECT 1 FROM free_board_comment_like
+            WHERE user_id = #{userId} AND board_id = #{boardId} AND comment_id = #{commentId}
+        ) AS likeExists;
+    </select>
+
+    <insert id="insertReplyLike" parameterType="com.kitri.web_project.dto.comment.RequestCommentLike">
+        INSERT INTO free_board_comment_like (user_id, board_id, comment_id)
+        VALUES (#{userId}, #{boardId}, #{commentId})
+    </insert>
+
+    <delete id="deleteReplyLike" parameterType="com.kitri.web_project.dto.comment.RequestCommentLike">
+        DELETE FROM free_board_comment_like
+        WHERE user_id = #{userId} AND board_id = #{boardId} AND comment_id = #{commentId}
+    </delete>
+
+    <select id="getReplyLikeStatus" parameterType="Long" resultType="boolean">
+        SELECT COUNT(*) > 0 AS likeStatus
+        FROM free_board_comment_like
+        WHERE comment_id = #{commentId}
+    </select>
+
+    <select id="getTotalCommentCount" resultType="int" parameterType="long">
+        SELECT COUNT(*) FROM free_board_comment WHERE board_id = #{boardId}
+    </select>
 
 </mapper>
