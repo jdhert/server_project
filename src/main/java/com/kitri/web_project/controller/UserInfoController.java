@@ -179,11 +179,6 @@ public class UserInfoController {
         return userMapper.petCalendar(id);
     }
 
-//    @PostMapping("/updateColor") // 캘린더 색상 업데이트
-//    public void petCalendars(@RequestBody PetCalendar petCalendar){
-//        userMapper.UpdateColor(petCalendar);
-//    }
-
     @PostMapping("/updateColor/{petId}") //캘린더 색상 업데이트
     public void petCalendars(@PathVariable long petId, @RequestBody Map<String, String> requestBody){
         String color = requestBody.get("color");
@@ -216,7 +211,7 @@ public class UserInfoController {
         // imgPath 데이터만 추출하여 디코딩된 URL 리스트 생성
         List<String> decodedImageUrls = diaryMainImgList.stream()
                 .map(diaryMainImg -> decodeImageUrl(diaryMainImg.getImgPath()))
-                .collect(Collectors.toList());
+                .toList();
 
         // 디코딩된 URL을 다시 imgPath 필드에 할당하여 diaryMainImgList 수정
         for (int i = 0; i < diaryMainImgList.size(); i++) {
