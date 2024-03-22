@@ -11,5 +11,9 @@ import java.time.LocalDateTime;
 public class PetCalendar {
     String name;
     LocalDate createdAt;
+    long diaryId;
+    long petId;
+    String petColor;
+
 }
 
