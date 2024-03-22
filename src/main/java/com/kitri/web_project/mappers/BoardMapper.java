@@ -39,5 +39,7 @@ public interface BoardMapper {
 
     List<String> getImages(long id);
 
+    List<BoardInfo> getMyLike(long id, int page);
+
 
 }
