@@ -116,11 +116,23 @@
     </delete>
 
     <select id="diaryMainImages" parameterType="long" resultType="com.kitri.web_project.dto.diary.DiaryMainImg">
-        SELECT pet.name as petName, pet_diary.title, pet_diary.content, pet_diary.created_at as createdAt, pet_id as petId, pet_diary.user_id as userId, pet_diary.id as diaryId,
-               (SELECT img_path FROM diary_img WHERE diary_id = pet_diary.id LIMIT 1) as imgPath
-        FROM pet_diary
-                 JOIN pet ON pet_diary.pet_id = pet.id
-        WHERE pet_diary.user_id = #{id};
+        SELECT
+            pet.name AS petName,
+            pet_diary.title,
+            pet_diary.content,
+            pet_diary.created_at AS createdAt,
+            pet_id AS petId,
+            pet_diary.user_id AS userId,
+            pet_diary.id AS diaryId,
+            (SELECT img_path FROM diary_img WHERE diary_id = pet_diary.id LIMIT 1) AS imgPath
+        FROM
+            pet_diary
+            JOIN
+            pet ON pet_diary.pet_id = pet.id
+        WHERE
+            pet_diary.user_id = #{id}
+        ORDER BY
+            pet_diary.created_at DESC;
     </select>
 
 

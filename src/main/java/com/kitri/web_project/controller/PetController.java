@@ -1,8 +1,10 @@
 package com.kitri.web_project.controller;
 
 import com.kitri.web_project.dto.PetInfo;
+import com.kitri.web_project.dto.diary.PetCalendar;
 import com.kitri.web_project.dto.pet.RequestPet;
 import com.kitri.web_project.dto.pet.UpdatePet;
+import com.kitri.web_project.dto.pet.getPetDiary;
 import com.kitri.web_project.mappers.PetMapper;
 import com.kitri.web_project.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,6 +115,29 @@ public class PetController {
         } else {
             System.out.println("Failed: Image not found at path " + fullPath);
         }
+    }
+
+    @GetMapping("/getDiary/{petId}")
+    public List<getPetDiary> getDiary(@PathVariable long petId){
+        List<getPetDiary> getPetDiaryList = petMapper.getDiary(petId);
+
+
+        List<String> decodedImageUrls = getPetDiaryList.stream()
+                .map(getdiaryImage -> decodeImageUrl(getdiaryImage.getImgPath()))
+                .collect(Collectors.toList());
+
+        for(int i = 0; i < getPetDiaryList.size(); i++){
+            getPetDiaryList.get(i).setImgPath(decodedImageUrls.get(i));
+        }
+        return getPetDiaryList;
+    }
+    // URL 디코딩 메서드
+    private String decodeImageUrl(String encodedUrl) {
+        return URLDecoder.decode(ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/images/")
+                        .path(encodedUrl)
+                        .toUriString(),
+                StandardCharsets.UTF_8);
     }
 
 }
