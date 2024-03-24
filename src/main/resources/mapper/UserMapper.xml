@@ -34,8 +34,8 @@
         h" />
     </resultMap>
 
-    <select id="findByEmail" resultMap="userResultMap" parameterType="string">
-        SELECT * FROM user where email like #{email} and social = false;
+    <select id="findByEmail" resultMap="userResultMap">
+        SELECT * FROM user where email like #{email} and social = #{social};
     </select>
 
 

@@ -59,8 +59,10 @@ public class BoardController {
         boardMapper.uploadBoard(board);
         for(String tag : board.getTags())
             boardMapper.setTag(board.getId(), tag);
-        for(String image : board.getImages())
-            boardMapper.setImage(board.getUserId(), board.getId(), image);
+        if(board.getImages()!=null) {
+            for (String image : board.getImages())
+                boardMapper.setImage(board.getUserId(), board.getId(), image);
+        }
     }
 
     @GetMapping("/search/{page}")
@@ -125,17 +127,8 @@ public class BoardController {
         return boardMapper.getMyBoards(id, subject);
     }
     @GetMapping("/popular")
-    public List<BoardInfo> getPopularBoard() {
-        String[] intervals = {"7 DAY", "1 MONTH", "1 YEAR", "100 YEAR"};
-        List<BoardInfo> results = null;
-        for (String interval : intervals) {
-            results = boardMapper.getPopularBoards(interval);
-            if (!results.isEmpty()) {
-                break;
-            }
-        }
-        ImageSet(results);
-        return results;
+    public List<BoardInfo> getPopularBoard(int subject) {
+        return boardService.popularBoards(subject);
     }
 
     @Value("${upload.path.routine}")

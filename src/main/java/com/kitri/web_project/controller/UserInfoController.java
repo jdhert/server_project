@@ -173,7 +173,6 @@ public class UserInfoController {
 
     @GetMapping("/select/{id}")
     public RequestDiary requestDiaries(@PathVariable long id){
-//        long id1 = Long.parseLong(id);
         return userMapper.petDiary(id);
     }
     //다이어리 미리보기 매핑
@@ -240,7 +239,6 @@ public class UserInfoController {
 
 
 
-    // URL 디코딩 메서드
     private String decodeImageUrl(String encodedUrl) {
         return URLDecoder.decode(ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/images/")
