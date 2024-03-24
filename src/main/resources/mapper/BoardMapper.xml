@@ -18,14 +18,14 @@
         limit #{offset}, #{limit}
     </select>
 
-    <select id="getPopularBoards" parameterType="string" resultType="com.kitri.web_project.dto.board.BoardInfo">
+    <select id="getPopularBoards"  resultType="com.kitri.web_project.dto.board.BoardInfo">
         SELECT free_board.id, <include refid="responseColumns" />, user_id as userId, nick_name as writer, user.img_path as userImg
         FROM free_board join user on user_id = user.id
-        WHERE subject = 0 AND created_at >= DATE(NOW()) - INTERVAL
+        WHERE subject = #{subject} AND created_at >= DATE(NOW()) - INTERVAL
         <choose>
-            <when test="_parameter == '7 DAY'">7 DAY</when>
-            <when test="_parameter == '1 MONTH'">1 MONTH</when>
-            <when test="_parameter == '1 YEAR'">1 YEAR</when>
+            <when test="interval == '7 DAY'">7 DAY</when>
+            <when test="interval == '1 MONTH'">1 MONTH</when>
+            <when test="interval == '1 YEAR'">1 YEAR</when>
             <otherwise>100 YEAR</otherwise>
         </choose>
         ORDER BY like_count DESC, view_count DESC
