@@ -115,7 +115,7 @@
         DELETE FROM diary_img where id = #{id};
     </delete>
 
-    <select id="diaryMainImages" parameterType="long" resultType="com.kitri.web_project.dto.diary.DiaryMainImg">
+    <select id="diaryMainImages" resultType="com.kitri.web_project.dto.diary.DiaryMainImg">
         SELECT
             pet.name AS petName,
             pet_diary.title,
@@ -132,9 +132,9 @@
         WHERE
             pet_diary.user_id = #{id}
         ORDER BY
-            pet_diary.created_at DESC;
+            pet_diary.created_at DESC
+        limit #{page}, 12
     </select>
-
 
     <update id="updateUser" parameterType="com.kitri.web_project.dto.UserUpdateInfo">
         UPDATE user
@@ -171,6 +171,10 @@
 
     <select id="passwordFind" resultType="string">
         select password from user where id = #{id}
+    </select>
+
+    <select id="getMaxPage" resultType="java.lang.Integer">
+        select count(*) from pet_diary where user_id = #{id}
     </select>
 </mapper>
 
