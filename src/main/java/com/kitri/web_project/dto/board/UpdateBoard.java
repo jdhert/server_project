@@ -9,8 +9,10 @@ import java.util.List;
 @Setter
 public class UpdateBoard {
     Long boardId;
+    Long userId;
     String title;
     String content;
     String category;
     List<String> tags;
+    List<String> img;
 }
