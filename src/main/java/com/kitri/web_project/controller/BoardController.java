@@ -83,6 +83,7 @@ public class BoardController {
 
     @GetMapping("/get/{boardId}")
     public BoardInfo getBoard(@PathVariable long boardId){
+
         return boardMapper.getBoard(boardId);
     }
 
@@ -237,10 +238,4 @@ public class BoardController {
     public List<BoardInfo> getMyLike(@PathVariable long id, int page){
         return boardService.boardInfos(id, page);
     }
-
-
-
-
-
-
 }
