@@ -39,9 +39,11 @@ public interface UserMapper {
     List<DiaryImgDto> getDiaryImages(long id);
     void deleteImageById(@Param("id") long id);
 
-    List<DiaryMainImg> diaryMainImages(long id);
+    List<DiaryMainImg> diaryMainImages(long id, int page);
 
     void UpdateColor(long petId, String color);
 
     String passwordFind(long id);
+
+    int getMaxPage(long id);
 }

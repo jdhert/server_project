@@ -19,4 +19,6 @@ public class DiaryMainImg {
     String content;
     String petName;
     String imgPath;
+    private int maxPage;
+
 }

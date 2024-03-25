@@ -17,4 +17,5 @@ public class RequestPet {
     String petGender;
     boolean petDisease;
     boolean petRecog_chip;
+    String petColor;
 }

@@ -214,17 +214,25 @@ public class UserInfoController {
     }
 
     @GetMapping("/getMainImage/{id}")
-    public List<DiaryMainImg> diaryMainImages(@PathVariable long id) {
-        List<DiaryMainImg> diaryMainImgList = userMapper.diaryMainImages(id);
+    public List<DiaryMainImg> diaryMainImages(@PathVariable long id, int page) {
+        List<DiaryMainImg> diaryMainImgList = userMapper.diaryMainImages(id, (page-1)*12);
 
-        // imgPath 데이터만 추출하여 디코딩된 URL 리스트 생성
-        List<String> decodedImageUrls = diaryMainImgList.stream()
-                .map(diaryMainImg -> decodeImageUrl(diaryMainImg.getImgPath()))
-                .toList();
+        if (diaryMainImgList != null && !diaryMainImgList.isEmpty()) {
+            int maxPage = userMapper.getMaxPage(id); // userMapper를 통해 최대 페이지 값을 가져옴
 
-        // 디코딩된 URL을 다시 imgPath 필드에 할당하여 diaryMainImgList 수정
-        for (int i = 0; i < diaryMainImgList.size(); i++) {
-            diaryMainImgList.get(i).setImgPath(decodedImageUrls.get(i));
+
+            diaryMainImgList.get(0).setMaxPage(maxPage); // 각 DiaryMainImg 객체에 최대 페이지 값 설정
+
+
+            // imgPath 데이터만 추출하여 디코딩된 URL 리스트 생성
+            List<String> decodedImageUrls = diaryMainImgList.stream()
+                    .map(diaryMainImg -> decodeImageUrl(diaryMainImg.getImgPath()))
+                    .toList();
+
+            // 디코딩된 URL을 다시 imgPath 필드에 할당하여 diaryMainImgList 수정
+            for (int i = 0; i < diaryMainImgList.size(); i++) {
+                diaryMainImgList.get(i).setImgPath(decodedImageUrls.get(i));
+            }
         }
 
         return diaryMainImgList;
