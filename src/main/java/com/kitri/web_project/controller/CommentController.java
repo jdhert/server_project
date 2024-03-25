@@ -42,6 +42,7 @@ public class CommentController {
     @PostMapping
     public void addComment(@RequestBody RequestComment requestComment){
         commentMapper.addComment(requestComment);
+        commentMapper.addCommentCount(requestComment.getId());
     }
 
     @PutMapping("/{id}")
@@ -49,10 +50,12 @@ public class CommentController {
         commentMapper.editComment(commentDto);
     }
 
-    @DeleteMapping("/{commentId}")
-    public void deleteComment(@PathVariable long commentId){
-       commentMapper.deleteComment(commentId);
+    @DeleteMapping("/{commentId}/board/{boardId}")
+    public void deleteComment(@PathVariable long commentId, @PathVariable long boardId){
+        commentMapper.deleteComment(commentId);
+        commentMapper.minusCommentCount(boardId);
     }
+
 
     @PostMapping("/{commentId}/replies")
     @Transactional
@@ -60,6 +63,7 @@ public class CommentController {
         try {
             requestReplyComment.setParentCommentId(commentId);
             commentMapper.addNewComment(requestReplyComment);
+            commentMapper.addCommentCount(requestReplyComment.getBoardId());
             return ResponseEntity.ok("대댓글이 성공적으로 추가되었습니다.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("대댓글 추가 중에 오류가 발생했습니다.");
@@ -71,9 +75,10 @@ public class CommentController {
         commentMapper.editReply(requestReplyComment);
     }
 
-    @DeleteMapping("/{replyId}/replies")
-    public void deleteReply(@PathVariable long replyId) {
+    @DeleteMapping("/{replyId}/replies/{boardId}")
+    public void deleteReply(@PathVariable long replyId, @PathVariable long boardId) {
         commentMapper.deleteReply(replyId);
+        commentMapper.minusCommentCount(boardId);
     }
 
     @PutMapping("/{replyId}/replyLike")

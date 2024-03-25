@@ -34,13 +34,13 @@ public class QnaController {
         return boardMapper.getBoard(boardId);
     }
 
-    @PutMapping
-    public void updateBoard(@RequestBody UpdateBoard updateBoard){
-        boardMapper.deleteTags(updateBoard.getBoardId());
-        boardMapper.updateBoard(updateBoard);
-        for(String tag : updateBoard.getTags())
-            boardMapper.setTag(updateBoard.getBoardId(), tag);
-    }
+//    @PutMapping
+//    public void updateBoard(@RequestBody UpdateBoard updateBoard){
+//        boardMapper.deleteTags(updateBoard.getBoardId());
+//        boardMapper.updateBoard(updateBoard);
+//        for(String tag : updateBoard.getTags())
+//            boardMapper.setTag(updateBoard.getBoardId(), tag);
+//    }
 
     @DeleteMapping("/{boardId}")
     public void deleteBoard(@PathVariable long boardId){

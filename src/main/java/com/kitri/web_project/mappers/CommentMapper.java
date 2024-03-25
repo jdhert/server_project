@@ -17,7 +17,9 @@ public interface CommentMapper {
     List<CommentDto> getMyComments(long id);
 
     void addComment(RequestComment requestComment);
+    void addCommentCount(long boardId);
     void deleteComment(long commentId);
+    void minusCommentCount(long boardId);
     void editComment(CommentDto commentDto);
     void addNewComment(RequestReplyComment requestReplyComment);
     void editReply(RequestReplyComment requestReplyComment);

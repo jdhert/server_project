@@ -4,13 +4,18 @@ import com.kitri.web_project.dto.board.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
 import com.kitri.web_project.dto.board.RequestBoardLike;
 import com.kitri.web_project.dto.board.UpdateBoard;
+import com.kitri.web_project.dto.diary.DiaryImgDto;
+import com.kitri.web_project.dto.diary.RequestDiary;
+import com.kitri.web_project.dto.image.RequestImage;
 import com.kitri.web_project.mappers.BoardMapper;
 import com.kitri.web_project.service.BoardService;
+import org.eclipse.tags.shaded.org.apache.regexp.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -102,18 +107,24 @@ public class BoardController {
         return ResponseEntity.ok(imageUrls);
     }
 
+
     @PutMapping
     public void updateBoard(@RequestBody UpdateBoard updateBoard){
         boardMapper.deleteTags(updateBoard.getBoardId());
         boardMapper.updateBoard(updateBoard);
+
         for(String tag : updateBoard.getTags())
             boardMapper.setTag(updateBoard.getBoardId(), tag);
+        for(String img : updateBoard.getImg())
+            boardMapper.setImage(updateBoard.getUserId(), updateBoard.getBoardId(), img);
     }
 
-    @DeleteMapping("/{boardId}")
-    public void deleteBoard(@PathVariable long boardId){
-        boardMapper.deleteBoard(boardId);
+
+    @DeleteMapping("/{id}")
+    public void deleteBoard(@PathVariable long id){
+        boardMapper.deleteBoard(id);
     }
+
 
     @GetMapping("/getMyBoard/{id}")
     public List<BoardInfo> getMyBoard(@RequestParam int subject, @RequestParam int page, @PathVariable long id) {
@@ -170,6 +181,39 @@ public class BoardController {
         return s;
     }
 
+    //수정 페이지 이미지 불러오기
+    @GetMapping("/BoardEditImages/{id}")
+    public ResponseEntity<List<RequestImage>> getBoardImage(@PathVariable long id) {
+        List<RequestImage> imageList = boardMapper.getBoardImage(id);
+        List<String> images = new ArrayList<>();
+
+        for(RequestImage bs : imageList){
+            images.add(bs.getImagePath());
+        }
+
+        List<String> imageUrls = images.stream()
+                .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
+                        .path("/images/")
+                        .path(path)
+                        .toUriString())
+                .map(encodedUrl -> URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8)) // URL 디코딩
+                .toList();
+        for (int i = 0; i < imageUrls.size(); i++) {
+            imageList.get(i).setImagePath(imageUrls.get(i));
+        }
+
+        ResponseEntity<List<RequestImage>> l = ResponseEntity.ok(imageList);
+        return ResponseEntity.ok(imageList);
+    }
+
+    //수정 이미지 삭제
+    @DeleteMapping("/delete")
+    public void deleteImageById(@RequestParam("ids") Long[] ids) {
+        for (Long id : ids) {
+            boardMapper.deleteImageById(id);
+        }
+    }
+
     @PutMapping("/{postId}/like")
     public void updateLikeStatus(@PathVariable long postId, @RequestParam boolean liked) {
         if(liked) {
@@ -200,13 +244,23 @@ public class BoardController {
     }
 
     @PutMapping("/view/{id}")
-    public ResponseEntity<?> updateViewCount(@PathVariable("id") Long id) {
+    public ResponseEntity<?> updateViewCount(@PathVariable("id") long id) {
         try {
             boardMapper.updateViewCount(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+//    @GetMapping("/view/{id}")
+//    public long totalViewCount(@PathVariable("id") Long id) {
+//        return boardMapper.totalViewCount(id);
+//    }
+
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Long> totalViewCount(@PathVariable("id") long id) {
+        Long viewCount = boardMapper.totalViewCount(id);
+        return ResponseEntity.ok().body(viewCount);
     }
 
     @PostMapping("/liked")

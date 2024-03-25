@@ -125,9 +125,19 @@
         update free_board set title = #{title}, content = #{content}, category = #{category}, created_At = now() where id = #{boardId}
     </update>
 
-    <delete id="deleteBoard" parameterType="long">
-        DELETE FROM free_board WHERE id = #{id}
+    <delete id="deleteBoard" >
+        DELETE FROM free_board, free_board_comment, free_board_comment_like, free_board_like
+        USING free_board
+        LEFT JOIN free_board_comment ON free_board.id = free_board_comment.board_id
+        LEFT JOIN free_board_comment_like ON free_board_comment.id = free_board_comment_like.comment_id
+        LEFT JOIN free_board_like ON free_board.id = free_board_like.board_id
+        WHERE free_board.id = #{id};
     </delete>
+
+    <select id="totalViewCount" parameterType="long">
+        SELECT view_count FROM DBpet.free_board WHERE id = #{id}
+    </select>
+
 
     <select id="getMyBoards" parameterType="com.kitri.web_project.dto.board.RequestMyBoard" resultType="com.kitri.web_project.dto.board.BoardInfo">
         select free_board.id as id, <include refid="responseColumns" />,
@@ -170,6 +180,7 @@
         VALUES (#{id}, #{boardId}, #{imagePath})
     </insert>
 
+
     <select id="getImages" parameterType="long" resultType="string">
         select img_path from free_board_img
         where board_id = #{id}
@@ -206,6 +217,14 @@
         limit #{page}, 10
     </select>
 
+
+    <select id="getBoardImage" parameterType="long" resultType="com.kitri.web_project.dto.image.RequestImage">
+        select img_path as imagePath, id as id from free_board_img where board_id = #{id}
+    </select>
+
+    <delete id="deleteImageById" parameterType="Long">
+        DELETE FROM free_board_img where id = #{id};
+    </delete>
 
 
 </mapper>

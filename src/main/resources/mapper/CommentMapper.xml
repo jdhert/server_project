@@ -45,13 +45,26 @@
         values (#{id}, #{userId}, #{content})
     </insert>
 
+    <update id="addCommentCount">
+        UPDATE free_board
+        SET comment_count = comment_count + 1
+        WHERE id = #{id};
+    </update>
+
     <update id="editComment" parameterType="com.kitri.web_project.dto.comment.CommentDto">
         UPDATE free_board_comment SET content = #{content} WHERE id = #{id}
     </update>
 
+
     <delete id="deleteComment" parameterType="long">
         DELETE FROM free_board_comment WHERE id = #{commentId}
     </delete>
+
+    <update id="minusCommentCount">
+        UPDATE free_board
+        SET comment_count = comment_count - 1
+        WHERE id = #{id};
+    </update>
 
     <insert id="addNewComment" parameterType="com.kitri.web_project.dto.comment.RequestComment">
         INSERT INTO free_board_comment (board_id, user_id, content, parent_comment_id)
