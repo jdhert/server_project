@@ -11,7 +11,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Objects;
+import java.util.TimeZone;
 
 @RestController
 @RequestMapping("/api/login")
@@ -36,7 +39,13 @@ public class LoginController {
         if(!Objects.equals(loginUser.getPassword(), responseUsers.getPassword()))
             return 0L;
         if(!responseUsers.getSocial()) {
-            CookieSet(response, responseUsers);
+            CookieSet(response, responseUsers, loginUser.getAutologin());
+            if (loginUser.getAutologin() != null && loginUser.getAutologin()) {
+                Cookie autologinCookie = new Cookie("autologin", "true");
+                autologinCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days in seconds
+                autologinCookie.setPath("/");
+                response.addCookie(autologinCookie);
+            }
             return responseUsers.getId();
         } return 0L;
     }
@@ -46,15 +55,19 @@ public class LoginController {
         Cookie cookie = new Cookie("email", null);
         Cookie cookie1 = new Cookie("id", null);
         Cookie cookie2 = new Cookie("name", null);
+        Cookie autologinCookie = new Cookie("autologin", "true");
         cookie1.setMaxAge(0);
         cookie.setMaxAge(0);
         cookie2.setMaxAge(0);
+        autologinCookie.setMaxAge(0);
         cookie.setPath("/");
         cookie1.setPath("/");
         cookie2.setPath("/");
+        autologinCookie.setPath("/");
         res.addCookie(cookie);
         res.addCookie(cookie1);
         res.addCookie(cookie2);
+        res.addCookie(autologinCookie);
         return true;
     }
 
@@ -78,13 +91,18 @@ public class LoginController {
         return loginService.verifyCode(code);
     }
 
-    public void CookieSet(HttpServletResponse response, ResponseClient responseClient){
+    public void CookieSet(HttpServletResponse response, ResponseClient responseClient, boolean check){
         Cookie cookie = new Cookie("email", responseClient.getEmail());
         Cookie cookie1 = new Cookie("id", responseClient.getId().toString());
         Cookie cookie2 = new Cookie("name", responseClient.getName());
         cookie.setPath("/");
         cookie1.setPath("/");
         cookie2.setPath("/");
+        if(check) {
+            cookie.setMaxAge(7 * 24 * 60 * 60);
+            cookie1.setMaxAge(7 * 24 * 60 * 60);
+            cookie2.setMaxAge(7 * 24 * 60 * 60);
+        }
         response.addCookie(cookie);
         response.addCookie(cookie1);
         response.addCookie(cookie2);

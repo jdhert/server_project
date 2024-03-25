@@ -8,5 +8,5 @@ import lombok.Setter;
 public class LoginUser {
     String email;
     String password;
-
+    Boolean autologin;
 }
