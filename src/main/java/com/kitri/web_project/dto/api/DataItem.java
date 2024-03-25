@@ -7,6 +7,8 @@ import lombok.Setter;
 
 @Data
 public class DataItem {
+    private long id;
+
     @JsonProperty("건물 번호")
     private String buildingNumber;
 
