@@ -40,7 +40,7 @@ public class LoginController {
             return 0L;
         if(!responseUsers.getSocial()) {
             CookieSet(response, responseUsers, loginUser.getAutologin());
-            if (loginUser.getAutologin() != null && loginUser.getAutologin()) {
+                if (loginUser.getAutologin() != null && loginUser.getAutologin()) {
                 Cookie autologinCookie = new Cookie("autologin", "true");
                 autologinCookie.setMaxAge(7 * 24 * 60 * 60); // 7 days in seconds
                 autologinCookie.setPath("/");
