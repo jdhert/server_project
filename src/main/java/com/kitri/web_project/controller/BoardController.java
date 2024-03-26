@@ -48,13 +48,13 @@ public class BoardController {
     }
 
     @GetMapping("/{page}")
-    public List<BoardInfo> get(@PathVariable int page) {
+    public List<BoardInfo> get(@PathVariable int page, @RequestParam int subject) {
         int maxPage = 8;
         int offset;
         int limit;
         offset = (page - 1) * maxPage;
         limit = 8;
-        List<BoardInfo> bm = boardMapper.getBoards(offset, limit, 0);
+        List<BoardInfo> bm = boardMapper.getBoards(offset, limit, subject);
         ImageSet(bm);
         return bm;
     }
@@ -73,11 +73,8 @@ public class BoardController {
         int maxPage=8;
         int offset;
         int limit;
-        if(subject == 1) {
-            if (page == 1)
-                offset = 0;
-            else offset = (page - 1) * maxPage + (page - 2) * (maxPage / 2);
-        } else offset = (page - 1) * maxPage;
+
+        offset = (page - 1) * maxPage;
         limit = 8;
         List<BoardInfo> bm = boardMapper.getSearchBoards(search+'%', type, type1, offset, limit, subject);
         ImageSet(bm);
@@ -123,6 +120,7 @@ public class BoardController {
     @DeleteMapping("/{id}")
     public void deleteBoard(@PathVariable long id){
         boardMapper.deleteBoard(id);
+        boardMapper.deleteAllImgs(id);
     }
 
 

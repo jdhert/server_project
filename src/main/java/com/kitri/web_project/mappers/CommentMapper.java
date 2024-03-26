@@ -23,7 +23,7 @@ public interface CommentMapper {
     void editComment(CommentDto commentDto);
     void addNewComment(RequestReplyComment requestReplyComment);
     void editReply(RequestReplyComment requestReplyComment);
-    void deleteReply(long replyId);
+    void deleteReply(long replyId, long boardId);
 
     void incrementReplyLikeCount(long replyId);
     void decrementReplyLikeCount(long replyId);

@@ -21,7 +21,7 @@
     <select id="getPopularBoards" parameterType="string" resultType="com.kitri.web_project.dto.board.BoardInfo">
         SELECT free_board.id, <include refid="responseColumns" />, user_id as userId, nick_name as writer, user.img_path as userImg
         FROM free_board join user on user_id = user.id
-        WHERE subject = 0 AND created_at >= DATE(NOW()) - INTERVAL
+        WHERE subject = #{subject} AND created_at >= DATE(NOW()) - INTERVAL
         <choose>
             <when test="_parameter == '7 DAY'">7 DAY</when>
             <when test="_parameter == '1 MONTH'">1 MONTH</when>
@@ -131,7 +131,12 @@
         LEFT JOIN free_board_comment ON free_board.id = free_board_comment.board_id
         LEFT JOIN free_board_comment_like ON free_board_comment.id = free_board_comment_like.comment_id
         LEFT JOIN free_board_like ON free_board.id = free_board_like.board_id
-        WHERE free_board.id = #{id};
+        WHERE free_board.id = #{id}
+    </delete>
+
+    <delete id="deleteAllImgs">
+        DELETE FROM free_board_img
+        WHERE board_id = #{id}
     </delete>
 
     <select id="totalViewCount" parameterType="long">

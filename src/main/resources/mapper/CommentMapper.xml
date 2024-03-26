@@ -58,12 +58,20 @@
 
     <delete id="deleteComment" parameterType="long">
         DELETE FROM free_board_comment WHERE id = #{commentId}
+-- --      DELETE FROM free_board_comment WHERE id = #{commentId} OR parent_comment_id = #{commentId}
+--         DELETE FROM free_board_comment
+--         WHERE id = #{commentId} OR parent_comment_id IN (SELECT id FROM free_board_comment WHERE parent_comment_id = #{commentId});
+
     </delete>
 
     <update id="minusCommentCount">
         UPDATE free_board
-        SET comment_count = comment_count - 1
-        WHERE id = #{id};
+        SET comment_count = (
+            SELECT COUNT(*)
+            FROM free_board_comment AS fbc
+            WHERE fbc.board_id = #{boardId}
+        )
+        WHERE id = #{boardId};
     </update>
 
     <insert id="addNewComment" parameterType="com.kitri.web_project.dto.comment.RequestComment">
