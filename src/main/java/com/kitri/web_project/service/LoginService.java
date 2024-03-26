@@ -3,6 +3,7 @@ package com.kitri.web_project.service;
 import com.kitri.web_project.dto.login.ResponseClient;
 import com.kitri.web_project.dto.login.SocialLogin;
 import com.kitri.web_project.mappers.UserMapper;
+import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -52,6 +53,7 @@ public class LoginService {
 
     public Long socialLogin(SocialLogin socialLogin, HttpServletResponse response){
         ResponseClient responseClient = userMapper.findByEmail(socialLogin.getEmail(), true);
+        System.out.println(socialLogin.getEmail());
         if(responseClient != null){
             CookieSet(response, responseClient);
             return responseClient.getId();
