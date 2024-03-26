@@ -1,6 +1,7 @@
 package com.kitri.web_project.mappers;
 
 import com.kitri.web_project.dto.*;
+import com.kitri.web_project.dto.api.BookMarks;
 import com.kitri.web_project.dto.diary.DiaryImgDto;
 import com.kitri.web_project.dto.diary.DiaryMainImg;
 import com.kitri.web_project.dto.diary.RequestDiary;
@@ -10,7 +11,6 @@ import com.kitri.web_project.dto.login.ResponseUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import javax.lang.model.element.NestingKind;
 import java.util.List;
 
 @Mapper
@@ -46,4 +46,5 @@ public interface UserMapper {
     String passwordFind(long id);
 
     int getMaxPage(long id);
+
 }

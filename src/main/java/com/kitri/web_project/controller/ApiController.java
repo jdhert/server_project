@@ -1,5 +1,6 @@
 package com.kitri.web_project.controller;
 
+import com.kitri.web_project.dto.api.BookMarks;
 import com.kitri.web_project.dto.api.DataItem;
 import com.kitri.web_project.dto.api.SearchDto;
 import com.kitri.web_project.service.ApiService;
@@ -29,5 +30,24 @@ public class ApiController {
         return apiService.getList(page, searchDto);
     }
 
+    @PostMapping("/findBookmark")
+    public boolean bookMarks(@RequestBody BookMarks bookMarks){
+        boolean exists = apiService.findBookmark(bookMarks) != null;
+        return exists;
+    }
 
+    @PostMapping("/bookmarks")
+    public boolean checkedBookmarks(@RequestBody BookMarks bookMarks){
+        if (bookMarks.getChecked()) {
+            BookMarks bookMarks1 = apiService.findBookmark(bookMarks);
+            bookMarks.setId(bookMarks1.getId());
+            apiService.unbookmarks(bookMarks.getId());
+
+            return !bookMarks.getChecked();
+        } else {
+            apiService.bookmarks(bookMarks);
+
+            return !bookMarks.getChecked();
+        }
+    }
 }

@@ -176,5 +176,6 @@
     <select id="getMaxPage" resultType="java.lang.Integer">
         select count(*) from pet_diary where user_id = #{id}
     </select>
+
 </mapper>
 
