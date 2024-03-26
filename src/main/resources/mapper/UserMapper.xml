@@ -3,7 +3,7 @@
 
 <mapper namespace="com.kitri.web_project.mappers.UserMapper">
 
-    <insert id="signup" parameterType="string">
+    <insert id="signup">
         INSERT INTO user (email, nick_name, password, address, img_Path, social)
         VALUES (#{email}, #{name}, #{password}, #{address}, #{imgPath}, #{social})
     </insert>
