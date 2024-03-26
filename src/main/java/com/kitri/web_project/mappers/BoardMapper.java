@@ -28,6 +28,7 @@ public interface BoardMapper {
     void updateBoard(UpdateBoard updateBoard);
 
     void deleteBoard(long id);
+    void deleteAllImgs(long id);
 
     void deleteTags(long id);
 

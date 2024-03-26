@@ -29,10 +29,10 @@ public class QnaController {
             limit = 8;
         return boardMapper.getBoards(offset, limit, 1);
     }
-    @GetMapping("/get/{boardId}")
-    public BoardInfo getBoard(@PathVariable long boardId){
-        return boardMapper.getBoard(boardId);
-    }
+//    @GetMapping("/get/{boardId}")
+//    public BoardInfo getBoard(@PathVariable long boardId){
+//        return boardMapper.getBoard(boardId);
+//    }
 
 //    @PutMapping
 //    public void updateBoard(@RequestBody UpdateBoard updateBoard){
@@ -41,27 +41,27 @@ public class QnaController {
 //        for(String tag : updateBoard.getTags())
 //            boardMapper.setTag(updateBoard.getBoardId(), tag);
 //    }
-
-    @DeleteMapping("/{boardId}")
-    public void deleteBoard(@PathVariable long boardId){
-        boardMapper.deleteBoard(boardId);
-    }
-
-    @PutMapping("/{postId}/like")
-    public void updateLikeStatus(@PathVariable long postId, @RequestParam boolean liked) {
-        if(liked) {
-            boardMapper.incrementLikeCount(postId);
-        } else {
-            boardMapper.decrementLikeCount(postId);
-        }
-    }
-
-    @PutMapping("/{commentId}/commentLike")
-    public void updateCommentLikeStatus(@PathVariable long commentId, @RequestParam boolean liked) {
-        if(liked) {
-            boardMapper.incrementCommentLikeCount(commentId);
-        } else {
-            boardMapper.decrementCommentLikeCount(commentId);
-        }
-    }
+//
+//    @DeleteMapping("/{boardId}")
+//    public void deleteBoard(@PathVariable long boardId){
+//        boardMapper.deleteBoard(boardId);
+//    }
+//
+//    @PutMapping("/{postId}/like")
+//    public void updateLikeStatus(@PathVariable long postId, @RequestParam boolean liked) {
+//        if(liked) {
+//            boardMapper.incrementLikeCount(postId);
+//        } else {
+//            boardMapper.decrementLikeCount(postId);
+//        }
+//    }
+//
+//    @PutMapping("/{commentId}/commentLike")
+//    public void updateCommentLikeStatus(@PathVariable long commentId, @RequestParam boolean liked) {
+//        if(liked) {
+//            boardMapper.incrementCommentLikeCount(commentId);
+//        } else {
+//            boardMapper.decrementCommentLikeCount(commentId);
+//        }
+//    }
 }
