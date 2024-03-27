@@ -75,9 +75,10 @@ public class CommentController {
         commentMapper.editReply(requestReplyComment);
     }
 
+    @Transactional
     @DeleteMapping("/{replyId}/replies/{boardId}")
     public void deleteReply(@PathVariable long replyId, @PathVariable long boardId) {
-        commentMapper.deleteReply(replyId);
+        commentMapper.deleteReply(replyId, boardId);
         commentMapper.minusCommentCount(boardId);
     }
 
