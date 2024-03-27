@@ -53,7 +53,6 @@ public class LoginService {
 
     public Long socialLogin(SocialLogin socialLogin, HttpServletResponse response){
         ResponseClient responseClient = userMapper.findByEmail(socialLogin.getEmail(), true);
-        System.out.println(socialLogin.getEmail());
         if(responseClient != null){
             CookieSet(response, responseClient);
             return responseClient.getId();
