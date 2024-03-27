@@ -4,8 +4,8 @@
 <mapper namespace="com.kitri.web_project.mappers.PetMapper">
 
     <insert id="addPet" useGeneratedKeys="true" keyProperty="id" parameterType="com.kitri.web_project.dto.pet.RequestPet">
-        INSERT INTO pet (user_id, img_path, name, age, weight, species, spec_species, gender, disease, recog_chip)
-        VALUES (#{userId}, #{petImg}, #{petName}, #{petAge}, #{petWeight}, #{species}, #{spec_species}, #{petGender}, #{petDisease}, #{petRecog_chip})
+        INSERT INTO pet (user_id, img_path, name, age, weight, species, spec_species, gender, disease, recog_chip, pet_color)
+        VALUES (#{userId}, #{petImg}, #{petName}, #{petAge}, #{petWeight}, #{species}, #{spec_species}, #{petGender}, #{petDisease}, #{petRecog_chip}, #{petColor})
     </insert>
 
     <select id="getImages" parameterType="long" resultType="string">
