@@ -121,8 +121,7 @@ public class CommentController {
     @GetMapping("/{id}/likeStatus")
     public boolean getCommentLikeStatus(@PathVariable("id") Long commentId) {
         try {
-            boolean commentLiked = commentMapper.getCommentLikeStatus(commentId);
-            return commentLiked;
+            return commentMapper.getCommentLikeStatus(commentId);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,8 +162,7 @@ public class CommentController {
     @GetMapping("/{id}/replyLikeStatus")
     public boolean getReplyLikeStatus(@PathVariable("id") Long replyId) {
         try {
-            boolean replyLiked = commentMapper.getReplyLikeStatus(replyId);
-            return replyLiked;
+            return commentMapper.getReplyLikeStatus(replyId);
 
         } catch (Exception e) {
             e.printStackTrace();

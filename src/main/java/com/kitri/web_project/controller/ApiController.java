@@ -6,7 +6,6 @@ import com.kitri.web_project.dto.api.SearchDto;
 import com.kitri.web_project.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -32,22 +31,11 @@ public class ApiController {
 
     @PostMapping("/findBookmark")
     public boolean bookMarks(@RequestBody BookMarks bookMarks){
-        boolean exists = apiService.findBookmark(bookMarks) != null;
-        return exists;
+        return apiService.findBookmark(bookMarks) != null;
     }
 
     @PostMapping("/bookmarks")
     public boolean checkedBookmarks(@RequestBody BookMarks bookMarks){
-        if (bookMarks.getChecked()) {
-            BookMarks bookMarks1 = apiService.findBookmark(bookMarks);
-            bookMarks.setId(bookMarks1.getId());
-            apiService.unbookmarks(bookMarks.getId());
-
-            return !bookMarks.getChecked();
-        } else {
-            apiService.bookmarks(bookMarks);
-
-            return !bookMarks.getChecked();
-        }
+        return apiService.checkedBookmarks(bookMarks);
     }
 }

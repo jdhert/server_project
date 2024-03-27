@@ -4,17 +4,13 @@ import com.kitri.web_project.dto.login.LoginUser;
 import com.kitri.web_project.dto.login.ResponseClient;
 import com.kitri.web_project.dto.login.SocialLogin;
 import com.kitri.web_project.mappers.UserMapper;
-import com.kitri.web_project.service.ApiService;
 import com.kitri.web_project.service.LoginService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Objects;
-import java.util.TimeZone;
 
 @RestController
 @RequestMapping("/api/login")

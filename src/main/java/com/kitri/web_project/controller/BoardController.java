@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -74,10 +76,8 @@ public class BoardController {
     public List<BoardInfo> search(@RequestParam String search, @RequestParam String type, @RequestParam String type1, @RequestParam int subject, @PathVariable int page){
         int maxPage=8;
         int offset;
-        int limit;
-
+        int limit = 8;
         offset = (page - 1) * maxPage;
-        limit = 8;
         List<BoardInfo> bm = boardMapper.getSearchBoards(search+'%', type, type1, offset, limit, subject);
         ImageSet(bm);
         return bm;
@@ -85,7 +85,6 @@ public class BoardController {
 
     @GetMapping("/get/{boardId}")
     public BoardInfo getBoard(@PathVariable long boardId){
-
         return boardMapper.getBoard(boardId);
     }
 
@@ -112,7 +111,6 @@ public class BoardController {
     public void updateBoard(@RequestBody UpdateBoard updateBoard){
         boardMapper.deleteTags(updateBoard.getBoardId());
         boardMapper.updateBoard(updateBoard);
-
         for(String tag : updateBoard.getTags())
             boardMapper.setTag(updateBoard.getBoardId(), tag);
         for(String img : updateBoard.getImg())
@@ -141,31 +139,23 @@ public class BoardController {
         return boardService.popularBoards(subject);
     }
 
-    @Value("${upload.path.routine}")
-    private String uploadRootPath;
 
     @PostMapping(value = "/img", consumes={MediaType.MULTIPART_FORM_DATA_VALUE})
     public List<String> insertImages(@RequestPart(value = "image", required = false) MultipartFile[] imageFiles) {
         List<String> s = new ArrayList<>();;
         for (MultipartFile file : imageFiles) {
             try {
-                    //1.서버에 이미지파일을 저장, 이미지를 서버에 업로드
-                    //1-a.파일 저장 위치를 지정하여 파일 객체에 포장
-                    String originalFilename = file.getOriginalFilename();
-                    //1-a-1.파일명이 중복되지 않도록 변경
-                    String uploadFileName = UUID.randomUUID() + "_" + originalFilename;
-                    //1-a-2.압럳, 폴더를 날짜별로 생성
-                    String newUploadPath = uploadRootPath;
-                    File uploadFile = new File(newUploadPath + File.separator + uploadFileName);
-                    //1-b. 파일을 해당 경로에 업로드
-                    file.transferTo(uploadFile);
-//                String savePath
-//                        = newUploadPath.substring(uploadRootPath.length());
-//                String s1 = savePath + File.separator + uploadFileName;
-                    String savePath = newUploadPath.substring(uploadRootPath.length()).replace("\\", "/"); // 역슬래시를 슬래시로 변환
-                    String encodedFileName = URLEncoder.encode(uploadFileName, StandardCharsets.UTF_8); // 파일명 인코딩
-                    String s1 = savePath + "/" + encodedFileName; // URL 생성
-                    s.add(s1);
+                String originalFilename = file.getOriginalFilename();
+                String uploadFileName = UUID.randomUUID() + "_" + originalFilename;
+                String currentDir = System.getProperty("user.dir");
+                Path parentDir = Paths.get(currentDir).getParent();
+                String uploadRootPath  = parentDir.resolve("images").toString();
+                File uploadFile = new File(uploadRootPath + File.separator + uploadFileName);
+                file.transferTo(uploadFile);
+                String savePath = uploadRootPath.replace("\\", "/");
+                String encodedFileName = URLEncoder.encode(uploadFileName, StandardCharsets.UTF_8);
+                String s1 = savePath + "/" + encodedFileName;
+                s.add(s1);
             } catch(IOException e){
                 System.out.println(e);
             }
@@ -178,11 +168,9 @@ public class BoardController {
     public ResponseEntity<List<RequestImage>> getBoardImage(@PathVariable long id) {
         List<RequestImage> imageList = boardMapper.getBoardImage(id);
         List<String> images = new ArrayList<>();
-
         for(RequestImage bs : imageList){
             images.add(bs.getImagePath());
         }
-
         List<String> imageUrls = images.stream()
                 .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/images/")
@@ -193,8 +181,6 @@ public class BoardController {
         for (int i = 0; i < imageUrls.size(); i++) {
             imageList.get(i).setImagePath(imageUrls.get(i));
         }
-
-        ResponseEntity<List<RequestImage>> l = ResponseEntity.ok(imageList);
         return ResponseEntity.ok(imageList);
     }
 
@@ -244,10 +230,6 @@ public class BoardController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-//    @GetMapping("/view/{id}")
-//    public long totalViewCount(@PathVariable("id") Long id) {
-//        return boardMapper.totalViewCount(id);
-//    }
 
     @GetMapping("/view/{id}")
     public ResponseEntity<Long> totalViewCount(@PathVariable("id") long id) {
@@ -277,8 +259,7 @@ public class BoardController {
     @GetMapping("/{id}/likeStatus")
     public boolean getPostLikeStatus(@PathVariable("id") Long postId) {
         try {
-            boolean postLiked = boardMapper.getPostLikeStatus(postId);
-            return postLiked;
+            return boardMapper.getPostLikeStatus(postId);
         } catch (Exception e){
             e.printStackTrace();
             return false;

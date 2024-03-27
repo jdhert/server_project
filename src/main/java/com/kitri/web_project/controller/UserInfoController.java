@@ -19,6 +19,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @RestController
@@ -48,8 +50,10 @@ public class UserInfoController {
 
         String imgPath = userMapper.getUserImages(userUpdateInfo.getUserId());
         userMapper.updateUser(userUpdateInfo);
-
-        String fullPath = "/D:/imageStore" + imgPath;
+        String currentDir = System.getProperty("user.dir");
+        Path parentDir = Paths.get(currentDir).getParent();
+        String uploadRootPath  = parentDir.resolve("images").toString();
+        String fullPath = uploadRootPath + imgPath;
         File file = new File(fullPath);
         if (file.exists()) {
             try {
@@ -86,7 +90,11 @@ public class UserInfoController {
     public void deleteUser(@PathVariable Long id) {
         String imgPath = userMapper.getUserImages(id);
         userMapper.deleteUser(id);
-        String fullPath = "/D:/imageStore" + imgPath;
+
+        String currentDir = System.getProperty("user.dir");
+        Path parentDir = Paths.get(currentDir).getParent();
+        String uploadRootPath  = parentDir.resolve("images").toString();
+        String fullPath = uploadRootPath + imgPath;
         File file = new File(fullPath);
         if (file.exists()) {
             try {

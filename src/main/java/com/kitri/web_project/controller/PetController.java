@@ -15,6 +15,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.File;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +38,6 @@ public class PetController {
     @GetMapping("/{id}")
     public ResponseEntity<List<String>> getImages(@PathVariable long id){
         List<String> images = petMapper.getImages(id);
-        // URI Components Builder를 사용해 완전한 URL 생성
         List<String> imageUrls = images.stream()
                 .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/images/")
@@ -50,7 +51,6 @@ public class PetController {
     @GetMapping("/detail/img/{petId}")
     public ResponseEntity<List<String>> getPetImages(@PathVariable long petId){
         List<String> images = petMapper.getPetImages(petId);
-        // URI Components Builder를 사용해 완전한 URL 생성
         List<String> imageUrls = images.stream()
                 .map(path -> ServletUriComponentsBuilder.fromCurrentContextPath()
                         .path("/images/")
@@ -75,8 +75,10 @@ public class PetController {
             imgPath = String.valueOf(petMapper.getPetImages(pet.getPetId()));
             petMapper.updatePet(pet);
         }
-
-        String fullPath = "/D:/imageStore" + imgPath;
+        String currentDir = System.getProperty("user.dir");
+        Path parentDir = Paths.get(currentDir).getParent();
+        String uploadRootPath  = parentDir.resolve("images").toString();
+        String fullPath = uploadRootPath  + imgPath;
         File file = new File(fullPath);
         if (file.exists()) {
             try {
@@ -98,8 +100,10 @@ public class PetController {
     public void RequestDiary(@PathVariable long petId) {
         String imgPath = String.valueOf(petMapper.getPetImages(petId));
         petMapper.deletePet(petId);
-
-        String fullPath = "/D:/imageStore" + imgPath;
+        String currentDir = System.getProperty("user.dir");
+        Path parentDir = Paths.get(currentDir).getParent();
+        String uploadRootPath  = parentDir.resolve("images").toString();
+        String fullPath = uploadRootPath + imgPath;
         File file = new File(fullPath);
         if (file.exists()) {
             try {
@@ -124,7 +128,7 @@ public class PetController {
 
         List<String> decodedImageUrls = getPetDiaryList.stream()
                 .map(getdiaryImage -> decodeImageUrl(getdiaryImage.getImgPath()))
-                .collect(Collectors.toList());
+                .toList();
 
         for(int i = 0; i < getPetDiaryList.size(); i++){
             getPetDiaryList.get(i).setImgPath(decodedImageUrls.get(i));

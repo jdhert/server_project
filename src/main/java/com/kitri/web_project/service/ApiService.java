@@ -26,13 +26,18 @@ public class ApiService {
         return list;
     }
 
-    public void bookmarks(BookMarks bookMarks) {
-        apiMapper.bookmarks(bookMarks);
-    }
-    public void unbookmarks(Long id) {
-        apiMapper.unbookmarks(id);
-    }
     public BookMarks findBookmark(BookMarks bookMarks) {
         return apiMapper.findBookmark(bookMarks);
+    }
+
+    public boolean checkedBookmarks(BookMarks bookMarks){
+        if (bookMarks.getChecked()) {
+            BookMarks bookMarks1 = findBookmark(bookMarks);
+            bookMarks.setId(bookMarks1.getId());
+            apiMapper.unbookmarks(bookMarks.getId());
+        } else {
+            apiMapper.bookmarks(bookMarks);
+        }
+        return !bookMarks.getChecked();
     }
 }
