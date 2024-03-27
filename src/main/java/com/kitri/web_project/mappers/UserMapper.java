@@ -17,7 +17,7 @@ import java.util.List;
 public interface UserMapper {
 
     ResponseUser findMember(String name, String email);
-    void signup(String name, String email, String password, String address, String imgPath, boolean social);
+    void signup(String email, String name, String password, String address, String imgPath, boolean social);
     ResponseClient findByEmail(String email, boolean social);
     UserInfo findById(long id);
     List<PetInfo> getPets(long id);

@@ -189,7 +189,7 @@ public class UserInfoController {
     }
     @PostMapping("/updateColor/{petId}") //캘린더 색상 업데이트
     public void petCalendars(@PathVariable long petId, @RequestBody Map<String, String> requestBody){
-        String color = requestBody.get("color");
+        String color = requestBody.get("petColor");
         userMapper.UpdateColor(petId, color);
     }
 
