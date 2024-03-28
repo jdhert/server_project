@@ -98,10 +98,6 @@
     </update>
 
     <select id="getBoard" parameterType="long" resultType="com.kitri.web_project.dto.board.BoardInfo">
-<!--        select id, <include refid="responseColumns" />, user_id as userId-->
-<!--        from free_board-->
-<!--        WHERE id = #{id}-->
-
         SELECT fb.id, fb.title, fb.created_at AS createdAt, fb.content, fb.view_count AS viewCount, fb.comment_count AS commentCount, fb.like_count AS likeCount, fb.category, fb.user_id AS userId, u.nick_name AS writer, u.img_path AS userImg
         FROM free_board fb
         JOIN user u ON fb.user_id = u.id
@@ -147,7 +143,7 @@
     <select id="getMyBoards" parameterType="com.kitri.web_project.dto.board.RequestMyBoard" resultType="com.kitri.web_project.dto.board.BoardInfo">
         select free_board.id as id, <include refid="responseColumns" />,
         free_board.user_id as userId,
-        (select COUNT(*) FROM free_board where subject = #{subject}) AS totalRowCount,
+        (select COUNT(*) FROM free_board where subject = #{subject} and user_id = #{id}) AS totalRowCount,
         nick_name as writer
         from free_board join user on user.id = user_id
         WHERE subject = #{subject} and user.id = #{id}

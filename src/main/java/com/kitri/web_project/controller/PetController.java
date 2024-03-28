@@ -27,8 +27,6 @@ public class PetController {
     @Autowired
     private PetMapper petMapper;
 
-    @Autowired
-    private UserMapper userMapper;
 
     @PostMapping
     public void addPet(@RequestBody RequestPet pet) {

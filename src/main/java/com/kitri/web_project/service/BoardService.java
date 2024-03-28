@@ -21,8 +21,7 @@ public class BoardService {
     BoardMapper boardMapper;
 
     public List<BoardInfo> boardInfos(long id, int page){
-        List<BoardInfo> b =boardMapper.getMyLike(id, (page-1) * 10);
-        return b;
+        return boardMapper.getMyLike(id, (page-1) * 10);
     }
 
     public List<BoardInfo> popularBoards(int subject){
@@ -56,5 +55,13 @@ public class BoardService {
                 .map(encodedUrl -> URLDecoder.decode(encodedUrl, StandardCharsets.UTF_8)) // URL 디코딩
                 .collect(Collectors.toList());
         return ResponseEntity.ok(imageUrls);
+    }
+
+    public List<BoardInfo> getMyBoards(long id, int subject, int page){
+        int maxPage=10;
+        int offset;
+        int limit = 10;
+        offset = (page - 1) * maxPage;
+        return boardMapper.getMyBoards(id, subject);
     }
 }
