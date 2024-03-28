@@ -28,8 +28,6 @@ public class UserInfoController {
     @Autowired
     UserMapper userMapper;
 
-
-
     private final UserInfoService userInfoService;
 
     @Autowired
@@ -143,8 +141,6 @@ public class UserInfoController {
             }
         }
     }
-
-
 
     @GetMapping("/DiaryImages/{id}")
     public ResponseEntity<List<DiaryImgDto>> getImages(@PathVariable long id) {
