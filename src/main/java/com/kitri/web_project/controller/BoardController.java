@@ -126,16 +126,12 @@ public class BoardController {
         boardMapper.deleteAllImgs(id);
     }
 
-
     @GetMapping("/getMyBoard/{id}")
-    public List<BoardInfo> getMyBoard(@RequestParam int subject, @RequestParam int page, @PathVariable long id) {
-//        int maxPage=10;
-//        int offset;
-//        int limit;
-//        offset = (page - 1) * maxPage;
-//        limit = 10;
-        return boardMapper.getMyBoards(id, subject);
+    public List<BoardInfo> getMyBoard(@RequestParam int subject, @RequestParam int page, @RequestParam int itemsPerPage, @PathVariable long id) {
+        int offset = (page - 1) * itemsPerPage;
+        return boardMapper.getMyBoards(id, subject, offset, itemsPerPage);
     }
+
     @GetMapping("/popular")
     public List<BoardInfo> getPopularBoard(int subject) {
         return boardService.popularBoards(subject);
@@ -224,8 +220,6 @@ public class BoardController {
             boardMapper.decrementCommentLikeCount(commentId);
         }
     }
-
-
 
     public void ImageSet(List<BoardInfo> bm){
         for(BoardInfo b : bm){
