@@ -249,18 +249,35 @@ public class BoardController {
         return ResponseEntity.ok().body(viewCount);
     }
 
+//    @PostMapping("/liked")
+//    public boolean boardLiked(@RequestBody RequestBoardLike requestBoardLike) {
+//        try {
+//            if (requestBoardLike.getLiked()) {
+//                boolean recordExists = boardMapper.checkLikeExists(requestBoardLike.getUserId(), requestBoardLike.getBoardId());
+//                if (!recordExists) {
+//                    boardMapper.insertLike(requestBoardLike.getUserId(), requestBoardLike.getBoardId());
+//                }
+//                return true;
+//            } else {
+//                boardMapper.deleteLike(requestBoardLike.getUserId(), requestBoardLike.getBoardId());
+//                return false;
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+
     @PostMapping("/liked")
     public boolean boardLiked(@RequestBody RequestBoardLike requestBoardLike) {
         try {
-            if (requestBoardLike.getLiked()) {
-                boolean recordExists = boardMapper.checkLikeExists(requestBoardLike.getUserId(), requestBoardLike.getBoardId());
-                if (!recordExists) {
-                    boardMapper.insertLike(requestBoardLike.getUserId(), requestBoardLike.getBoardId());
-                }
-                return true;
-            } else {
-                boardMapper.deleteLike(requestBoardLike.getUserId(), requestBoardLike.getBoardId());
+            boolean likeExists = boardMapper.checkLikeExists(requestBoardLike); // 좋아요가 이미 존재하는지 확인
+            if (likeExists) { // 좋아요가 이미 존재하는 경우
+                boardMapper.deleteLike(requestBoardLike); //좋아요 취소
                 return false;
+            } else { // 좋아요가 존재하지 않는 경우
+                boardMapper.insertLike(requestBoardLike); // 좋아요 추가
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -268,16 +285,32 @@ public class BoardController {
         }
     }
 
-    @GetMapping("/{id}/likeStatus")
-    public boolean getPostLikeStatus(@PathVariable("id") Long postId) {
+
+//    @GetMapping("/{id}/likeStatus")
+//    public boolean getPostLikeStatus(@PathVariable("id") Long postId) {
+//        try {
+//            boolean postLiked = boardMapper.getPostLikeStatus(postId);
+//            return postLiked;
+//        } catch (Exception e){
+//            e.printStackTrace();
+//            return false;
+//        }
+//    }
+
+    @GetMapping("/{userId}/{boardId}/likeStatus")
+    public boolean getPostLikeStatus(@PathVariable("userId") Long userId, @PathVariable("boardId") Long boardId) {
         try {
-            boolean postLiked = boardMapper.getPostLikeStatus(postId);
+            RequestBoardLike requestBoardLike = new RequestBoardLike();
+            requestBoardLike.setUserId(userId);
+            requestBoardLike.setBoardId(boardId);
+            boolean postLiked = boardMapper.getPostLikeStatus(requestBoardLike);
             return postLiked;
         } catch (Exception e){
             e.printStackTrace();
             return false;
         }
     }
+
 
 
     @GetMapping("/getMyLike/{id}")

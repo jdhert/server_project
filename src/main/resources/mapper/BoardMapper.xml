@@ -202,12 +202,20 @@
         where board_id = #{id}
     </select>
 
-    <select id="checkLikeExists" parameterType="com.kitri.web_project.dto.board.RequestBoardLike">
-        SELECT EXISTS (
-            SELECT 1 FROM free_board_like
-            WHERE user_id = #{userId} AND board_id = #{boardId}
-        ) AS likeExists;
+<!--    <select id="checkLikeExists" parameterType="com.kitri.web_project.dto.board.RequestBoardLike" resultType="int">-->
+<!--        SELECT EXISTS (-->
+<!--            SELECT 1 FROM free_board_like-->
+<!--            WHERE user_id = #{userId} AND board_id = #{boardId}-->
+<!--        ) AS likeExists;-->
+<!--    </select>-->
+
+    <select id="checkLikeExists" parameterType="com.kitri.web_project.dto.board.RequestBoardLike" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END AS likeExists
+        FROM free_board_like
+        WHERE user_id = #{userId} AND board_id = #{boardId}
     </select>
+
+
 
     <insert id="insertLike" parameterType="com.kitri.web_project.dto.board.RequestBoardLike">
         INSERT INTO free_board_like (user_id, board_id)
@@ -219,11 +227,17 @@
         WHERE user_id = #{userId} AND board_id = #{boardId}
     </delete>
 
-    <select id="getPostLikeStatus" parameterType="Long" resultType="boolean">
+<!--    <select id="getPostLikeStatus" parameterType="Long" resultType="boolean">-->
+<!--        SELECT COUNT(*) > 0 AS likeStatus-->
+<!--        FROM free_board_like-->
+<!--        WHERE board_id = #{boardId}-->
+<!--    </select>-->
+    <select id="getPostLikeStatus" parameterType="com.kitri.web_project.dto.board.RequestBoardLike" resultType="boolean">
         SELECT COUNT(*) > 0 AS likeStatus
         FROM free_board_like
-        WHERE board_id = #{boardId}
+        WHERE user_id = #{userId} AND board_id = #{boardId}
     </select>
+
 
     <select id="getMyLike" resultType="com.kitri.web_project.dto.board.BoardInfo">
         select fb.id as id, fb.title as title, fb.view_count as viewCount, fb.like_count as likeCount, fb.comment_count as commentCount
