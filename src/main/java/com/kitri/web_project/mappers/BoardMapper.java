@@ -2,6 +2,7 @@ package com.kitri.web_project.mappers;
 
 import com.kitri.web_project.dto.board.BoardInfo;
 import com.kitri.web_project.dto.board.RequestBoard;
+import com.kitri.web_project.dto.board.RequestBoardLike;
 import com.kitri.web_project.dto.board.UpdateBoard;
 import com.kitri.web_project.dto.image.RequestImage;
 import org.apache.ibatis.annotations.Mapper;
@@ -46,12 +47,18 @@ public interface BoardMapper {
     List<BoardInfo> getMyLike(long id, int page);
 
 
-    boolean checkLikeExists(@Param("userId") long userId, @Param("boardId") long boardId);
+//    boolean checkLikeExists(@Param("userId") long userId, @Param("boardId") long boardId);
+    boolean checkLikeExists(RequestBoardLike requestBoardLike);
 
-    boolean insertLike(long userId, long boardId);
-    boolean deleteLike(long userId, long boardId);
 
-    boolean getPostLikeStatus(Long postId);
+//    boolean insertLike(long userId, long boardId);
+//    boolean deleteLike(long userId, long boardId);
+    boolean insertLike(RequestBoardLike requestBoardLike);
+    boolean deleteLike(RequestBoardLike requestBoardLike);
+
+
+//    boolean getPostLikeStatus(Long postId);
+    boolean getPostLikeStatus(RequestBoardLike requestBoardLike);
 
     Long totalViewCount(long id);
 
