@@ -143,16 +143,6 @@
         SELECT view_count FROM DBpet.free_board WHERE id = #{id}
     </select>
 
-
-<!--    <select id="getMyBoards" parameterType="com.kitri.web_project.dto.board.RequestMyBoard" resultType="com.kitri.web_project.dto.board.BoardInfo">-->
-<!--        select free_board.id as id, <include refid="responseColumns" />,-->
-<!--        free_board.user_id as userId,-->
-<!--        (select COUNT(*) FROM free_board where subject = #{subject}) AS totalRowCount,-->
-<!--        nick_name as writer-->
-<!--        from free_board join user on user.id = user_id-->
-<!--        WHERE subject = #{subject} and user.id = #{id}-->
-<!--        order by created_at desc-->
-<!--    </select>-->
     <select id="getMyBoards" parameterType="com.kitri.web_project.dto.board.RequestMyBoard" resultType="com.kitri.web_project.dto.board.BoardInfo">
         SELECT free_board.id AS id, <include refid="responseColumns" />,
                 free_board.user_id AS userId,
