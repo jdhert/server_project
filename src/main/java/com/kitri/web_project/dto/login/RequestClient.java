@@ -28,6 +28,7 @@ public class RequestClient {
     @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,20}$")
     String passwordVerify;
 
+    String imgPath;
     String address;
 
 }

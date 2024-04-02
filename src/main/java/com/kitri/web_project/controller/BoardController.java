@@ -85,7 +85,6 @@ public class BoardController {
 
     @GetMapping("/get/{boardId}")
     public BoardInfo getBoard(@PathVariable long boardId){
-
         return boardMapper.getBoard(boardId);
     }
 
