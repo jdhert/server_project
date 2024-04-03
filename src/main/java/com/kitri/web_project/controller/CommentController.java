@@ -1,5 +1,6 @@
 package com.kitri.web_project.controller;
 
+import com.kitri.web_project.dto.board.RequestBoardLike;
 import com.kitri.web_project.dto.comment.CommentDto;
 import com.kitri.web_project.dto.comment.RequestComment;
 import com.kitri.web_project.dto.comment.RequestCommentLike;
@@ -22,7 +23,8 @@ public class CommentController {
 
     @GetMapping("/{id}")
     public List<CommentDto> getTopLevelComments(@PathVariable long id){
-        return commentMapper.getTopLevelComments(id);
+        List<CommentDto> c = commentMapper.getTopLevelComments(id);
+        return c;
     }
 
     @GetMapping("/detailcomment")
@@ -97,21 +99,17 @@ public class CommentController {
         return commentMapper.childCount(id);
     }
 
+
     @PostMapping("/liked")
     public boolean commentLiked(@RequestBody RequestCommentLike requestCommentLike) {
-        long userId = requestCommentLike.getUserId();
-        long boardId = requestCommentLike.getBoardId();
-        long commentId = requestCommentLike.getCommentId();
         try {
-            if (requestCommentLike.getLiked()) {
-                boolean recordExists = commentMapper.checkCommentLikeExists(userId, boardId, commentId);
-                if (!recordExists) {
-                    commentMapper.insertCommentLike(userId, boardId, commentId);
-                }
-                return true;
-            } else {
-                commentMapper.deleteCommentLike(userId, boardId, commentId);
+            boolean likeExists = commentMapper.checkCommentLikeExists(requestCommentLike); // 좋아요가 이미 존재하는지 확인
+            if (likeExists) { // 좋아요가 이미 존재하는 경우
+                commentMapper.deleteCommentLike(requestCommentLike); //좋아요 취소
                 return false;
+            } else { // 좋아요가 존재하지 않는 경우
+                commentMapper.insertCommentLike(requestCommentLike); // 좋아요 추가
+                return true;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -119,53 +117,15 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/{id}/likeStatus")
-    public boolean getCommentLikeStatus(@PathVariable("id") Long commentId) {
+
+    @GetMapping("/{userId}/{commentId}/likeStatus")
+    public boolean getCommentLikeStatus(@PathVariable("userId") Long userId, @PathVariable("commentId") Long commentId) {
         try {
-            boolean commentLiked = commentMapper.getCommentLikeStatus(commentId);
+            RequestCommentLike requestCommentLike = new RequestCommentLike();
+            requestCommentLike.setUserId(userId);
+            requestCommentLike.setCommentId(commentId);
+            boolean commentLiked = commentMapper.getCommentLikeStatus(requestCommentLike);
             return commentLiked;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    @PostMapping("/replyLiked")
-    public boolean replyLiked(@RequestBody RequestCommentLike requestCommentLike) {
-        long userId = requestCommentLike.getUserId();
-        long boardId = requestCommentLike.getBoardId();
-        long commentId = requestCommentLike.getCommentId();
-        boolean liked = requestCommentLike.getLiked();
-
-        try {
-            boolean alreadyLiked = commentMapper.checkReplyLikeExists(userId, boardId, commentId);
-            if (alreadyLiked && liked) {
-                return true;
-            }
-            else if (!alreadyLiked && !liked) {
-                return false;
-            }
-
-            if (liked) {
-                commentMapper.insertReplyLike(userId, boardId, commentId);
-            } else {
-                commentMapper.deleteReplyLike(userId, boardId, commentId);
-            }
-            return liked;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    @GetMapping("/{id}/replyLikeStatus")
-    public boolean getReplyLikeStatus(@PathVariable("id") Long replyId) {
-        try {
-            boolean replyLiked = commentMapper.getReplyLikeStatus(replyId);
-            return replyLiked;
 
         } catch (Exception e) {
             e.printStackTrace();
