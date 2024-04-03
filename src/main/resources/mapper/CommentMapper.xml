@@ -98,12 +98,19 @@
     </update>
 
 
-    <select id="checkCommentLikeExists" parameterType="com.kitri.web_project.dto.comment.RequestCommentLike">
-       SELECT EXISTS (
-          SELECT 1 FROM free_board_comment_like
-          WHERE user_id = #{userId} AND board_id = #{boardId} AND comment_id = #{commentId}
-          ) AS likeExists;
+<!--    <select id="checkCommentLikeExists" parameterType="com.kitri.web_project.dto.comment.RequestCommentLike">-->
+<!--       SELECT EXISTS (-->
+<!--          SELECT 1 FROM free_board_comment_like-->
+<!--          WHERE user_id = #{userId} AND board_id = #{boardId} AND comment_id = #{commentId}-->
+<!--          ) AS likeExists;-->
+<!--    </select>-->
+
+    <select id="checkCommentLikeExists" parameterType="com.kitri.web_project.dto.board.RequestBoardLike" resultType="boolean">
+        SELECT CASE WHEN COUNT(*) > 0 THEN TRUE ELSE FALSE END AS likeExists
+        FROM free_board_comment_like
+        WHERE user_id = #{userId} AND comment_id = #{commentId}
     </select>
+
 
     <insert id="insertCommentLike" parameterType="com.kitri.web_project.dto.comment.RequestCommentLike">
        INSERT INTO free_board_comment_like (user_id, board_id, comment_id)
@@ -115,10 +122,16 @@
         WHERE user_id = #{userId} AND board_id = #{boardId} AND comment_id = #{commentId}
     </delete>
 
-    <select id="getCommentLikeStatus" parameterType="Long" resultType="boolean">
+<!--    <select id="getCommentLikeStatus" parameterType="Long" resultType="boolean">-->
+<!--        SELECT COUNT(*) > 0 AS likeStatus-->
+<!--        FROM free_board_comment_like-->
+<!--        WHERE user_id = #{userId} AND comment_id = #{commentId}-->
+<!--    </select>-->
+
+    <select id="getCommentLikeStatus" parameterType="com.kitri.web_project.dto.comment.RequestCommentLike" resultType="boolean">
         SELECT COUNT(*) > 0 AS likeStatus
         FROM free_board_comment_like
-        WHERE comment_id = #{commentId}
+        WHERE user_id = #{userId} AND comment_id = #{commentId}
     </select>
 
 
