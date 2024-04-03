@@ -20,5 +20,5 @@ public class DiaryMainImg {
     String petName;
     String imgPath;
     private int maxPage;
-
+    long diaryCount;
 }
